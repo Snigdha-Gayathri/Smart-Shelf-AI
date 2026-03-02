@@ -42,6 +42,62 @@ body {
   font-size: clamp(14px, 2vw, 16px);
 }
 
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.sidebar {
+  flex-shrink: 0;
+}
+
+.main-content {
+  flex: 1;
+  min-width: 0;
+  overflow-y: auto;
+}
+
+.personality-section {
+  width: 100%;
+  min-width: 0;
+}
+
+.personality-story-layout {
+  width: 100%;
+  min-width: 0;
+}
+
+.story-box {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+@media (min-width: 1024px) and (orientation: landscape) {
+  .story-box {
+    max-width: min(100%, 980px);
+  }
+}
+
+@media (max-width: 1023px), (orientation: portrait) {
+  .story-box {
+    max-width: 100%;
+  }
+
+  .story-box-content {
+    padding: 16px !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .story-box {
+    padding: 16px;
+  }
+}
+
 /* ── Landscape orientation adjustments ── */
 @media (orientation: landscape) and (max-height: 500px) {
   /* Compact padding in landscape on short screens (phones rotated) */

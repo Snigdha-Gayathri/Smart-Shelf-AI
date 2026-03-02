@@ -145,21 +145,10 @@ export default function App() {
   // Handle logout - do NOT delete persisted user data (only clear in-memory state)
   function handleLogout() {
     localStorage.removeItem('auth');
-    localStorage.removeItem('profilePicture');
     setAuth(null);
+    setMenuOpen(false);
     setActiveSection('home');
     setRecommendations([]);
-    // Clear in-memory state but do NOT delete from storage
-    // This allows user to log back in without losing their data
-    setCurrentlyReading([]);
-    setEducationalBooks([]);
-    setPreviousReads([]);
-    setUserFeedback({
-      likedGenres: new Map(),
-      dislikedGenres: new Map(),
-      likedTags: new Map(),
-      dislikedTags: new Map()
-    });
   }
 
   // Handle delete account - explicitly remove all persisted user data
@@ -661,20 +650,19 @@ export default function App() {
 
   return (
     <div 
-      className={`w-full min-h-screen min-h-[100dvh] overflow-x-hidden font-sans transition-colors duration-500 flex flex-row ${theme === 'dark' ? 'bg-black text-white' : 'text-slate-800'}`} 
+      className={`app-layout w-full h-screen overflow-hidden font-sans transition-colors duration-500 ${theme === 'dark' ? 'bg-black text-white' : 'text-slate-800'}`} 
       style={{ backgroundColor: theme === 'dark' ? '#000000' : '#FAF7F2' }}
     >
-      {/* Inline Glass Navigation Sidebar with smooth width transition */}
-      <HamburgerMenu 
-        isOpen={menuOpen} 
-        setIsOpen={setMenuOpen} 
-        activeSection={activeSection} 
-        setActiveSection={setActiveSection}
-        inline={true}
-      />
+      {auth && (
+        <HamburgerMenu 
+          isOpen={menuOpen} 
+          setIsOpen={setMenuOpen} 
+          activeSection={activeSection} 
+          setActiveSection={setActiveSection}
+        />
+      )}
       
-      {/* Main Content Area - Shifts and resizes based on navigation state */}
-      <main className="flex-1 w-full overflow-y-auto px-3 sm:px-6 md:px-8 py-4 sm:py-8 md:py-12 transition-all duration-300 ease-in-out">
+      <main className="main-content flex-1 min-w-0 h-screen px-3 sm:px-6 md:px-8 py-4 sm:py-8 md:py-12 transition-all duration-300 ease-in-out overflow-y-auto">
         <div className="w-full max-w-6xl mx-auto">
         <HeaderSection theme={theme} />
         {!auth && (

@@ -1,14 +1,13 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { generatePersonalityStory } from '../utils/personalityStoryGenerator';
-import qlexiImage from '../assets/qlexi-intro-removebg-preview-removebg-preview.png';
 
 export default function PersonalityStoryScreen({ previousReads }) {
   const story = generatePersonalityStory(previousReads);
   const booksCompleted = previousReads?.length || 0;
 
   return (
-    <section className="w-full min-h-screen">
+    <section className="personality-section w-full">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
@@ -24,80 +23,16 @@ export default function PersonalityStoryScreen({ previousReads }) {
         </p>
       </motion.div>
 
-      {/* Two-Column Layout: Q Lexi on Left, Story on Right */}
-      <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-start">
-        
-        {/* Left Column: Q Lexi Character - Large & Dominant */}
+      <div className="personality-story-layout w-full min-w-0">
         <motion.div
-          initial={{ opacity: 0, x: -30 }}
-          animate={{ opacity: 1, x: 0 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="flex-shrink-0 w-full lg:w-auto flex justify-center lg:justify-start lg:sticky lg:top-8"
-        >
-          <div className="relative">
-            {/* Q Lexi Image - Large */}
-            <motion.img
-              src={qlexiImage}
-              alt="Q Lexi - Your reading personality analyst"
-              className="w-48 sm:w-56 md:w-64 lg:w-72 xl:w-80 h-auto object-contain drop-shadow-2xl"
-              style={{
-                minHeight: '300px',
-                maxHeight: '70vh',
-              }}
-              animate={{
-                y: [0, -8, 0],
-              }}
-              transition={{
-                duration: 4,
-                repeat: Infinity,
-                ease: 'easeInOut',
-              }}
-            />
-            
-            {/* Glow effect behind Q Lexi */}
-            <div 
-              className="absolute inset-0 -z-10 blur-3xl opacity-30 rounded-full"
-              style={{
-                background: 'radial-gradient(circle, rgba(30, 144, 255, 0.6) 0%, rgba(30, 144, 255, 0.25) 50%, transparent 70%)',
-                transform: 'scale(1.2)',
-              }}
-            />
-
-            {/* Speech bubble hint */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.8, duration: 0.4 }}
-              className="absolute -right-2 top-4 sm:top-8 px-3 py-2 rounded-xl text-xs sm:text-sm font-medium max-w-32 sm:max-w-40"
-              style={{
-                background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)',
-                color: 'white',
-                boxShadow: '0 4px 15px rgba(59, 130, 246, 0.4)',
-              }}
-            >
-              Let me judge you... lovingly 💙
-              <div 
-                className="absolute -left-2 top-4 w-0 h-0"
-                style={{
-                  borderTop: '6px solid transparent',
-                  borderBottom: '6px solid transparent',
-                  borderRight: '8px solid #3b82f6',
-                }}
-              />
-            </motion.div>
-          </div>
-        </motion.div>
-
-        {/* Right Column: Single Story Box */}
-        <motion.div
-          initial={{ opacity: 0, x: 30 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="flex-1 w-full"
+          className="flex-1 min-w-0 w-full"
         >
           {/* CINEMATIC VIDEO STORY BOX */}
           <div
-            className="group relative rounded-2xl sm:rounded-3xl overflow-hidden border-2 border-[#1E90FF] shadow-[0_0_25px_#1E90FF] transition-all duration-500 ease-out hover:scale-[1.02] hover:shadow-[0_0_40px_#1E90FF,0_0_70px_rgba(30,144,255,0.7)]"
+            className="story-box group relative rounded-2xl sm:rounded-3xl overflow-hidden border-2 border-[#1E90FF] shadow-[0_0_25px_#1E90FF] transition-all duration-500 ease-out hover:shadow-[0_0_40px_#1E90FF,0_0_70px_rgba(30,144,255,0.7)]"
           >
             {/* Background Video */}
             <video
@@ -114,7 +49,7 @@ export default function PersonalityStoryScreen({ previousReads }) {
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-black/60 transition-all duration-500 group-hover:from-black/60 group-hover:via-black/30 group-hover:to-black/50" />
 
             {/* Content Layer */}
-            <div className="relative z-10 p-6 sm:p-8 md:p-10 lg:p-12">
+            <div className="story-box-content relative z-10 p-6 sm:p-8 md:p-10 lg:p-12">
               {/* Story Content - Long form, readable */}
               <div className="space-y-5 sm:space-y-6">
                 {story.split('\n\n').map((paragraph, idx) => (
@@ -136,7 +71,7 @@ export default function PersonalityStoryScreen({ previousReads }) {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 1.2 }}
-                className="mt-8 pt-6 border-t border-[#1E90FF]/30 flex items-center justify-between"
+                className="mt-8 pt-6 border-t border-[#1E90FF]/30 flex items-center justify-between gap-3 flex-wrap"
               >
                 <p className="text-sm font-semibold text-white drop-shadow-[0_0_8px_rgba(30,144,255,0.7)]">
                   📚 {booksCompleted} book{booksCompleted !== 1 ? 's' : ''} shaped this story
