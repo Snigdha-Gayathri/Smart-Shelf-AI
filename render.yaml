@@ -12,11 +12,16 @@ services:
 
     # ── Build — install backend deps + build frontend ──
     buildCommand: |
-      cd backend && pip install -r requirements.txt &&
-      cd ../frontend && npm ci && npm run build
+      set -e
+      cd backend
+      pip install --upgrade pip
+      pip install -r requirements.txt
+      cd ../frontend
+      npm ci --no-audit --no-fund
+      npm run build
 
     # ── Start — gunicorn + uvicorn workers ──
-    startCommand: cd backend && gunicorn app:app -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:$PORT --timeout 120 --workers 2
+    startCommand: cd backend && gunicorn app:app -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:$PORT --timeout 180 --workers 1
 
     # ── Environment ──
     envVars:
@@ -25,7 +30,9 @@ services:
       - key: NODE_VERSION
         value: "20"
       - key: SKIP_ML
-        value: "0"
+        value: "1"
+      - key: PYTHONUNBUFFERED
+        value: "1"
       # Set these in the Render dashboard (secrets):
       # - GROQ_API_KEY
       # - MONGODB_URI
@@ -33,7 +40,7 @@ services:
       # - OPENAI_API_KEY
 
     # ── Health check ──
-    healthCheckPath: /api/v1/quantum_info
+    healthCheckPath: /health
 
     # ── Plan ──
     plan: free

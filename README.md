@@ -59,6 +59,28 @@ npm run dev
 
 The frontend will be available at `http://localhost:5173`
 
+## ☁️ Deploy on Render
+
+This repo includes a `render.yaml` blueprint configured for stable first deploys:
+
+- Builds backend and frontend in one service
+- Serves built SPA from FastAPI (`frontend/dist`)
+- Uses `SKIP_ML=1` by default to avoid startup failures from heavy model downloads
+- Uses `/health` for Render health checks
+
+### Steps
+
+1. Push the repository to GitHub.
+2. In Render, create a new Blueprint service from the repo.
+3. Ensure these env vars are set in Render (as needed by your features):
+  - `GROQ_API_KEY`
+  - `MONGODB_URI`
+  - `JWT_SECRET`
+  - `OPENAI_API_KEY`
+4. Deploy.
+
+After a successful first deploy, you can set `SKIP_ML=0` only if your plan/resources can handle model loading.
+
 ## 📡 API Endpoints
 
 ### `/ready` (GET)
