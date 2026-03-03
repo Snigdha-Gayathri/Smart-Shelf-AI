@@ -22,7 +22,7 @@ import EducationalInsightPanel from './components/EducationalInsightPanel';
 import CategoryStyledBookCard from './components/CategoryStyledBookCard';
 import SkeletonLoader from './components/SkeletonLoader';
 
-const API_BASE = import.meta.env.VITE_BACKEND_URL || 'http://127.0.0.1:8000'
+const API_BASE = (import.meta.env.VITE_BACKEND_URL || '').trim() || (import.meta.env.PROD ? window.location.origin : 'http://127.0.0.1:8000')
 
 export default function App({ clerk = { enabled: false, isLoaded: false, isSignedIn: false, user: null, signOut: null } }) {
   const clerkEnabled = Boolean(clerk?.enabled)
