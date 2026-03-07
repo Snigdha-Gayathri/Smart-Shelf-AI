@@ -21,7 +21,7 @@ services:
       npm run build
 
     # ── Start — gunicorn + uvicorn workers ──
-    startCommand: cd backend && gunicorn app:app -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:$PORT --timeout 180 --workers 1
+    startCommand: cd backend && python -m gunicorn app:app -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:$PORT --timeout 180 --workers 1
 
     # ── Environment ──
     envVars:
