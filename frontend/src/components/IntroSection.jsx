@@ -1,16 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
+import { getApiBase } from '../utils/apiBase'
 
 const BLUE = '#1E90FF'
 const GLOW = `0 0 20px ${BLUE}, 0 0 40px rgba(30,144,255,0.5)`
 const GLOW_SOFT = `0 0 14px rgba(30,144,255,0.25)`
 
-// Backend API base — falls back to same origin in production (Render)
-const API_BASE =
-  (typeof import.meta !== 'undefined' && import.meta.env?.VITE_BACKEND_URL
-    ? import.meta.env.VITE_BACKEND_URL
-    : ''
-  ).trim() || (typeof window !== 'undefined' ? window.location.origin : '')
+const API_BASE = getApiBase()
 
 
 

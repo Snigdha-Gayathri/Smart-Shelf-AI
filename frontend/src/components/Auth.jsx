@@ -3,8 +3,9 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { FiEye, FiEyeOff, FiUserPlus, FiLogIn, FiCheckCircle, FiXCircle } from 'react-icons/fi'
 import GoogleAuthButtons from './GoogleAuthButtons'
 import qLexiIntroImage from '../assets/qlexi-intro-removebg-preview-removebg-preview.png'
+import { getApiBase } from '../utils/apiBase'
 
-const API_BASE = (import.meta.env.VITE_BACKEND_URL || '').trim() || (import.meta.env.PROD ? window.location.origin : '')
+const API_BASE = getApiBase()
 
 /* Password rules */
 const PASSWORD_RULES = [

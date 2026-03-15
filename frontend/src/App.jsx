@@ -21,8 +21,9 @@ import YourEducation from './components/YourEducation';
 import EducationalInsightPanel from './components/EducationalInsightPanel';
 import CategoryStyledBookCard from './components/CategoryStyledBookCard';
 import SkeletonLoader from './components/SkeletonLoader';
+import { getApiBase } from './utils/apiBase';
 
-const API_BASE = (import.meta.env.VITE_BACKEND_URL || '').trim() || (import.meta.env.PROD ? window.location.origin : '')
+const API_BASE = getApiBase()
 
 export default function App({ clerk = { enabled: false, isLoaded: false, isSignedIn: false, user: null, signOut: null } }) {
   const clerkEnabled = Boolean(clerk?.enabled)

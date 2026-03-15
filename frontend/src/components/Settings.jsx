@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
+import { getApiBase } from '../utils/apiBase'
 
-const API_BASE = (import.meta.env.VITE_BACKEND_URL || '').trim() || (import.meta.env.PROD ? window.location.origin : '')
+const API_BASE = getApiBase()
 
 export default function Settings({ 
   theme, 

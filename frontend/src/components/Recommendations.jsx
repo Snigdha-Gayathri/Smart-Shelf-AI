@@ -3,10 +3,11 @@ import EducationalInsightPanel from './EducationalInsightPanel'
 import ReadingInsightsPanel from './ReadingInsightsPanel'
 import CategoryStyledBookCard from './CategoryStyledBookCard'
 import SkeletonLoader from './SkeletonLoader'
+import { getApiBase } from '../utils/apiBase'
 
 export default function Recommendations({ recommendations = [], onAddToCurrentlyReading, loading = false, currentUsername = '' }) {
   const [message, setMessage] = useState('')
-  const API_BASE = (import.meta.env.VITE_BACKEND_URL || '').trim() || (import.meta.env.PROD ? window.location.origin : '')
+  const API_BASE = getApiBase()
 
   if (loading) {
     return <SkeletonLoader count={6} variant="card" />
