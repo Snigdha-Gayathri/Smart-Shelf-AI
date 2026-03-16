@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { FiEye, FiEyeOff, FiUserPlus, FiLogIn, FiCheckCircle, FiXCircle } from 'react-icons/fi'
+import { FiEye, FiEyeOff, FiUserPlus, FiCheckCircle, FiXCircle } from 'react-icons/fi'
 import GoogleAuthButtons from './GoogleAuthButtons'
 import qLexiIntroImage from '../assets/qlexi-intro-removebg-preview-removebg-preview.png'
 import { getApiBase } from '../utils/apiBase'
@@ -40,6 +40,8 @@ function PasswordRulesIndicator({ password }) {
 export default function Auth({ onSuccess, googleAuthEnabled = false }) {
   /* Sparkle Particle Generator */
   const [sparkles, setSparkles] = useState([])
+  const [snowflakes, setSnowflakes] = useState([])
+
   useEffect(() => {
     const chars = ['✦', '✧', '·', '⋆', '·', '✧']
     const generated = Array.from({ length: 45 }).map((_, i) => ({
@@ -53,6 +55,32 @@ export default function Auth({ onSuccess, googleAuthEnabled = false }) {
     }))
     setSparkles(generated)
   }, [])
+
+  useEffect(() => {
+    const cleanup = window.setInterval(() => {
+      setSnowflakes((prev) => prev.filter((flake) => Date.now() - flake.createdAt < 1700))
+    }, 250)
+
+    return () => window.clearInterval(cleanup)
+  }, [])
+
+  function handleShellMouseMove(e) {
+    const flake = {
+      id: `${Date.now()}-${Math.random()}`,
+      x: e.clientX,
+      y: e.clientY,
+      createdAt: Date.now(),
+      size: 8 + Math.random() * 8,
+      drift: (Math.random() - 0.5) * 18,
+      duration: 1.2 + Math.random() * 0.8,
+      opacity: 0.55 + Math.random() * 0.3,
+    }
+
+    setSnowflakes((prev) => {
+      const next = [...prev, flake]
+      return next.length > 45 ? next.slice(next.length - 45) : next
+    })
+  }
 
   /* Login state */
   const [loginUsername, setLoginUsername] = useState('')
@@ -161,7 +189,7 @@ export default function Auth({ onSuccess, googleAuthEnabled = false }) {
   }
 
   return (
-    <div className="auth-new-shell">
+    <div className="auth-new-shell" onMouseMove={handleShellMouseMove}>
       {/* Decorative Sparkles */}
       <div className="auth-sparkles">
         {sparkles.map(s => (
@@ -177,6 +205,25 @@ export default function Auth({ onSuccess, googleAuthEnabled = false }) {
             }}
           >
             {s.char}
+          </span>
+        ))}
+      </div>
+
+      <div className="auth-cursor-snow-layer" aria-hidden="true">
+        {snowflakes.map((flake) => (
+          <span
+            key={flake.id}
+            className="auth-cursor-snowflake"
+            style={{
+              left: `${flake.x}px`,
+              top: `${flake.y}px`,
+              fontSize: `${flake.size}px`,
+              opacity: flake.opacity,
+              ['--snow-drift']: `${flake.drift}px`,
+              ['--snow-duration']: `${flake.duration}s`,
+            }}
+          >
+            ❄
           </span>
         ))}
       </div>
@@ -207,13 +254,12 @@ export default function Auth({ onSuccess, googleAuthEnabled = false }) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.1 }}
       >
-        <div className="auth-card">
+        <div className="auth-card auth-card-login">
           <h2 className="auth-card-title">Login</h2>
           <p className="auth-card-subtitle">Step into your book world</p>
 
-          <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-            <div className="auth-input-prefix-wrapper">
-              <span className="auth-input-prefix">/</span>
+          <form onSubmit={handleLogin} className="auth-form auth-login-form">
+            <div className="auth-input-wrapper">
               <input
                 type="text"
                 placeholder="Username"
@@ -272,11 +318,11 @@ export default function Auth({ onSuccess, googleAuthEnabled = false }) {
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.6, delay: 0.2 }}
       >
-        <div className="auth-card">
+        <div className="auth-card auth-card-register">
           <h2 className="auth-card-title">Register</h2>
           <p className="auth-card-subtitle">Create your book world</p>
 
-          <form onSubmit={handleRegister} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+          <form onSubmit={handleRegister} className="auth-form auth-register-form">
             <div className="auth-input-wrapper">
               <input
                 type="text"
@@ -321,7 +367,7 @@ export default function Auth({ onSuccess, googleAuthEnabled = false }) {
               </button>
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <div className="auth-rules-wrap">
               <p className="auth-pw-helper">Password verification checks</p>
               <PasswordRulesIndicator password={regPassword} />
             </div>
