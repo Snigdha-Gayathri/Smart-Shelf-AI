@@ -10,6 +10,7 @@ import logging
 from datetime import datetime
 import re
 from typing import Optional, List, Dict, Any
+from uuid import uuid4
 
 load_dotenv()
 # Prevent transformers from importing TensorFlow/Keras (avoid Keras 3 incompatibility)
@@ -139,6 +140,7 @@ server_ready = False
 
 # ── In-memory book dataset (loaded ONCE at startup — avoids repeated disk I/O) ──
 _BOOKS_DATASET: List[Dict[str, Any]] = []
+_AUTHOR_WEBSITE_MAP: Dict[str, str] = {}
 
 # --- Mock OTP storage (for dev/testing only) ---
 # In-memory stores with short-lived entries; replace with real SMS provider later.
@@ -210,6 +212,21 @@ class ChangePasswordPayload(BaseModel):
     token: str
 
 
+class ReviewPayload(BaseModel):
+    review_id: Optional[str] = None
+    username: Optional[str] = None
+    book: str
+    author: Optional[str] = None
+    genre: Optional[str] = None
+    rating: int
+    review: str = ""
+
+
+class ReviewUpdatePayload(BaseModel):
+    rating: int
+    review: str = ""
+
+
 def _get_books_dataset() -> List[Dict[str, Any]]:
     """Return the in-memory book dataset, loading from disk if not yet cached."""
     global _BOOKS_DATASET
@@ -222,6 +239,60 @@ def _get_books_dataset() -> List[Dict[str, Any]]:
             _BOOKS_DATASET = _json.load(f)
         logger.info(f"📚 Loaded {len(_BOOKS_DATASET)} books from dataset into memory")
     return _BOOKS_DATASET
+
+
+def _reviews_file_path() -> Path:
+    return Path(__file__).parent / "data" / "reviews.json"
+
+
+def _load_reviews() -> List[Dict[str, Any]]:
+    import json as _json
+    path = _reviews_file_path()
+    if not path.exists():
+        return []
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            data = _json.load(f)
+        return data if isinstance(data, list) else []
+    except Exception as e:
+        logger.warning(f"Failed to read reviews.json: {e}")
+        return []
+
+
+def _save_reviews(reviews: List[Dict[str, Any]]) -> None:
+    import json as _json
+    path = _reviews_file_path()
+    with open(path, "w", encoding="utf-8") as f:
+        _json.dump(reviews, f, ensure_ascii=False, indent=2)
+
+
+def _get_author_website_map() -> Dict[str, str]:
+    """Return a cached author->website map loaded from data/author_website_links.txt."""
+    global _AUTHOR_WEBSITE_MAP
+    if _AUTHOR_WEBSITE_MAP:
+        return _AUTHOR_WEBSITE_MAP
+
+    links_path = Path(__file__).parent / "data" / "author_website_links.txt"
+    if not links_path.exists():
+        logger.warning("author_website_links.txt not found; returning empty author website map")
+        _AUTHOR_WEBSITE_MAP = {}
+        return _AUTHOR_WEBSITE_MAP
+
+    parsed: Dict[str, str] = {}
+    with open(links_path, "r", encoding="utf-8") as f:
+        for raw_line in f:
+            line = raw_line.strip()
+            if not line or ":" not in line:
+                continue
+            author, url = line.split(":", 1)
+            author = author.strip()
+            url = url.strip()
+            if author and url:
+                parsed[author] = url
+
+    _AUTHOR_WEBSITE_MAP = parsed
+    logger.info(f"🔗 Loaded {len(_AUTHOR_WEBSITE_MAP)} author website links")
+    return _AUTHOR_WEBSITE_MAP
 
 
 # ── Personality Match Helpers ──────────────────────────────────────────────
@@ -683,6 +754,132 @@ def ready():
     Frontend can poll this endpoint and wait until ready==true before requesting heavy endpoints.
     """
     return {"ready": bool(server_ready), "has_embedding_cache": bool(book_embedding_cache), "has_quantum_cache": bool(quantum_cache)}
+
+
+@app.get("/api/v1/authors/catalog")
+def authors_catalog():
+    """Return author-level catalog metadata for dashboard analytics.
+
+    Includes each author's known books in the SmartShelf dataset, plus optional website links
+    loaded from `backend/data/author_website_links.txt`.
+    """
+    books = _get_books_dataset()
+    websites = _get_author_website_map()
+
+    grouped: Dict[str, Dict[str, Any]] = {}
+    for b in books:
+        author = (b.get("author") or "").strip()
+        title = (b.get("title") or "").strip()
+        if not author or not title:
+            continue
+
+        entry = grouped.setdefault(
+            author,
+            {
+                "author": author,
+                "website": websites.get(author),
+                "books": [],
+            },
+        )
+
+        entry["books"].append(
+            {
+                "title": title,
+                "genre": b.get("genre"),
+                "tone": b.get("tone"),
+                "pacing": b.get("pacing"),
+                "type": b.get("type"),
+                "tags": b.get("embedding_tags") or b.get("emotion_tags") or [],
+            }
+        )
+
+    authors = []
+    for author, info in grouped.items():
+        books_for_author = info.get("books", [])
+        authors.append(
+            {
+                "author": author,
+                "website": info.get("website") or websites.get(author),
+                "total_books": len(books_for_author),
+                "books": books_for_author,
+            }
+        )
+
+    authors.sort(key=lambda x: x["author"].lower())
+    return {
+        "status": "ok",
+        "authors": authors,
+        "count": len(authors),
+    }
+
+
+@app.get("/api/v1/reviews")
+def get_reviews(username: Optional[str] = None):
+    """Return saved review entries. Optional username filter."""
+    reviews = _load_reviews()
+    if username:
+        uname = username.strip().lower()
+        reviews = [r for r in reviews if (r.get("username") or "").strip().lower() == uname]
+    return {"status": "ok", "reviews": reviews, "count": len(reviews)}
+
+
+@app.post("/api/v1/reviews")
+def save_review(payload: ReviewPayload):
+    """Persist a user review entry to backend/data/reviews.json."""
+    rating = int(payload.rating)
+    if rating < 1 or rating > 5:
+        return {"status": "error", "error": "rating must be between 1 and 5"}
+
+    entry = {
+        "review_id": payload.review_id or str(uuid4()),
+        "username": (payload.username or "").strip().lower() or None,
+        "book": (payload.book or "").strip(),
+        "author": (payload.author or "").strip() or None,
+        "genre": (payload.genre or "").strip().lower() or None,
+        "rating": rating,
+        "review": (payload.review or "").strip(),
+        "created_at": datetime.utcnow().isoformat(),
+    }
+
+    reviews = _load_reviews()
+    reviews.append(entry)
+    _save_reviews(reviews)
+    return {"status": "ok", "review": entry}
+
+
+@app.put("/api/v1/reviews/{review_id}")
+def update_review(review_id: str, payload: ReviewUpdatePayload):
+    """Update rating/review text for an existing review entry by review_id."""
+    rating = int(payload.rating)
+    if rating < 1 or rating > 5:
+        return {"status": "error", "error": "rating must be between 1 and 5"}
+    reviews = _load_reviews()
+    updated = None
+    for item in reviews:
+        if item.get("review_id") == review_id:
+            item["rating"] = rating
+            item["review"] = payload.review.strip()
+            item["updated_at"] = datetime.utcnow().isoformat()
+            updated = item
+            break
+
+    if not updated:
+        return {"status": "error", "error": "Review not found"}
+
+    _save_reviews(reviews)
+    return {"status": "ok", "review": updated}
+
+
+@app.delete("/api/v1/reviews/{review_id}")
+def delete_review(review_id: str):
+    """Delete a review entry by review_id."""
+    reviews = _load_reviews()
+    filtered = [r for r in reviews if r.get("review_id") != review_id]
+    if len(filtered) == len(reviews):
+        return {"status": "error", "error": "Review not found"}
+
+    _save_reviews(filtered)
+    return {"status": "ok", "deleted_review_id": review_id}
 
 # ------------------------ Mock OTP + Password Change ------------------------
 

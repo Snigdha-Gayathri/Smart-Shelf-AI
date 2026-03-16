@@ -1,0 +1,52 @@
+[
+  {
+    "review_id": "1773693935460-ufhvia",
+    "username": "snig99",
+    "book": "Deep Work",
+    "author": "Cal Newport",
+    "genre": "self-help",
+    "rating": 3,
+    "review": "Was good,but didn't like the non-fiction quality of it",
+    "created_at": "2026-03-16T20:45:35.479178"
+  },
+  {
+    "review_id": "1773693962704-l4e2r0",
+    "username": "snig99",
+    "book": "The 7 1/2 Deaths of Evelyn Hardcastle",
+    "author": "Stuart Turton",
+    "genre": "mystery",
+    "rating": 2,
+    "review": "Not my cup of tea",
+    "created_at": "2026-03-16T20:46:02.720906"
+  },
+  {
+    "review_id": "1773694063205-08jb3z",
+    "username": "snig99",
+    "book": "13 Steps to Bloody Good Luck",
+    "author": "Ashwin Sanghi",
+    "genre": "self-help",
+    "rating": 2,
+    "review": "",
+    "created_at": "2026-03-16T20:47:43.212193"
+  },
+  {
+    "review_id": "1773694071513-uipgqe",
+    "username": "snig99",
+    "book": "Myth = Mithya: A Handbook of Hindu Mythology",
+    "author": "Devdutt Pattanaik",
+    "genre": "mythology / cultural studies",
+    "rating": 5,
+    "review": "",
+    "created_at": "2026-03-16T20:47:51.529175"
+  },
+  {
+    "review_id": "1773694076481-ye7al1",
+    "username": "snig99",
+    "book": "God of Malice",
+    "author": "Rina Kent",
+    "genre": "dark romance",
+    "rating": 2,
+    "review": "",
+    "created_at": "2026-03-16T20:47:56.493796"
+  }
+]
