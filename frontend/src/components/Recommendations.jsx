@@ -71,6 +71,19 @@ export default function Recommendations({ recommendations = [], onAddToCurrently
           </button>
           {message && <div className="text-xs sm:text-sm mt-2 text-cool-slate">{message}</div>}
 
+          {/* Buy Online button */}
+          {book.buy_link && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation()
+                window.open(book.buy_link, '_blank', 'noopener,noreferrer')
+              }}
+              className="w-full inline-flex items-center justify-center rounded-md px-3 py-2 sm:py-2.5 text-xs sm:text-sm font-medium transition bg-amber-600 hover:bg-amber-700 text-white focus:outline-none focus:ring-2 focus:ring-amber-400"
+            >
+              🛒 Buy Online
+            </button>
+          )}
+
           {isEducational ? (
             <EducationalInsightPanel book={book} />
           ) : (

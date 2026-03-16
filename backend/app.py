@@ -380,6 +380,37 @@ def _detect_requested_book_type(prompt: str) -> Optional[str]:
     return None
 
 
+def _detect_author_query(prompt: str, books: List[Dict[str, Any]]) -> Optional[str]:
+    """Detect if the user is searching for books by a specific author.
+
+    Checks whether any known author name from the dataset appears in the prompt.
+    Returns the canonical author name (as stored in the dataset), or None.
+    Sorts candidates longest-first so more-specific names take priority.
+    """
+    if not prompt or not books:
+        return None
+
+    prompt_lower = prompt.lower()
+
+    # Build unique author list from dataset
+    seen: set = set()
+    author_list: list = []
+    for book in books:
+        author = (book.get("author") or "").strip()
+        if author and author.lower() not in seen:
+            seen.add(author.lower())
+            author_list.append(author)
+
+    # Prefer longer names first (e.g. "J.K. Rowling" over "K. Rowling")
+    author_list.sort(key=lambda a: len(a), reverse=True)
+
+    for author in author_list:
+        if author.lower() in prompt_lower:
+            return author
+
+    return None
+
+
 # Warmup quantum emotion pipeline on startup (if available)
 @app.on_event("startup")
 async def startup_event():
@@ -798,15 +829,23 @@ async def recommend(mood: MoodRequest):
 
         logger.info(f"📚 Dataset: {len(books)} books available")
 
-        # ── Step 1: filter by explicit book type ──
-        requested_type = _detect_requested_book_type(text)
-        if requested_type:
-            books = [b for b in books if b.get("type") == requested_type]
-            logger.info(f"Type filter '{requested_type}': {len(books)} candidates")
+        # ── Step 0: detect author-specific query (highest priority) ──
+        matched_author = _detect_author_query(text, books)
+        is_author_query = False
+        if matched_author:
+            books = [b for b in books if (b.get("author") or "").strip().lower() == matched_author.lower()]
+            is_author_query = True
+            logger.info(f"Author query detected: '{matched_author}' → {len(books)} books")
+        else:
+            # ── Step 1: filter by explicit book type ──
+            requested_type = _detect_requested_book_type(text)
+            if requested_type:
+                books = [b for b in books if b.get("type") == requested_type]
+                logger.info(f"Type filter '{requested_type}': {len(books)} candidates")
 
-        # ── Step 2: filter by genre / embedding_tags before ML scoring ──
-        books = _filter_books_by_query(books, text)
-        logger.info(f"After query filter: {len(books)} candidate books")
+            # ── Step 2: filter by genre / embedding_tags before ML scoring ──
+            books = _filter_books_by_query(books, text)
+            logger.info(f"After query filter: {len(books)} candidate books")
 
         if not books:
             logger.warning("No books available after applying requested type filter")
@@ -1013,9 +1052,12 @@ async def recommend(mood: MoodRequest):
             scores_sample = [r["personality_match"] for r in recommendations[:5]]
             logger.info(f"🧬 Personality match scores (top 5): {scores_sample}")
 
-        # Enrich top recommendations with cover images and explanation
+        # For author queries return all matching books; otherwise top 10
+        result_pool = recommendations if is_author_query else recommendations[:10]
+
+        # Enrich recommendations with cover images and explanation
         enriched = []
-        for book in recommendations[:10]:
+        for book in result_pool:
             cover = book.get("cover")
             book["cover"] = cover
 

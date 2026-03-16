@@ -35,6 +35,19 @@ export default function EducationalReads({ books = [], onUpdateEduStatus, userId
             ✓ Mark as Completed
           </button>
 
+          {/* Buy Online button */}
+          {book.buy_link && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation()
+                window.open(book.buy_link, '_blank', 'noopener,noreferrer')
+              }}
+              className="w-full px-3 py-2 text-xs sm:text-sm rounded-md bg-amber-600 hover:bg-amber-700 text-white font-medium transition focus:outline-none focus:ring-2 focus:ring-amber-400"
+            >
+              🛒 Buy Online
+            </button>
+          )}
+
           {/* Smart Notes — visible when actively learning */}
           <SmartNotesPanel
             bookId={book.id}
