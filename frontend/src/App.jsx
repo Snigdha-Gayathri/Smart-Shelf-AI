@@ -325,7 +325,14 @@ export default function App({ clerk = { enabled: false, isLoaded: false, isSigne
   function handleAuthSuccess(a){
     setAuth(a);
     if (a?.user) {
-      localStorage.setItem('auth', JSON.stringify({ user: a.user, token: a?.token || null }));
+      localStorage.setItem(
+        'auth',
+        JSON.stringify({
+          user: a.user,
+          token: a?.token || null,
+          authMethod: a?.authMethod || 'local',
+        })
+      );
     }
     // Load persisted user data from storage after successful login
     if (a?.user?.id) {
