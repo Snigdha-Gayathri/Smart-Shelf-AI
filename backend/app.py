@@ -10,6 +10,7 @@ import logging
 from datetime import datetime
 import re
 from typing import Optional, List, Dict, Any
+from uuid import uuid4
 
 load_dotenv()
 # Prevent transformers from importing TensorFlow/Keras (avoid Keras 3 incompatibility)
@@ -115,10 +116,12 @@ else:
 
 app = FastAPI(title="Smart Shelf AI")
 
+# CORS configuration
+allowed_origins = os.getenv("ALLOWED_ORIGINS", "*").split(",")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allow all origins for local development
-    allow_credentials=True,
+    allow_origins=allowed_origins,
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -139,12 +142,12 @@ server_ready = False
 
 # ── In-memory book dataset (loaded ONCE at startup — avoids repeated disk I/O) ──
 _BOOKS_DATASET: List[Dict[str, Any]] = []
+_AUTHOR_WEBSITE_MAP: Dict[str, str] = {}
 
-# --- Mock OTP storage (for dev/testing only) ---
+# --- OTP storage ---
 # In-memory stores with short-lived entries; replace with real SMS provider later.
 otp_store: dict[str, dict] = {}
 verified_sessions: dict[str, dict] = {}
-latest_demo_otp: dict[str, str] = {}
 
 
 def _make_placeholder_cover_dataurl(title: str, author: str = '', width: int = 400, height: int = 600) -> str:
@@ -180,32 +183,50 @@ class PromptRequest(BaseModel):
 
 
 class RegisterRequest(BaseModel):
-    email: str
+    name: str
+    username: str
     password: str
 
 
 class LoginRequest(BaseModel):
-    email: str
+    username: str
     password: str
 
 
 class DeleteAccountPayload(BaseModel):
-    email: str
+    username: str
+    password: str
 
 
 class RequestOtpPayload(BaseModel):
-    phone: str
+    username: str
 
 
 class VerifyOtpPayload(BaseModel):
-    phone: str
+    username: str
     otp: str
 
 
 class ChangePasswordPayload(BaseModel):
-    email: str
+    username: str
+    current_password: str
     new_password: str
     token: str
+
+
+class ReviewPayload(BaseModel):
+    review_id: Optional[str] = None
+    username: Optional[str] = None
+    book: str
+    author: Optional[str] = None
+    genre: Optional[str] = None
+    rating: int
+    review: str = ""
+
+
+class ReviewUpdatePayload(BaseModel):
+    rating: int
+    review: str = ""
 
 
 def _get_books_dataset() -> List[Dict[str, Any]]:
@@ -220,6 +241,60 @@ def _get_books_dataset() -> List[Dict[str, Any]]:
             _BOOKS_DATASET = _json.load(f)
         logger.info(f"📚 Loaded {len(_BOOKS_DATASET)} books from dataset into memory")
     return _BOOKS_DATASET
+
+
+def _reviews_file_path() -> Path:
+    return Path(__file__).parent / "data" / "reviews.json"
+
+
+def _load_reviews() -> List[Dict[str, Any]]:
+    import json as _json
+    path = _reviews_file_path()
+    if not path.exists():
+        return []
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            data = _json.load(f)
+        return data if isinstance(data, list) else []
+    except Exception as e:
+        logger.warning(f"Failed to read reviews.json: {e}")
+        return []
+
+
+def _save_reviews(reviews: List[Dict[str, Any]]) -> None:
+    import json as _json
+    path = _reviews_file_path()
+    with open(path, "w", encoding="utf-8") as f:
+        _json.dump(reviews, f, ensure_ascii=False, indent=2)
+
+
+def _get_author_website_map() -> Dict[str, str]:
+    """Return a cached author->website map loaded from data/author_website_links.txt."""
+    global _AUTHOR_WEBSITE_MAP
+    if _AUTHOR_WEBSITE_MAP:
+        return _AUTHOR_WEBSITE_MAP
+
+    links_path = Path(__file__).parent / "data" / "author_website_links.txt"
+    if not links_path.exists():
+        logger.warning("author_website_links.txt not found; returning empty author website map")
+        _AUTHOR_WEBSITE_MAP = {}
+        return _AUTHOR_WEBSITE_MAP
+
+    parsed: Dict[str, str] = {}
+    with open(links_path, "r", encoding="utf-8") as f:
+        for raw_line in f:
+            line = raw_line.strip()
+            if not line or ":" not in line:
+                continue
+            author, url = line.split(":", 1)
+            author = author.strip()
+            url = url.strip()
+            if author and url:
+                parsed[author] = url
+
+    _AUTHOR_WEBSITE_MAP = parsed
+    logger.info(f"🔗 Loaded {len(_AUTHOR_WEBSITE_MAP)} author website links")
+    return _AUTHOR_WEBSITE_MAP
 
 
 # ── Personality Match Helpers ──────────────────────────────────────────────
@@ -378,6 +453,37 @@ def _detect_requested_book_type(prompt: str) -> Optional[str]:
     return None
 
 
+def _detect_author_query(prompt: str, books: List[Dict[str, Any]]) -> Optional[str]:
+    """Detect if the user is searching for books by a specific author.
+
+    Checks whether any known author name from the dataset appears in the prompt.
+    Returns the canonical author name (as stored in the dataset), or None.
+    Sorts candidates longest-first so more-specific names take priority.
+    """
+    if not prompt or not books:
+        return None
+
+    prompt_lower = prompt.lower()
+
+    # Build unique author list from dataset
+    seen: set = set()
+    author_list: list = []
+    for book in books:
+        author = (book.get("author") or "").strip()
+        if author and author.lower() not in seen:
+            seen.add(author.lower())
+            author_list.append(author)
+
+    # Prefer longer names first (e.g. "J.K. Rowling" over "K. Rowling")
+    author_list.sort(key=lambda a: len(a), reverse=True)
+
+    for author in author_list:
+        if author.lower() in prompt_lower:
+            return author
+
+    return None
+
+
 # Warmup quantum emotion pipeline on startup (if available)
 @app.on_event("startup")
 async def startup_event():
@@ -469,78 +575,150 @@ async def startup_event():
 
 # ------------------------ Auth Endpoints (Local Only) ------------------------
 
-def _is_valid_email(email: str) -> bool:
-    return bool(re.match(r"^[^@\s]+@[^@\s]+\.[^@\s]+$", email or ""))
+def _is_valid_username(username: str) -> bool:
+    if not username:
+        return False
+    return bool(re.match(r"^[A-Za-z0-9_.-]{3,32}$", username))
 
 
 def _is_valid_password(pw: str) -> Optional[str]:
     if not pw or len(pw) < 8:
-        return "Password must be at least 8 characters."
-    if not re.search(r"[A-Za-z]", pw) or not re.search(r"\d", pw):
-        return "Password must include letters and numbers."
+        return "Password must be at least 8 characters long."
+    if not re.search(r"[A-Z]", pw):
+        return "Password must contain at least one uppercase letter."
+    if not re.search(r"[a-z]", pw):
+        return "Password must contain at least one lowercase letter."
+    if not re.search(r"\d", pw):
+        return "Password must contain at least one number."
+    if not re.search(r"[^A-Za-z0-9]", pw):
+        return "Password must contain at least one special character."
     return None
+
+
+def _get_password_context():
+    """Use pbkdf2_sha256 for all password hashing and verification."""
+    from passlib.context import CryptContext
+    return CryptContext(schemes=["pbkdf2_sha256"], deprecated="auto")
 
 
 @app.post("/auth/register")
 def register_user(payload: RegisterRequest):
-    logger.info(f"Register request received for email: {payload.email}")
-    
-    if not _is_valid_email(payload.email):
-        logger.warning(f"Invalid email format: {payload.email}")
-        return {"status": "error", "error": "Invalid email address"}
+    normalized_username = (payload.username or "").strip().lower()
+    normalized_name = (payload.name or "").strip()
+    logger.info(f"Register request received for username: {normalized_username}")
+
+    if not normalized_name:
+        return {"status": "error", "error": "Name is required."}
+
+    if not _is_valid_username(normalized_username):
+        return {"status": "error", "error": "Username must be 3-32 characters and can include letters, numbers, ., _, and -."}
     
     pw_err = _is_valid_password(payload.password)
     if pw_err:
-        logger.warning(f"Invalid password for {payload.email}: {pw_err}")
+        logger.warning(f"Invalid password for {normalized_username}: {pw_err}")
         return {"status": "error", "error": pw_err}
 
     try:
         from services import db as db_client
-        from passlib.context import CryptContext
-        # Use pbkdf2_sha256 for wide compatibility (no external binaries) and strong hashing
-        pwd_ctx = CryptContext(schemes=["pbkdf2_sha256"], deprecated="auto")
+        pwd_ctx = _get_password_context()
 
-        existing = db_client.get_user_by_email(payload.email)
+        existing = db_client.get_user_by_username(normalized_username)
         if existing:
-            logger.warning(f"Registration attempt with existing email: {payload.email}")
-            return {"status": "error", "error": "Email already registered"}
+            logger.warning(f"Registration attempt with existing username: {normalized_username}")
+            return {
+                "status": "error",
+                "error": "This username is already registered. Please choose a different username."
+            }
 
         pw_hash = pwd_ctx.hash(payload.password)
-        db_client.add_user(payload.email, pw_hash)
-        logger.info(f"✅ Registered new user successfully: {payload.email}")
-        return {"status": "ok", "user": {"email": payload.email, "id": payload.email}}
+        logger.info(f"Generated password hash for {normalized_username}: {pw_hash[:20]}...")
+
+        # Verify the hash is valid BEFORE storing
+        if not pwd_ctx.verify(payload.password, pw_hash):
+            logger.error(f"❌ Pre-store hash verification failed for {normalized_username}")
+            return {"status": "error", "error": "Registration failed. Please try again."}
+
+        synthetic_email = f"{normalized_username}@smartshelf.local"
+        db_client.add_user(
+            synthetic_email,
+            pw_hash,
+            username=normalized_username,
+            name=normalized_name,
+        )
+
+        # Read-after-write verification: ensure the stored hash can verify the password
+        created = db_client.get_user_by_username(normalized_username) or {}
+        stored_hash = created.get("password_hash")
+        if not stored_hash:
+            logger.error(f"❌ Post-store read failed for {normalized_username}: no password_hash in DB")
+            return {"status": "error", "error": "Registration failed — please try again."}
+        if not pwd_ctx.verify(payload.password, stored_hash):
+            logger.error(f"❌ Post-store hash verification FAILED for {normalized_username}. Hash may be truncated or corrupted.")
+            # Delete the broken record so user can retry
+            db_client.delete_user_by_username(normalized_username)
+            return {"status": "error", "error": "Registration failed — please try again."}
+
+        logger.info(f"✅ Registered new user successfully (hash verified): {normalized_username}")
+        return {
+            "status": "ok",
+            "user": {
+                "id": created.get("id") or normalized_username,
+                "name": created.get("name") or normalized_name,
+                "username": created.get("username") or normalized_username,
+                "email": created.get("email") or synthetic_email,
+            }
+        }
     except Exception as e:
-        logger.error(f"❌ Register error for {payload.email}: {str(e)}", exc_info=True)
+        logger.error(f"❌ Register error for {normalized_username}: {str(e)}", exc_info=True)
         return {"status": "error", "error": str(e)}
 
 
 @app.post("/auth/login")
 def login_user(payload: LoginRequest):
-    logger.info(f"Login request received for email: {payload.email}")
-    
-    if not _is_valid_email(payload.email):
-        logger.warning(f"Invalid email format for login: {payload.email}")
-        return {"status": "error", "error": "Invalid email or password"}
+    normalized_username = (payload.username or "").strip().lower()
+    logger.info(f"Login request received for username: {normalized_username}")
+
+    if not _is_valid_username(normalized_username):
+        logger.warning(f"Invalid username format for login: {normalized_username}")
+        return {"status": "error", "error": "Invalid username or password."}
     try:
         from services import db as db_client
-        from passlib.context import CryptContext
-        pwd_ctx = CryptContext(schemes=["pbkdf2_sha256"], deprecated="auto")
+        pwd_ctx = _get_password_context()
 
-        user = db_client.get_user_by_email(payload.email)
+        user = db_client.get_user_by_username(normalized_username)
         if not user:
-            logger.warning(f"Login attempt with non-existent email: {payload.email}")
-            return {"status": "error", "error": "Invalid email or password"}
-        if not pwd_ctx.verify(payload.password, user.get("password_hash")):
-            logger.warning(f"Login failed for {payload.email}: invalid password")
-            return {"status": "error", "error": "Invalid email or password"}
+            logger.warning(f"Login attempt with non-existent username: {normalized_username}")
+            return {"status": "error", "error": "Invalid username or password."}
+        stored_hash = user.get("password_hash")
+        if not stored_hash:
+            logger.warning(f"Login failed for {normalized_username}: missing stored password hash")
+            return {"status": "error", "error": "Invalid username or password."}
+        logger.info(f"Login: stored hash for {normalized_username} starts with: {stored_hash[:20]}... (len={len(stored_hash)})")
+        try:
+            password_ok = pwd_ctx.verify(payload.password, stored_hash)
+        except Exception as verify_err:
+            logger.error(f"Login: pwd_ctx.verify raised exception for {normalized_username}: {verify_err}")
+            return {"status": "error", "error": "Invalid username or password."}
+        if not password_ok:
+            logger.warning(f"Login failed for {normalized_username}: invalid password (verify returned False)")
+            return {"status": "error", "error": "Incorrect password. Please try again."}
 
         # Minimal token for client-side storage; not used by backend auth yet
         import secrets
         token = secrets.token_urlsafe(24)
-        logger.info(f"✅ Login successful for: {payload.email}")
-        return {"status": "ok", "user": {"email": user.get("email"), "id": user.get("id")}, "token": token}
+        logger.info(f"✅ Login successful for: {normalized_username}")
+        return {
+            "status": "ok",
+            "user": {
+                "id": user.get("id"),
+                "name": user.get("name"),
+                "username": user.get("username"),
+                "email": user.get("email"),
+            },
+            "token": token,
+        }
     except Exception as e:
-        logger.error(f"❌ Login error for {payload.email}: {str(e)}", exc_info=True)
+        logger.error(f"❌ Login error for {normalized_username}: {str(e)}", exc_info=True)
         return {"status": "error", "error": str(e)}
 
 
@@ -549,14 +727,21 @@ def delete_user_account(payload: DeleteAccountPayload):
     """Delete user account and all associated data."""
     try:
         from services import db as db_client
+        pwd_ctx = _get_password_context()
         
+        normalized_username = (payload.username or "").strip().lower()
+
         # Verify user exists
-        user = db_client.get_user_by_email(payload.email)
+        user = db_client.get_user_by_username(normalized_username)
         if not user:
             return {"status": "error", "error": "User not found"}
+            
+        stored_hash = user.get("password_hash")
+        if not stored_hash or not pwd_ctx.verify(payload.password, stored_hash):
+            return {"status": "error", "error": "Invalid password."}
         
         # Delete user from database
-        db_client.delete_user(payload.email)
+        db_client.delete_user_by_username(normalized_username)
         
         return {"status": "ok", "message": "Account deleted successfully"}
     except Exception as e:
@@ -577,6 +762,132 @@ def ready():
     """
     return {"ready": bool(server_ready), "has_embedding_cache": bool(book_embedding_cache), "has_quantum_cache": bool(quantum_cache)}
 
+
+@app.get("/api/v1/authors/catalog")
+def authors_catalog():
+    """Return author-level catalog metadata for dashboard analytics.
+
+    Includes each author's known books in the SmartShelf dataset, plus optional website links
+    loaded from `backend/data/author_website_links.txt`.
+    """
+    books = _get_books_dataset()
+    websites = _get_author_website_map()
+
+    grouped: Dict[str, Dict[str, Any]] = {}
+    for b in books:
+        author = (b.get("author") or "").strip()
+        title = (b.get("title") or "").strip()
+        if not author or not title:
+            continue
+
+        entry = grouped.setdefault(
+            author,
+            {
+                "author": author,
+                "website": websites.get(author),
+                "books": [],
+            },
+        )
+
+        entry["books"].append(
+            {
+                "title": title,
+                "genre": b.get("genre"),
+                "tone": b.get("tone"),
+                "pacing": b.get("pacing"),
+                "type": b.get("type"),
+                "tags": b.get("embedding_tags") or b.get("emotion_tags") or [],
+            }
+        )
+
+    authors = []
+    for author, info in grouped.items():
+        books_for_author = info.get("books", [])
+        authors.append(
+            {
+                "author": author,
+                "website": info.get("website") or websites.get(author),
+                "total_books": len(books_for_author),
+                "books": books_for_author,
+            }
+        )
+
+    authors.sort(key=lambda x: x["author"].lower())
+    return {
+        "status": "ok",
+        "authors": authors,
+        "count": len(authors),
+    }
+
+
+@app.get("/api/v1/reviews")
+def get_reviews(username: Optional[str] = None):
+    """Return saved review entries. Optional username filter."""
+    reviews = _load_reviews()
+    if username:
+        uname = username.strip().lower()
+        reviews = [r for r in reviews if (r.get("username") or "").strip().lower() == uname]
+    return {"status": "ok", "reviews": reviews, "count": len(reviews)}
+
+
+@app.post("/api/v1/reviews")
+def save_review(payload: ReviewPayload):
+    """Persist a user review entry to backend/data/reviews.json."""
+    rating = int(payload.rating)
+    if rating < 1 or rating > 5:
+        return {"status": "error", "error": "rating must be between 1 and 5"}
+
+    entry = {
+        "review_id": payload.review_id or str(uuid4()),
+        "username": (payload.username or "").strip().lower() or None,
+        "book": (payload.book or "").strip(),
+        "author": (payload.author or "").strip() or None,
+        "genre": (payload.genre or "").strip().lower() or None,
+        "rating": rating,
+        "review": (payload.review or "").strip(),
+        "created_at": datetime.utcnow().isoformat(),
+    }
+
+    reviews = _load_reviews()
+    reviews.append(entry)
+    _save_reviews(reviews)
+    return {"status": "ok", "review": entry}
+
+
+@app.put("/api/v1/reviews/{review_id}")
+def update_review(review_id: str, payload: ReviewUpdatePayload):
+    """Update rating/review text for an existing review entry by review_id."""
+    rating = int(payload.rating)
+    if rating < 1 or rating > 5:
+        return {"status": "error", "error": "rating must be between 1 and 5"}
+    reviews = _load_reviews()
+    updated = None
+    for item in reviews:
+        if item.get("review_id") == review_id:
+            item["rating"] = rating
+            item["review"] = payload.review.strip()
+            item["updated_at"] = datetime.utcnow().isoformat()
+            updated = item
+            break
+
+    if not updated:
+        return {"status": "error", "error": "Review not found"}
+
+    _save_reviews(reviews)
+    return {"status": "ok", "review": updated}
+
+
+@app.delete("/api/v1/reviews/{review_id}")
+def delete_review(review_id: str):
+    """Delete a review entry by review_id."""
+    reviews = _load_reviews()
+    filtered = [r for r in reviews if r.get("review_id") != review_id]
+    if len(filtered) == len(reviews):
+        return {"status": "error", "error": "Review not found"}
+
+    _save_reviews(filtered)
+    return {"status": "ok", "deleted_review_id": review_id}
+
 # ------------------------ Mock OTP + Password Change ------------------------
 
 @app.post("/auth/request-otp")
@@ -585,54 +896,37 @@ def request_otp(payload: RequestOtpPayload):
     No SMS is sent; OTP is logged to the backend console for testing.
     """
     import random, time
-    phone = (payload.phone or "").strip()
-    if not phone:
-        return {"status": "error", "error": "Phone number is required"}
+    username = (payload.username or "").strip().lower()
+    if not _is_valid_username(username):
+        return {"status": "error", "error": "Valid username is required"}
     otp = f"{random.randint(0, 999999):06d}"
-    otp_store[phone] = {"otp": otp, "ts": time.time()}
-    latest_demo_otp["phone"] = phone
-    latest_demo_otp["otp"] = otp
-    latest_demo_otp["generated_at"] = datetime.utcnow().isoformat()
-    logger.warning(f"[DEMO OTP] Phone={phone} OTP={otp}")
-    print("\n" + "=" * 62, flush=True)
-    print(f"[DEMO OTP GENERATED] Phone: {phone}", flush=True)
-    print(f"[DEMO OTP GENERATED] OTP  : {otp}", flush=True)
-    print("=" * 62 + "\n", flush=True)
-    return {"status": "ok", "message": "OTP generated in backend terminal for demo."}
-
-
-@app.get("/auth/latest-otp")
-def get_latest_otp():
-    if not latest_demo_otp:
-        return {"status": "ok", "has_otp": False}
+    otp_store[username] = {"otp": otp, "ts": time.time()}
+    logger.warning(f"[OTP GENERATED] Username={username} (log output only in dev)")
     return {
         "status": "ok",
-        "has_otp": True,
-        "phone": latest_demo_otp.get("phone"),
-        "otp": latest_demo_otp.get("otp"),
-        "generated_at": latest_demo_otp.get("generated_at"),
+        "message": f"OTP generated. Enter it to verify.",
     }
 
 
 @app.post("/auth/verify-otp")
 def verify_otp(payload: VerifyOtpPayload):
     import time, secrets
-    phone = (payload.phone or "").strip()
+    username = (payload.username or "").strip().lower()
     entered_otp = (payload.otp or "").strip()
     if not entered_otp.isdigit() or len(entered_otp) != 6:
         return {"status": "error", "error": "OTP must be a 6-digit code"}
-    entry = otp_store.get(phone)
+    entry = otp_store.get(username)
     if not entry or entry.get("otp") != entered_otp:
         return {"status": "error", "error": "Invalid OTP"}
     # Optional: expire OTP after 5 minutes
     if time.time() - float(entry.get("ts", 0)) > 300:
-        otp_store.pop(phone, None)
+        otp_store.pop(username, None)
         return {"status": "error", "error": "OTP expired"}
     # Mark verified by issuing a short-lived session token
     token = secrets.token_urlsafe(16)
-    verified_sessions[token] = {"phone": phone, "ts": time.time()}
+    verified_sessions[token] = {"username": username, "ts": time.time()}
     # Clear OTP so it cannot be reused
-    otp_store.pop(phone, None)
+    otp_store.pop(username, None)
     return {"status": "ok", "token": token}
 
 
@@ -650,29 +944,33 @@ def change_password(payload: ChangePasswordPayload):
         verified_sessions.pop(payload.token, None)
         return {"status": "error", "error": "Verification session expired"}
 
+    normalized_username = (payload.username or "").strip().lower()
+    if session.get("username") != normalized_username:
+        return {"status": "error", "error": "Verification token does not match this account"}
+
     pw_err = _is_valid_password(payload.new_password)
     if pw_err:
         return {"status": "error", "error": pw_err}
 
     try:
         from services import db as db_client
-        from passlib.context import CryptContext
-        pwd_ctx = CryptContext(schemes=["pbkdf2_sha256"], deprecated="auto")
+        pwd_ctx = _get_password_context()
+
+        user = db_client.get_user_by_username(normalized_username)
+        if not user:
+            return {"status": "error", "error": "User not found"}
+
+        existing_hash = user.get("password_hash")
+        if not existing_hash or not pwd_ctx.verify(payload.current_password, existing_hash):
+            return {"status": "error", "error": "Current password is incorrect."}
 
         pw_hash = pwd_ctx.hash(payload.new_password)
-
-        # Upsert semantics: if user does not exist yet (e.g., OAuth-only flow),
-        # create a local credential record so login with new password works.
-        user = db_client.get_user_by_email(payload.email)
-        if user:
-            updated = db_client.update_user_password(payload.email, pw_hash)
-            if not updated:
-                return {"status": "error", "error": "Password update failed"}
-        else:
-            db_client.add_user(payload.email, pw_hash)
+        updated = db_client.update_user_password_by_username(normalized_username, pw_hash)
+        if not updated:
+            return {"status": "error", "error": "Password update failed"}
 
         # Read-after-write verification to guarantee login will work.
-        persisted = db_client.get_user_by_email(payload.email)
+        persisted = db_client.get_user_by_username(normalized_username)
         if not persisted or not persisted.get("password_hash"):
             return {"status": "error", "error": "Password update failed: no stored credentials"}
         if not pwd_ctx.verify(payload.new_password, persisted.get("password_hash")):
@@ -680,8 +978,8 @@ def change_password(payload: ChangePasswordPayload):
 
         # Invalidate session token after successful change
         verified_sessions.pop(payload.token, None)
-        logger.info(f"Password updated successfully for user: {payload.email}")
-        return {"status": "ok"}
+        logger.info(f"Password updated successfully for user: {normalized_username}")
+        return {"status": "ok", "message": "Password successfully updated."}
     except Exception as e:
         logger.error(f"Change password error: {e}")
         return {"status": "error", "error": str(e)}
@@ -714,15 +1012,23 @@ async def recommend(mood: MoodRequest):
 
         logger.info(f"📚 Dataset: {len(books)} books available")
 
-        # ── Step 1: filter by explicit book type ──
-        requested_type = _detect_requested_book_type(text)
-        if requested_type:
-            books = [b for b in books if b.get("type") == requested_type]
-            logger.info(f"Type filter '{requested_type}': {len(books)} candidates")
+        # ── Step 0: detect author-specific query (highest priority) ──
+        matched_author = _detect_author_query(text, books)
+        is_author_query = False
+        if matched_author:
+            books = [b for b in books if (b.get("author") or "").strip().lower() == matched_author.lower()]
+            is_author_query = True
+            logger.info(f"Author query detected: '{matched_author}' → {len(books)} books")
+        else:
+            # ── Step 1: filter by explicit book type ──
+            requested_type = _detect_requested_book_type(text)
+            if requested_type:
+                books = [b for b in books if b.get("type") == requested_type]
+                logger.info(f"Type filter '{requested_type}': {len(books)} candidates")
 
-        # ── Step 2: filter by genre / embedding_tags before ML scoring ──
-        books = _filter_books_by_query(books, text)
-        logger.info(f"After query filter: {len(books)} candidate books")
+            # ── Step 2: filter by genre / embedding_tags before ML scoring ──
+            books = _filter_books_by_query(books, text)
+            logger.info(f"After query filter: {len(books)} candidate books")
 
         if not books:
             logger.warning("No books available after applying requested type filter")
@@ -852,10 +1158,12 @@ async def recommend(mood: MoodRequest):
                         "title": book.get("title"),
                         "author": book.get("author"),
                         "cover": book.get("cover"),
+                        "buy_link": book.get("buy_link"),
                         "synopsis": book.get("synopsis"),
                         "genre": book.get("genre"),
                         "type": book["type"],
                         "emotion_tags": book.get("emotion_tags", []),
+                        "reading_insights": book.get("reading_insights"),
                         "mood": book.get("mood"),
                         "tone": book.get("tone"),
                         "pacing": book.get("pacing"),
@@ -872,10 +1180,12 @@ async def recommend(mood: MoodRequest):
                         "title": book.get("title"),
                         "author": book.get("author"),
                         "cover": book.get("cover"),
+                        "buy_link": book.get("buy_link"),
                         "synopsis": book.get("synopsis"),
                         "genre": book.get("genre"),
                         "type": book["type"],
                         "emotion_tags": book.get("emotion_tags", []),
+                        "reading_insights": book.get("reading_insights"),
                         "mood": book.get("mood"),
                         "tone": book.get("tone"),
                         "pacing": book.get("pacing"),
@@ -897,10 +1207,12 @@ async def recommend(mood: MoodRequest):
                     "title": book.get("title"),
                     "author": book.get("author"),
                     "cover": book.get("cover"),
+                    "buy_link": book.get("buy_link"),
                     "synopsis": book.get("synopsis"),
                     "genre": book.get("genre"),
                     "type": book["type"],
                     "emotion_tags": book.get("emotion_tags", []),
+                    "reading_insights": book.get("reading_insights"),
                     "mood": book.get("mood"),
                     "tone": book.get("tone"),
                     "pacing": book.get("pacing"),
@@ -923,9 +1235,12 @@ async def recommend(mood: MoodRequest):
             scores_sample = [r["personality_match"] for r in recommendations[:5]]
             logger.info(f"🧬 Personality match scores (top 5): {scores_sample}")
 
-        # Enrich top recommendations with cover images and explanation
+        # For author queries return all matching books; otherwise top 10
+        result_pool = recommendations if is_author_query else recommendations[:10]
+
+        # Enrich recommendations with cover images and explanation
         enriched = []
-        for book in recommendations[:10]:
+        for book in result_pool:
             cover = book.get("cover")
             book["cover"] = cover
 
@@ -969,18 +1284,19 @@ async def recommend(mood: MoodRequest):
 async def select_book(payload: dict):
     """Store a user selection (book chosen to read) into persistent storage.
 
-    Expected JSON fields: book_name, genre, theme (optional).
+    Expected JSON fields: book_name, genre, theme (optional), username (optional).
     """
     try:
         book_name = payload.get("book_name") or payload.get("title")
         genre = payload.get("genre")
         theme = payload.get("theme") or (payload.get("emotion_tags") or [None])[0]
+        user_identifier = (payload.get("username") or payload.get("user_identifier") or payload.get("email") or "").strip().lower() or None
         ts = datetime.utcnow().isoformat()
         if db_client is None:
             logger.warning("DB client not available; selection will not be persisted")
             return {"status": "ok", "message": "selection received (no DB configured)"}
 
-        db_client.add_previous_book(book_name, genre, theme, ts)
+        db_client.add_previous_book(book_name, genre, theme, ts, user_identifier=user_identifier)
         return {"status": "ok", "message": "book selection saved"}
     except Exception as e:
         logger.error(f"Error saving selection: {e}")
@@ -988,17 +1304,17 @@ async def select_book(payload: dict):
 
 
 @app.get("/api/v1/history")
-def get_history(limit: int = 100):
+def get_history(limit: int = 100, username: str | None = None):
     if db_client is None:
         return {"history": []}
-    return {"history": db_client.get_history(limit)}
+    return {"history": db_client.get_history(limit, user_identifier=(username or "").strip().lower() or None)}
 
 
 @app.get("/api/v1/analytics")
-def get_analytics():
+def get_analytics(username: str | None = None):
     if db_client is None:
         return {"analytics": {}}
-    analytics = db_client.get_analytics()
+    analytics = db_client.get_analytics(user_identifier=(username or "").strip().lower() or None)
 
     # Personality summary (attempt AI-generated short paragraph)
     personality = None
@@ -1210,4 +1526,14 @@ if _FRONTEND_DIR.is_dir():
 
     logger.info(f"📦 Serving frontend SPA from {_FRONTEND_DIR}")
 else:
+    @app.get("/")
+    def root_status():
+        return {
+            "service": "Smart Shelf AI Backend",
+            "status": "ok",
+            "health": "/health",
+            "ready": "/ready",
+            "docs": "/docs",
+        }
+
     logger.info("ℹ️  No frontend/dist found — run 'npm run build' in frontend/ to enable SPA serving")
