@@ -116,10 +116,12 @@ else:
 
 app = FastAPI(title="Smart Shelf AI")
 
+# CORS configuration
+allowed_origins = os.getenv("ALLOWED_ORIGINS", "*").split(",")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allow all origins for local development
-    allow_credentials=False,  # Must be False when allow_origins=["*"] to be CORS-spec compliant
+    allow_origins=allowed_origins,
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -142,11 +144,10 @@ server_ready = False
 _BOOKS_DATASET: List[Dict[str, Any]] = []
 _AUTHOR_WEBSITE_MAP: Dict[str, str] = {}
 
-# --- Mock OTP storage (for dev/testing only) ---
+# --- OTP storage ---
 # In-memory stores with short-lived entries; replace with real SMS provider later.
 otp_store: dict[str, dict] = {}
 verified_sessions: dict[str, dict] = {}
-latest_demo_otp: dict[str, str] = {}
 
 
 def _make_placeholder_cover_dataurl(title: str, author: str = '', width: int = 400, height: int = 600) -> str:
@@ -194,6 +195,7 @@ class LoginRequest(BaseModel):
 
 class DeleteAccountPayload(BaseModel):
     username: str
+    password: str
 
 
 class RequestOtpPayload(BaseModel):
@@ -725,6 +727,7 @@ def delete_user_account(payload: DeleteAccountPayload):
     """Delete user account and all associated data."""
     try:
         from services import db as db_client
+        pwd_ctx = _get_password_context()
         
         normalized_username = (payload.username or "").strip().lower()
 
@@ -732,6 +735,10 @@ def delete_user_account(payload: DeleteAccountPayload):
         user = db_client.get_user_by_username(normalized_username)
         if not user:
             return {"status": "error", "error": "User not found"}
+            
+        stored_hash = user.get("password_hash")
+        if not stored_hash or not pwd_ctx.verify(payload.password, stored_hash):
+            return {"status": "error", "error": "Invalid password."}
         
         # Delete user from database
         db_client.delete_user_by_username(normalized_username)
@@ -894,31 +901,10 @@ def request_otp(payload: RequestOtpPayload):
         return {"status": "error", "error": "Valid username is required"}
     otp = f"{random.randint(0, 999999):06d}"
     otp_store[username] = {"otp": otp, "ts": time.time()}
-    latest_demo_otp["username"] = username
-    latest_demo_otp["otp"] = otp
-    latest_demo_otp["generated_at"] = datetime.utcnow().isoformat()
-    logger.warning(f"[DEMO OTP] Username={username} OTP={otp}")
-    print("\n" + "=" * 62, flush=True)
-    print(f"[DEMO OTP GENERATED] Username: {username}", flush=True)
-    print(f"[DEMO OTP GENERATED] OTP  : {otp}", flush=True)
-    print("=" * 62 + "\n", flush=True)
+    logger.warning(f"[OTP GENERATED] Username={username} (log output only in dev)")
     return {
         "status": "ok",
-        "message": f"Demo OTP: {otp}. Enter this OTP to verify.",
-        "otp": otp,
-    }
-
-
-@app.get("/auth/latest-otp")
-def get_latest_otp():
-    if not latest_demo_otp:
-        return {"status": "ok", "has_otp": False}
-    return {
-        "status": "ok",
-        "has_otp": True,
-        "username": latest_demo_otp.get("username"),
-        "otp": latest_demo_otp.get("otp"),
-        "generated_at": latest_demo_otp.get("generated_at"),
+        "message": f"OTP generated. Enter it to verify.",
     }
 
 

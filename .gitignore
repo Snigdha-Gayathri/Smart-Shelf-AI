@@ -43,3 +43,6 @@ secrets/
 Thumbs.db
 .vscode/
 .cache/
+
+# ── Local sync/temp artifacts ––
+.git-sync-temp/
