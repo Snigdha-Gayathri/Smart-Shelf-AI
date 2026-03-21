@@ -185,6 +185,39 @@ export default function Dashboard({ personalityProfile, annualWrapped, previousR
     return Math.round((active / 12) * 100)
   }, [annualWrapped])
 
+  // ── Mood consistency score from month-level mood dominance variance ──
+  const moodConsistency = useMemo(() => {
+    const monthlyMood = {}
+    yearBooks.forEach(b => {
+      if (!b.finishedAt) return
+      const monthIndex = new Date(b.finishedAt).getMonth()
+      if (!monthlyMood[monthIndex]) monthlyMood[monthIndex] = {}
+      const moods = getMoods(b.emotion_tags || b.tags || [])
+      Object.entries(moods).forEach(([mood, count]) => {
+        monthlyMood[monthIndex][mood] = (monthlyMood[monthIndex][mood] || 0) + count
+      })
+    })
+
+    const dominantByMonth = Object.values(monthlyMood)
+      .map(counts => Object.entries(counts).sort((a, b) => b[1] - a[1])[0]?.[0])
+      .filter(Boolean)
+
+    if (dominantByMonth.length === 0) {
+      return { score: 0, subtitle: 'Highly dynamic mood shifts' }
+    }
+
+    const dominantCounts = {}
+    dominantByMonth.forEach(mood => {
+      dominantCounts[mood] = (dominantCounts[mood] || 0) + 1
+    })
+    const maxRepeating = Math.max(...Object.values(dominantCounts))
+    const score = Math.round((maxRepeating / dominantByMonth.length) * 100)
+
+    if (score >= 70) return { score, subtitle: 'Stable reading mood pattern' }
+    if (score >= 40) return { score, subtitle: 'Moderate variation in mood' }
+    return { score, subtitle: 'Highly dynamic mood shifts' }
+  }, [yearBooks])
+
   // ── Fiction immersion hours ──
   const fictionHours = useMemo(() => {
     const fBooks = enriched.filter(b => (b.type || 'fiction') === 'fiction')
@@ -541,6 +574,16 @@ export default function Dashboard({ personalityProfile, annualWrapped, previousR
             <div className="text-[10px] sm:text-xs uppercase tracking-wider font-semibold mb-1" style={{ color: `${GREEN}CC` }}>Fiction Immersion</div>
             <AnimatedNumber value={fictionHours} className="text-3xl sm:text-4xl font-black text-white" suffix="h" />
             <p className="text-[9px] sm:text-[10px] text-slate-400 mt-1">in fictional worlds</p>
+          </div>
+        </GlowCard>
+
+        {/* Mood Consistency */}
+        <GlowCard delay={0.72}>
+          <div className="text-center">
+            <div className="text-lg mb-1">🧭</div>
+            <div className="text-[10px] sm:text-xs uppercase tracking-wider font-semibold mb-1" style={{ color: `${CYAN}CC` }}>Mood Consistency</div>
+            <AnimatedNumber value={moodConsistency.score} className="text-3xl sm:text-4xl font-black text-white" suffix="%" />
+            <p className="text-[9px] sm:text-[10px] text-slate-400 mt-1">{moodConsistency.subtitle}</p>
           </div>
         </GlowCard>
 

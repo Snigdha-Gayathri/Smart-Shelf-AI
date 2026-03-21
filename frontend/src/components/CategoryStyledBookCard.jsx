@@ -70,6 +70,8 @@ export default function CategoryStyledBookCard({
   children,
   statusBadge,
   onClick,
+  cornerRibbonText,
+  showReason = true,
   forceDodgerOutline = false,
 }) {
   const [imgError, setImgError] = useState(false)
@@ -139,6 +141,22 @@ export default function CategoryStyledBookCard({
       {statusBadge && (
         <div className="absolute top-2.5 right-2.5 z-10">
           {statusBadge}
+        </div>
+      )}
+
+      {/* Premium corner ribbon for duplicate recommendation state */}
+      {cornerRibbonText && (
+        <div className="absolute top-4 right-[-48px] z-[11] rotate-45 pointer-events-none">
+          <span
+            className="block text-[10px] sm:text-[11px] font-bold text-white px-12 py-1.5 tracking-wide uppercase shadow-lg"
+            style={{
+              background: 'linear-gradient(135deg, #0EA5E9 0%, #1E90FF 45%, #06D6A0 100%)',
+              border: '1px solid rgba(255,255,255,0.35)',
+              textShadow: '0 1px 2px rgba(0,0,0,0.45)',
+            }}
+          >
+            {cornerRibbonText}
+          </span>
         </div>
       )}
 
@@ -236,7 +254,7 @@ export default function CategoryStyledBookCard({
         </div>
       )}
 
-      {book.reason && (
+      {showReason && book.reason && (
         <p className="text-xs italic text-slate-300 mt-2 relative z-[2]">💡 {book.reason}</p>
       )}
 

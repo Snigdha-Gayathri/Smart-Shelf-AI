@@ -733,6 +733,7 @@ export default function App({ clerk = { enabled: false, isLoaded: false, isSigne
                 <Recommendations 
                   recommendations={recommendations} 
                   onAddToCurrentlyReading={handleAddToCurrentlyReading}
+                  currentlyReading={currentlyReading}
                 />
               )}
             </section>
