@@ -1404,6 +1404,19 @@ def get_free_books(request: Request):
         file_name = Path(raw_url).name
         if file_name:
             row["download_url"] = f"{base_url}/download/{file_name}"
+
+        # Cover URLs are optional. Keep only valid assets to avoid frontend 404 noise.
+        raw_cover = str(row.get("cover", "") or "")
+        if raw_cover:
+            cover_name = Path(raw_cover).name
+            cover_candidates = [
+                _FRONTEND_DIR / "covers" / cover_name,
+                _FRONTEND_DIR / "images" / cover_name,
+                Path(__file__).resolve().parent.parent / "frontend" / "public" / "covers" / cover_name,
+                Path(__file__).resolve().parent.parent / "frontend" / "public" / "images" / cover_name,
+            ]
+            if not any(candidate.is_file() for candidate in cover_candidates):
+                row["cover"] = ""
         normalized_books.append(row)
 
     return normalized_books
