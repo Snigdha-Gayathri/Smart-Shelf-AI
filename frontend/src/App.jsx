@@ -1162,6 +1162,7 @@ export default function App({ clerk = { enabled: false, isLoaded: false, isSigne
                   recommendations={recommendations} 
                   onAddToCurrentlyReading={handleAddToCurrentlyReading}
                   currentUsername={auth?.user?.username}
+                  currentlyReadingBooks={currentlyReading}
                 />
               )}
             </section>

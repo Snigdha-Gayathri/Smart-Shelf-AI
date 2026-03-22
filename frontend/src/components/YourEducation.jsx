@@ -15,12 +15,17 @@ const CARD_BG  = 'rgba(15,23,42,0.65)'
 const CARD_BORDER = `rgba(30,144,255,0.22)`
 const GLOW     = `0 0 20px ${BLUE}, 0 0 40px rgba(30,144,255,0.6)`
 const GLOW_SOFT = `0 0 14px rgba(30,144,255,0.25)`
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
 // ── deterministic hash for stable pseudo-random values ──
 function stableHash(str) {
   let h = 0
   for (let i = 0; i < str.length; i++) h = ((h << 5) - h + str.charCodeAt(i)) | 0
   return Math.abs(h)
+}
+
+function clampPercent(value) {
+  return Math.max(0, Math.min(100, Math.round(value)))
 }
 
 // ── Derive missing fields from available book data ──
@@ -141,6 +146,136 @@ export default function YourEducation({ educationalBooks = [] }) {
     }
   }, [finishedEducationalBooks, totalBooks])
 
+  // Additional analytics: Learning Retention
+  const learningRetention = useMemo(() => {
+    if (totalBooks === 0) {
+      return { score: 0, subtitle: 'Surface-level learning' }
+    }
+
+    const trackedEducational = educationalBooks.filter((book) => book.type === 'educational')
+    const completionRate = trackedEducational.length > 0
+      ? (totalBooks / trackedEducational.length) * 100
+      : 100
+
+    const weightedDifficulty = (
+      (difficultyCounts.Beginner * 1) +
+      (difficultyCounts.Intermediate * 2) +
+      (difficultyCounts.Advanced * 3)
+    ) / (totalBooks * 3) * 100
+
+    const topicCounts = {}
+    finishedEducationalBooks.forEach((book) => {
+      const topic = String(book.genre || 'general').toLowerCase()
+      topicCounts[topic] = (topicCounts[topic] || 0) + 1
+    })
+    const repeatedTopicCoverage = (Object.values(topicCounts).reduce((sum, count) => sum + (count > 1 ? count : 0), 0) / totalBooks) * 100
+
+    const timeScore = Math.min(100, (avgHours / 10) * 100)
+
+    const score = clampPercent(
+      (timeScore * 0.2) +
+      (completionRate * 0.35) +
+      (weightedDifficulty * 0.25) +
+      (repeatedTopicCoverage * 0.2)
+    )
+
+    if (score >= 70) return { score, subtitle: 'Strong long-term knowledge absorption' }
+    if (score >= 45) return { score, subtitle: 'Moderate retention' }
+    return { score, subtitle: 'Surface-level learning' }
+  }, [avgHours, difficultyCounts, educationalBooks, finishedEducationalBooks, totalBooks])
+
+  // Additional analytics: Cognitive Load
+  const cognitiveLoad = useMemo(() => {
+    if (totalBooks === 0) {
+      return { value: 'Low' }
+    }
+
+    const advancedPct = (difficultyCounts.Advanced / totalBooks) * 100
+    const avgCompletionTimeScore = Math.min(100, (velocity.avg / 45) * 100)
+    const distinctSubjects = new Set(finishedEducationalBooks.map((book) => String(book.genre || 'general').toLowerCase())).size
+    const subjectComplexity = Math.min(100, (distinctSubjects * 18) + (((difficultyCounts.Advanced * 3 + difficultyCounts.Intermediate * 2 + difficultyCounts.Beginner) / Math.max(totalBooks, 1)) * 12))
+
+    const loadScore = (advancedPct * 0.45) + (avgCompletionTimeScore * 0.3) + (subjectComplexity * 0.25)
+    if (loadScore >= 70) return { value: 'High' }
+    if (loadScore >= 35) return { value: 'Moderate' }
+    return { value: 'Low' }
+  }, [difficultyCounts, finishedEducationalBooks, totalBooks, velocity.avg])
+
+  // Additional analytics: Learning Growth (monthly progression of learning depth)
+  const learningGrowth = useMemo(() => {
+    const byMonth = MONTHS.reduce((acc, month) => {
+      acc[month] = []
+      return acc
+    }, {})
+
+    finishedEducationalBooks.forEach((book) => {
+      const monthName = MONTHS[new Date(book.endDate).getMonth()]
+      const weight = book.difficulty === 'Beginner' ? 1 : book.difficulty === 'Intermediate' ? 2 : 3
+      byMonth[monthName].push(weight)
+    })
+
+    let cumulativeBooks = 0
+    let cumulativeWeight = 0
+    const points = MONTHS.map((month) => {
+      const monthWeights = byMonth[month]
+      cumulativeBooks += monthWeights.length
+      cumulativeWeight += monthWeights.reduce((sum, weight) => sum + weight, 0)
+      const depth = cumulativeBooks > 0 ? Math.round((cumulativeWeight / (cumulativeBooks * 3)) * 100) : 0
+      return { month, depth }
+    })
+
+    const maxDepth = Math.max(...points.map((point) => point.depth), 1)
+    return { points, maxDepth }
+  }, [finishedEducationalBooks])
+
+  // Additional analytics: Focus Stability
+  const focusStability = useMemo(() => {
+    if (totalBooks === 0) {
+      return { score: 0 }
+    }
+
+    const topicCounts = {}
+    finishedEducationalBooks.forEach((book) => {
+      const topic = String(book.genre || 'general').toLowerCase()
+      topicCounts[topic] = (topicCounts[topic] || 0) + 1
+    })
+
+    const counts = Object.values(topicCounts)
+    const topicConsistency = (Math.max(...counts, 0) / totalBooks) * 100
+    const normalizedSwitching = (Object.keys(topicCounts).length - 1) / Math.max(totalBooks - 1, 1)
+
+    const score = clampPercent((topicConsistency * 0.6) + ((1 - Math.min(1, normalizedSwitching)) * 40))
+    return { score }
+  }, [finishedEducationalBooks, totalBooks])
+
+  // Additional analytics: Interdisciplinary Index
+  const interdisciplinaryIndex = useMemo(() => {
+    const domainCount = new Set(
+      finishedEducationalBooks.map((book) => String(book.genre || 'general').toLowerCase())
+    ).size
+
+    if (domainCount >= 5) return { value: 'High' }
+    if (domainCount >= 3) return { value: 'Medium' }
+    return { value: 'Low' }
+  }, [finishedEducationalBooks])
+
+  // Additional analytics: Completion Efficiency
+  const completionEfficiency = useMemo(() => {
+    if (totalBooks === 0) {
+      return { score: 0 }
+    }
+
+    const speedByBook = finishedEducationalBooks.map((book) => {
+      const expectedDays = Math.max(6, Math.round(book.estimatedHours * 1.6))
+      const speedScore = Math.min(100, (expectedDays / Math.max(book.daysTaken, 1)) * 100)
+      const difficultyWeight = book.difficulty === 'Beginner' ? 1 : book.difficulty === 'Intermediate' ? 1.2 : 1.45
+      return Math.min(100, speedScore * difficultyWeight)
+    })
+
+    const score = clampPercent(speedByBook.reduce((sum, value) => sum + value, 0) / speedByBook.length)
+    return { score }
+  }, [finishedEducationalBooks, totalBooks])
+
   // ── Empty state ──
   if (totalBooks === 0) {
     return (
@@ -214,6 +349,113 @@ export default function YourEducation({ educationalBooks = [] }) {
           </div>
         </GlowCard>
       </div>
+
+      {/* Additional Education Analytics */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+        <GlowCard delay={0.3}>
+          <div className="text-center">
+            <div className="text-lg mb-1">🧩</div>
+            <div className="text-[10px] sm:text-xs uppercase tracking-wider font-semibold mb-1" style={{ color: `${BLUE}CC` }}>Learning Retention</div>
+            <AnimatedNumber value={learningRetention.score} className="text-3xl sm:text-4xl font-black text-white" suffix="%" />
+            <p className="text-[9px] sm:text-[10px] text-slate-400 mt-1">{learningRetention.subtitle}</p>
+          </div>
+        </GlowCard>
+
+        <GlowCard delay={0.36}>
+          <div className="text-center">
+            <div className="text-lg mb-1">🧠</div>
+            <div className="text-[10px] sm:text-xs uppercase tracking-wider font-semibold mb-1" style={{ color: `${ROSE}CC` }}>Cognitive Load</div>
+            <p className="text-3xl sm:text-4xl font-black text-white">{cognitiveLoad.value}</p>
+            <p className="text-[9px] sm:text-[10px] text-slate-400 mt-1">Advanced intensity and completion pressure</p>
+          </div>
+        </GlowCard>
+
+        <GlowCard delay={0.42}>
+          <div className="text-center">
+            <div className="text-lg mb-1">🎯</div>
+            <div className="text-[10px] sm:text-xs uppercase tracking-wider font-semibold mb-1" style={{ color: `${GREEN}CC` }}>Focus Stability</div>
+            <AnimatedNumber value={focusStability.score} className="text-3xl sm:text-4xl font-black text-white" suffix="%" />
+            <p className="text-[9px] sm:text-[10px] text-slate-400 mt-1">Consistency of topics and switching control</p>
+          </div>
+        </GlowCard>
+
+        <GlowCard delay={0.48}>
+          <div className="text-center">
+            <div className="text-lg mb-1">🌐</div>
+            <div className="text-[10px] sm:text-xs uppercase tracking-wider font-semibold mb-1" style={{ color: `${CYAN}CC` }}>Interdisciplinary Index</div>
+            <p className="text-3xl sm:text-4xl font-black text-white">{interdisciplinaryIndex.value}</p>
+            <p className="text-[9px] sm:text-[10px] text-slate-400 mt-1">Domain diversity across completed reads</p>
+          </div>
+        </GlowCard>
+
+        <GlowCard delay={0.54}>
+          <div className="text-center">
+            <div className="text-lg mb-1">⚙️</div>
+            <div className="text-[10px] sm:text-xs uppercase tracking-wider font-semibold mb-1" style={{ color: `${GOLD}CC` }}>Completion Efficiency</div>
+            <AnimatedNumber value={completionEfficiency.score} className="text-3xl sm:text-4xl font-black text-white" suffix="%" />
+            <p className="text-[9px] sm:text-[10px] text-slate-400 mt-1">Completion speed adjusted by difficulty</p>
+          </div>
+        </GlowCard>
+      </div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.42 }}
+        className="p-5 sm:p-6 rounded-2xl"
+        style={{ background: CARD_BG, border: `2px solid ${CARD_BORDER}`, boxShadow: GLOW_SOFT }}
+      >
+        <SectionHeading icon="📈" title="Learning Growth" />
+        <div className="mt-5" style={{ height: '180px' }}>
+          <svg width="100%" height="180" viewBox="0 0 360 180" preserveAspectRatio="none">
+            {[0.25, 0.5, 0.75].map((fraction) => (
+              <line key={fraction} x1="0" y1={180 - fraction * 160} x2="360" y2={180 - fraction * 160} stroke={`${BLUE}12`} strokeWidth="1" />
+            ))}
+
+            <motion.path
+              d={`M ${learningGrowth.points.map((point, idx) => `${idx * (360 / 11)} ${180 - (point.depth / learningGrowth.maxDepth) * 155}`).join(' L ')} L ${11 * (360 / 11)} 180 L 0 180 Z`}
+              fill={`${BLUE}16`}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.52, duration: 0.8 }}
+            />
+
+            <motion.polyline
+              points={learningGrowth.points.map((point, idx) => `${idx * (360 / 11)},${180 - (point.depth / learningGrowth.maxDepth) * 155}`).join(' ')}
+              fill="none"
+              stroke={BLUE}
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: 1 }}
+              transition={{ delay: 0.5, duration: 1.1 }}
+              style={{ filter: `drop-shadow(0 0 6px ${BLUE})` }}
+            />
+
+            {learningGrowth.points.map((point, idx) => point.depth > 0 && (
+              <motion.circle
+                key={point.month}
+                cx={idx * (360 / 11)}
+                cy={180 - (point.depth / learningGrowth.maxDepth) * 155}
+                r="4"
+                fill={BLUE}
+                stroke="#fff"
+                strokeWidth="1.5"
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.62 + idx * 0.04, type: 'spring' }}
+              />
+            ))}
+          </svg>
+
+          <div className="flex justify-between mt-1 px-0">
+            {learningGrowth.points.map((point) => (
+              <span key={point.month} className="text-[8px] sm:text-[9px] text-slate-500 w-[30px] text-center">{point.month}</span>
+            ))}
+          </div>
+        </div>
+      </motion.div>
 
       {/* ════════════════════  MIDDLE ROW  ════════════════════ */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">

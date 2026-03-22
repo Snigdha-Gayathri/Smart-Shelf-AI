@@ -217,6 +217,79 @@ export default function Dashboard({ personalityProfile, annualWrapped, previousR
     return Math.round((active / 12) * 100)
   }, [annualWrapped])
 
+  // ── Mood consistency score from month-wise mood variance ──
+  const moodConsistency = useMemo(() => {
+    const moodKeys = Object.keys(MOOD_MAP)
+    const byMonth = {}
+
+    enriched.forEach((book) => {
+      if (!book.finishedAt) return
+      const monthName = monthNames[new Date(book.finishedAt).getMonth()]
+      if (!byMonth[monthName]) {
+        byMonth[monthName] = moodKeys.reduce((acc, key) => {
+          acc[key] = 0
+          return acc
+        }, {})
+      }
+
+      const moods = getMoods(book.emotion_tags || book.tags || [])
+      Object.entries(moods).forEach(([mood, count]) => {
+        if (Object.prototype.hasOwnProperty.call(byMonth[monthName], mood)) {
+          byMonth[monthName][mood] += count
+        }
+      })
+    })
+
+    const vectors = Object.values(byMonth)
+    if (!vectors.length) {
+      return {
+        score: 0,
+        level: 'Low',
+        subtitle: 'Highly dynamic mood shifts',
+      }
+    }
+
+    const normalizedVectors = vectors.map((vector) => {
+      const total = Object.values(vector).reduce((sum, value) => sum + value, 0)
+      return moodKeys.map((key) => (total > 0 ? (vector[key] || 0) / total : 0))
+    })
+
+    const avgVariance = moodKeys.reduce((sum, _, moodIdx) => {
+      const values = normalizedVectors.map((vector) => vector[moodIdx])
+      const mean = values.reduce((s, v) => s + v, 0) / values.length
+      const variance = values.reduce((s, v) => s + (v - mean) ** 2, 0) / values.length
+      return sum + variance
+    }, 0) / Math.max(moodKeys.length, 1)
+
+    const normalizedVariance = Math.min(1, avgVariance / 0.08)
+
+    const dominantMoodSequence = normalizedVectors
+      .map((vector) => {
+        const maxValue = Math.max(...vector)
+        if (maxValue <= 0) return null
+        return moodKeys[vector.indexOf(maxValue)]
+      })
+      .filter(Boolean)
+
+    const dominantCounts = {}
+    dominantMoodSequence.forEach((mood) => {
+      dominantCounts[mood] = (dominantCounts[mood] || 0) + 1
+    })
+
+    const dominantRepetition = dominantMoodSequence.length
+      ? Math.max(...Object.values(dominantCounts)) / dominantMoodSequence.length
+      : 0
+
+    const score = clampPercent(((1 - normalizedVariance) * 60) + (dominantRepetition * 40))
+    if (score >= 70) {
+      return { score, level: 'High', subtitle: 'Stable reading mood pattern' }
+    }
+    if (score >= 45) {
+      return { score, level: 'Medium', subtitle: 'Moderate variation in mood' }
+    }
+    return { score, level: 'Low', subtitle: 'Highly dynamic mood shifts' }
+  }, [enriched])
+
   // ── Fiction immersion hours ──
   const fictionHours = useMemo(() => {
     const fBooks = enriched.filter(b => (b.type || 'fiction') === 'fiction')
@@ -855,6 +928,16 @@ export default function Dashboard({ personalityProfile, annualWrapped, previousR
             <div className="text-[10px] sm:text-xs uppercase tracking-wider font-semibold mb-1" style={{ color: `${GREEN}CC` }}>Fiction Immersion</div>
             <AnimatedNumber value={fictionHours} className="text-3xl sm:text-4xl font-black text-white" suffix="h" />
             <p className="text-[9px] sm:text-[10px] text-slate-400 mt-1">in fictional worlds</p>
+          </div>
+        </GlowCard>
+
+        {/* Mood Consistency */}
+        <GlowCard delay={0.74}>
+          <div className="text-center">
+            <div className="text-lg mb-1">🎭</div>
+            <div className="text-[10px] sm:text-xs uppercase tracking-wider font-semibold mb-1" style={{ color: `${CYAN}CC` }}>Mood Consistency</div>
+            <AnimatedNumber value={moodConsistency.score} className="text-3xl sm:text-4xl font-black text-white" suffix="%" />
+            <p className="text-[9px] sm:text-[10px] text-slate-400 mt-1">{moodConsistency.subtitle}</p>
           </div>
         </GlowCard>
 
