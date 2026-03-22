@@ -1,0 +1,12 @@
+{
+  "name": "smartshelf-monorepo-wrapper",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Build wrapper for frontend deployment from monorepo root",
+  "scripts": {
+    "build": "npm ci --prefix frontend && npm run build --prefix frontend"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
