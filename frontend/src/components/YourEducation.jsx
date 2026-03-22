@@ -351,10 +351,10 @@ export default function YourEducation({ educationalBooks = [] }) {
         </GlowCard>
       </div>
 
-      {/* Additional Education Analytics */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+      {/* Additional Education Analytics — Same grid as top row */}
+      <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
         <GlowCard delay={0.3}>
-          <div className="text-center">
+          <div className="text-center w-full h-full flex flex-col items-center justify-center">
             <div className="text-lg mb-1">🧩</div>
             <div className="text-[10px] sm:text-xs uppercase tracking-wider font-semibold mb-1" style={{ color: `${BLUE}CC` }}>Learning Retention</div>
             <AnimatedNumber value={learningRetention.score} className="text-3xl sm:text-4xl font-black text-white" suffix="%" />
@@ -363,7 +363,7 @@ export default function YourEducation({ educationalBooks = [] }) {
         </GlowCard>
 
         <GlowCard delay={0.36}>
-          <div className="text-center">
+          <div className="text-center w-full h-full flex flex-col items-center justify-center">
             <div className="text-lg mb-1">🧠</div>
             <div className="text-[10px] sm:text-xs uppercase tracking-wider font-semibold mb-1" style={{ color: `${ROSE}CC` }}>Cognitive Load</div>
             <p className="text-3xl sm:text-4xl font-black text-white">{cognitiveLoad.value}</p>
@@ -372,7 +372,7 @@ export default function YourEducation({ educationalBooks = [] }) {
         </GlowCard>
 
         <GlowCard delay={0.42}>
-          <div className="text-center">
+          <div className="text-center w-full h-full flex flex-col items-center justify-center">
             <div className="text-lg mb-1">🎯</div>
             <div className="text-[10px] sm:text-xs uppercase tracking-wider font-semibold mb-1" style={{ color: `${GREEN}CC` }}>Focus Stability</div>
             <AnimatedNumber value={focusStability.score} className="text-3xl sm:text-4xl font-black text-white" suffix="%" />
@@ -381,7 +381,7 @@ export default function YourEducation({ educationalBooks = [] }) {
         </GlowCard>
 
         <GlowCard delay={0.48}>
-          <div className="text-center">
+          <div className="text-center w-full h-full flex flex-col items-center justify-center">
             <div className="text-lg mb-1">🌐</div>
             <div className="text-[10px] sm:text-xs uppercase tracking-wider font-semibold mb-1" style={{ color: `${CYAN}CC` }}>Interdisciplinary Index</div>
             <p className="text-3xl sm:text-4xl font-black text-white">{interdisciplinaryIndex.value}</p>
@@ -390,7 +390,7 @@ export default function YourEducation({ educationalBooks = [] }) {
         </GlowCard>
 
         <GlowCard delay={0.54}>
-          <div className="text-center">
+          <div className="text-center w-full h-full flex flex-col items-center justify-center">
             <div className="text-lg mb-1">⚙️</div>
             <div className="text-[10px] sm:text-xs uppercase tracking-wider font-semibold mb-1" style={{ color: `${GOLD}CC` }}>Completion Efficiency</div>
             <AnimatedNumber value={completionEfficiency.score} className="text-3xl sm:text-4xl font-black text-white" suffix="%" />
@@ -457,6 +457,199 @@ export default function YourEducation({ educationalBooks = [] }) {
           </div>
         </div>
       </motion.div>
+
+      {/* Topic Coverage & Knowledge Insights */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+        {/* Topic Focus Distribution */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.48 }}
+          className="p-5 sm:p-6 rounded-2xl"
+          style={{ background: CARD_BG, border: `2px solid ${CARD_BORDER}`, boxShadow: GLOW_SOFT }}
+        >
+          <SectionHeading icon="🎓" title="Topic Focus Distribution" />
+          <div className="mt-5 space-y-3">
+            {(() => {
+              const topicCounts = {}
+              finishedEducationalBooks.forEach((b) => {
+                const topic = String(b.genre || 'general').toLowerCase()
+                topicCounts[topic] = (topicCounts[topic] || 0) + 1
+              })
+              const sorted = Object.entries(topicCounts).sort((a, b) => b[1] - a[1])
+              const total = finishedEducationalBooks.length
+              return sorted.map(([topic, count], i) => {
+                const pct = total > 0 ? (count / total) * 100 : 0
+                const colors = [BLUE, GREEN, GOLD, ROSE, CYAN]
+                const color = colors[i % colors.length]
+                return (
+                  <div key={topic}>
+                    <div className="flex justify-between mb-1.5">
+                      <span className="text-xs sm:text-sm text-slate-300 capitalize">{topic}</span>
+                      <span className="text-xs font-bold" style={{ color }}>{count} book{count !== 1 ? 's' : ''} ({Math.round(pct)}%)</span>
+                    </div>
+                    <div className="h-3 sm:h-4 rounded-full overflow-hidden" style={{ background: 'rgba(30,144,255,0.08)' }}>
+                      <motion.div
+                        initial={{ width: 0 }}
+                        animate={{ width: `${pct}%` }}
+                        transition={{ delay: 0.58 + i * 0.08, duration: 0.8, ease: 'easeOut' }}
+                        className="h-full rounded-full"
+                        style={{
+                          background: `linear-gradient(90deg, ${color}60, ${color})`,
+                          boxShadow: `0 0 12px ${color}50`,
+                        }}
+                      />
+                    </div>
+                  </div>
+                )
+              })
+            })()}
+          </div>
+        </motion.div>
+
+        {/* Learning Insights */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.54 }}
+          className="p-5 sm:p-6 rounded-2xl"
+          style={{ background: CARD_BG, border: `2px solid ${CARD_BORDER}`, boxShadow: GLOW_SOFT }}
+        >
+          <SectionHeading icon="💡" title="Learning Intelligence" />
+          <div className="mt-5 space-y-3">
+            {(() => {
+              const insights = []
+              const allSkills = {}
+              finishedEducationalBooks.forEach((b) => {
+                b.skills.forEach((s) => {
+                  allSkills[s] = (allSkills[s] || 0) + 1
+                })
+              })
+              const topSkill = Object.entries(allSkills).sort((a, b) => b[1] - a[1])[0]
+              if (topSkill) {
+                insights.push({ emoji: '🏆', label: 'Top Skill', value: topSkill[0], color: GOLD })
+              }
+
+              const avgDifficulty = (
+                (difficultyCounts.Beginner * 1 + difficultyCounts.Intermediate * 2 + difficultyCounts.Advanced * 3) /
+                (totalBooks || 1)
+              ).toFixed(1)
+              const diffLevel = avgDifficulty < 1.5 ? 'Foundational' : avgDifficulty < 2.2 ? 'Intermediate' : 'Advanced'
+              insights.push({ emoji: '📚', label: 'Avg Difficulty', value: diffLevel, color: ROSE })
+
+              const comprehensiveness = Math.round((Object.keys(skillCounts).length / 15) * 100)
+              insights.push({ emoji: '🎯', label: 'Skill Breadth', value: `${comprehensiveness}%`, color: CYAN })
+
+              const learnVelocity = totalBooks > 0 ? Math.round((totalHours / totalBooks) * 10) / 10 : 0
+              const paceLabel = learnVelocity < 5 ? 'Quick Learner' : learnVelocity < 8 ? 'Balanced Pace' : 'Deep Diver'
+              insights.push({ emoji: '⚡', label: 'Learning Pace', value: paceLabel, color: GREEN })
+
+              return insights.map((insight, i) => (
+                <div key={insight.label} className="flex items-center justify-between p-3 rounded-lg" style={{ background: `${insight.color}0A`, border: `1px solid ${insight.color}20` }}>
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg">{insight.emoji}</span>
+                    <span className="text-xs sm:text-sm text-slate-300">{insight.label}</span>
+                  </div>
+                  <span className="text-xs sm:text-sm font-bold" style={{ color: insight.color }}>{insight.value}</span>
+                </div>
+              ))
+            })()}
+          </div>
+        </motion.div>
+      </div>
+
+      {/* Recommended Learning Path & Growth Opportunities */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+        {/* Knowledge Gaps & Opportunities */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+          className="p-5 sm:p-6 rounded-2xl"
+          style={{ background: CARD_BG, border: `2px solid ${CARD_BORDER}`, boxShadow: GLOW_SOFT }}
+        >
+          <SectionHeading icon="🎯" title="Growth Opportunities" />
+          <div className="mt-5 space-y-3">
+            {(() => {
+              const suggestedTopics = ['Psychology', 'Philosophy', 'History', 'Economics', 'Science', 'Sociology']
+              const readTopics = new Set(finishedEducationalBooks.map((b) => String(b.genre || '').toLowerCase()))
+              const gaps = suggestedTopics.filter((topic) => !readTopics.has(topic.toLowerCase()))
+              const topicCounts = {}
+              finishedEducationalBooks.forEach((b) => {
+                topicCounts[String(b.genre || '').toLowerCase()] = (topicCounts[String(b.genre || '').toLowerCase()] || 0) + 1
+              })
+              const sortedGaps = gaps.slice(0, 4)
+              return sortedGaps.length > 0 ? (
+                sortedGaps.map((topic, i) => (
+                  <div key={topic} className="flex items-center justify-between p-3 rounded-lg border border-white/10 bg-white/5">
+                    <div className="flex items-center gap-2">
+                      <span className="text-lg">📖</span>
+                      <div>
+                        <p className="text-xs sm:text-sm font-semibold text-white">{topic}</p>
+                        <p className="text-[9px] text-slate-400">Not yet explored</p>
+                      </div>
+                    </div>
+                    <span className="text-[10px] px-2 py-1 rounded-full" style={{ background: `${GREEN}20`, color: GREEN }}>
+                      Recommended
+                    </span>
+                  </div>
+                ))
+              ) : (
+                <p className="text-sm text-slate-400 text-center py-4">You've explored most core topics! Consider deepening existing areas or exploring niche specializations.</p>
+              )
+            })()}
+          </div>
+        </motion.div>
+
+        {/* Mastery Progression */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.66 }}
+          className="p-5 sm:p-6 rounded-2xl"
+          style={{ background: CARD_BG, border: `2px solid ${CARD_BORDER}`, boxShadow: GLOW_SOFT }}
+        >
+          <SectionHeading icon="🏔️" title="Subject Mastery Journey" />
+          <div className="mt-5 space-y-3">
+            {(() => {
+              const topicCounts = {}
+              const topicDifficulty = {}
+              finishedEducationalBooks.forEach((b) => {
+                const topic = String(b.genre || 'general').toLowerCase()
+                topicCounts[topic] = (topicCounts[topic] || 0) + 1
+                const diffWeight = b.difficulty === 'Beginner' ? 1 : b.difficulty === 'Intermediate' ? 2 : 3
+                topicDifficulty[topic] = (topicDifficulty[topic] || 0) + diffWeight
+              })
+              return Object.entries(topicCounts) .sort((a, b) => b[1] - a[1]) .slice(0, 3) .map(([topic, count], i) => {
+                const avgDiff = (topicDifficulty[topic] || 0) / count
+                const masteryPct = Math.min(100, Math.round((count * avgDiff * 15)))
+                const level = masteryPct < 30 ? 'Novice' : masteryPct < 60 ? 'Practitioner' : masteryPct < 85 ? 'Expert' : 'Master'
+                const levelColor = masteryPct < 30 ? GREEN : masteryPct < 60 ? GOLD : masteryPct < 85 ? BLUE : CYAN
+                return (
+                  <div key={topic}>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-xs sm:text-sm font-semibold text-white capitalize">{topic}</span>
+                      <span className="text-[10px] px-2 py-0.5 rounded-full" style={{ background: `${levelColor}20`, color: levelColor }}>
+                        {level}
+                      </span>
+                    </div>
+                    <div className="h-2.5 rounded-full overflow-hidden" style={{ background: 'rgba(30,144,255,0.08)' }}>
+                      <motion.div
+                        initial={{ width: 0 }}
+                        animate={{ width: `${masteryPct}%` }}
+                        transition={{ delay: 0.7 + i * 0.1, duration: 0.8 }}
+                        className="h-full rounded-full"
+                        style={{ background: `linear-gradient(90deg, ${levelColor}60, ${levelColor})`, boxShadow: `0 0 8px ${levelColor}40` }}
+                      />
+                    </div>
+                    <p className="text-[9px] text-slate-400 mt-1">{count} book{count !== 1 ? 's' : ''} • avg difficulty: {(avgDiff).toFixed(1)}/3</p>
+                  </div>
+                )
+              })
+            })()}
+          </div>
+        </motion.div>
+      </div>
 
       {/* ════════════════════  MIDDLE ROW  ════════════════════ */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">

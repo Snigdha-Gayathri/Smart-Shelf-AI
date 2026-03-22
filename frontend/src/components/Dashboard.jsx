@@ -168,6 +168,8 @@ function clampPercent(value) {
  *  MAIN COMPONENT
  * ══════════════════════════════════════════════════════════════ */
 export default function Dashboard({ personalityProfile, annualWrapped, previousReads = [], educationalBooks = [], reviewInsights = {} }) {
+  // ── Month names constant (used in multiple useMemo hooks) ──
+  const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
 
   // ── All year books (merged) ──
   const yearBooks = useMemo(() => {
@@ -325,7 +327,6 @@ export default function Dashboard({ personalityProfile, annualWrapped, previousR
   }, [enriched])
 
   // ── Monthly momentum (books per month) ──
-  const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
   const monthlyData = useMemo(() => {
     const mr = annualWrapped?.monthlyReads || {}
     return monthNames.map(m => ({ month: m, count: mr[m] || 0 }))
