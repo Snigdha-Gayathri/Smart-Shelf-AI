@@ -14,10 +14,46 @@ export default function IntroSection() {
   const [freeBooks, setFreeBooks] = useState([])
 
   useEffect(() => {
-    fetch(`${API_BASE}/api/free-books`)
-      .then(r => r.json())
-      .then(data => setFreeBooks(data))
-      .catch(() => setFreeBooks([]))
+    let isMounted = true
+
+    async function loadFreeBooks() {
+      const candidates = [`${API_BASE}/api/free-books`, `${API_BASE}/api/v1/free-books`]
+
+      for (const url of candidates) {
+        try {
+          const response = await fetch(url)
+          if (!response.ok) continue
+
+          const data = await response.json()
+          const books = Array.isArray(data)
+            ? data
+            : Array.isArray(data?.books)
+              ? data.books
+              : Array.isArray(data?.items)
+                ? data.items
+                : []
+
+          if (books.length > 0) {
+            if (isMounted) {
+              setFreeBooks(books.slice(0, 5))
+            }
+            return
+          }
+        } catch {
+          // Try the next candidate endpoint.
+        }
+      }
+
+      if (isMounted) {
+        setFreeBooks([])
+      }
+    }
+
+    loadFreeBooks()
+
+    return () => {
+      isMounted = false
+    }
   }, [])
 
   return (
@@ -135,7 +171,7 @@ they match your mood, your mindset, and your heart 💫`}
             <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-3 md:grid-cols-5 gap-2 sm:gap-4 w-full">
               {freeBooks.map((book, i) => (
                 <motion.div
-                  key={book.title}
+                  key={`${book.title || 'free-book'}-${i}`}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.9 + i * 0.1, duration: 0.4 }}
