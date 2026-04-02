@@ -851,6 +851,34 @@ export default function App({ clerk = { enabled: false, isLoaded: false, isSigne
     };
   }
 
+  async function fetchAnnualWrappedFromBackend(userId, localWrapped = null) {
+    if (!userId) return localWrapped;
+    try {
+      const res = await fetch(`${API_BASE}/users/${userId}/annual-wrapped`);
+      if (!res.ok) {
+        return localWrapped;
+      }
+      const data = await res.json();
+      if (!data || typeof data !== 'object') {
+        return localWrapped;
+      }
+
+      const analytics = {
+        predictionAlignment: data.predictionAlignment || null,
+        preferenceStability: data.preferenceStability || null,
+        explorationProfile: data.explorationProfile || null,
+        extras: data.extras || null,
+      };
+
+      return {
+        ...(localWrapped || {}),
+        ...analytics,
+      };
+    } catch {
+      return localWrapped;
+    }
+  }
+
   function handleUserSettingChange(key, value) {
     const userId = auth?.user?.id || 'guest';
     setUserSettings((prev) => updateSetting(userId, key, value, prev));
@@ -913,12 +941,45 @@ export default function App({ clerk = { enabled: false, isLoaded: false, isSigne
 
   // Recompute analytics whenever previousReads or educationalBooks change
   useEffect(() => {
-    const hasCompletedEdu = educationalBooks.some(b => b.eduStatus === 'completed');
-    if (previousReads.length > 0 || hasCompletedEdu) {
-      setPersonalityProfile(computePersonalityProfile());
-      setAnnualWrapped(computeAnnualWrapped());
+    let active = true;
+
+    async function refreshAnalytics() {
+      const hasCompletedEdu = educationalBooks.some(b => b.eduStatus === 'completed');
+      const hasLocalReadingData = previousReads.length > 0 || hasCompletedEdu;
+      if (hasLocalReadingData) {
+        setPersonalityProfile(computePersonalityProfile());
+      }
+
+      const localWrapped = hasLocalReadingData
+        ? computeAnnualWrapped()
+        : {
+            totalBooksRead: 0,
+            genreDistribution: {},
+            likeDislikeRatio: { liked: 0, disliked: 0 },
+            monthlyReads: {},
+            educationalCompleted: 0,
+            typeBreakdown: {},
+          };
+      if (active) {
+        setAnnualWrapped(localWrapped);
+      }
+
+      const userId = auth?.user?.id;
+      if (!userId) {
+        return;
+      }
+
+      const mergedWrapped = await fetchAnnualWrappedFromBackend(userId, localWrapped);
+      if (active && mergedWrapped) {
+        setAnnualWrapped(mergedWrapped);
+      }
     }
-  }, [previousReads, educationalBooks]);
+
+    refreshAnalytics();
+    return () => {
+      active = false;
+    };
+  }, [previousReads, educationalBooks, auth?.user?.id]);
 
   // Helper: Calculate a feedback score for a book based on user preferences
   // Returns a score modifier: positive for liked genres/tags, negative for disliked

@@ -587,6 +587,35 @@ export default function Dashboard({ personalityProfile, annualWrapped, previousR
     return `Your preference remains stable around ${titleCase(recommendationConfidence.topGenre)} with nuanced mood-driven variations ahead.`
   }, [evolutionTimeline, hiddenTaste, recommendationConfidence])
 
+  const advancedMetrics = useMemo(() => {
+    if (!annualWrapped) return []
+    const metrics = [
+      {
+        key: 'predictionAlignment',
+        title: 'Prediction Alignment',
+        icon: '🎯',
+        color: BLUE,
+        metric: annualWrapped.predictionAlignment,
+      },
+      {
+        key: 'preferenceStability',
+        title: 'Preference Stability',
+        icon: '🧭',
+        color: GREEN,
+        metric: annualWrapped.preferenceStability,
+      },
+      {
+        key: 'explorationProfile',
+        title: 'Exploration Profile',
+        icon: '🧪',
+        color: GOLD,
+        metric: annualWrapped.explorationProfile,
+      },
+    ]
+
+    return metrics.filter((entry) => entry.metric && typeof entry.metric === 'object')
+  }, [annualWrapped])
+
   // ── EMPTY STATE ──
   if (!annualWrapped || annualWrapped.totalBooksRead === 0) {
     return (
@@ -704,6 +733,56 @@ export default function Dashboard({ personalityProfile, annualWrapped, previousR
         <StatCard label="Like Ratio" value={`${likeRatio}%`} sub="positive reads" icon="👍" color={GREEN} delay={0.16} />
         <StatCard label="Consistency" value={`${consistency}%`} sub={consistencyLabel} icon="📈" color={GOLD} delay={0.24} />
       </div>
+
+      {/* ════════ BACKEND ANALYTICS (NEW) ════════ */}
+      {advancedMetrics.length > 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.28 }}
+          className="p-5 sm:p-6 rounded-2xl"
+          style={{ background: CARD_BG, border: `2px solid ${CARD_BORDER}`, boxShadow: GLOW_SOFT }}
+        >
+          <Heading icon="🧠" title="Advanced Annual Analytics" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 mt-4">
+            {advancedMetrics.map((entry, idx) => {
+              const rawScore = Number(entry.metric?.score)
+              const safeScore = Number.isFinite(rawScore) ? Math.max(0, Math.min(1, rawScore)) : 0
+              const scorePercent = Math.round(safeScore * 100)
+              const label = entry.metric?.label || 'N/A'
+              const context = Array.isArray(entry.metric?.context) ? entry.metric.context.filter(Boolean) : []
+
+              return (
+                <motion.div
+                  key={entry.key}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.32 + idx * 0.06 }}
+                  className="rounded-xl border border-white/10 bg-white/5 p-4"
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <p className="text-xs uppercase tracking-wide text-slate-400">{entry.title}</p>
+                    <span className="text-base">{entry.icon}</span>
+                  </div>
+                  <div className="flex items-end gap-2 mb-2">
+                    <span className="text-2xl font-black text-white">{scorePercent}%</span>
+                    <span className="text-xs font-semibold" style={{ color: entry.color }}>{label}</span>
+                  </div>
+                  <div className="h-2 w-full rounded-full bg-white/10 overflow-hidden mb-2">
+                    <div
+                      className="h-full rounded-full transition-all duration-700"
+                      style={{ width: `${scorePercent}%`, background: entry.color }}
+                    />
+                  </div>
+                  {context.length > 0 && (
+                    <p className="text-[11px] text-slate-300 leading-relaxed">{context[0]}</p>
+                  )}
+                </motion.div>
+              )
+            })}
+          </div>
+        </motion.div>
+      )}
 
       {/* ════════ TYPE BREAKDOWN BAR ════════ */}
       {annualWrapped.typeBreakdown && Object.keys(annualWrapped.typeBreakdown).length > 1 && (
