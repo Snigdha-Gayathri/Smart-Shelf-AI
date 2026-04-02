@@ -165,6 +165,7 @@ export default function Settings({
 
   const systemThemeLabel = getSystemThemeLabel()
   const readingGoalProgress = Math.min(100, Math.round((previousReads.length / Math.max(1, Number(userSettings?.readingGoal || 1))) * 100))
+  const profilePictureStorageKey = userId ? `user_${userId}_profilePicture` : 'profilePicture'
 
   useEffect(() => {
     const saved = localStorage.getItem(profilePictureStorageKey)

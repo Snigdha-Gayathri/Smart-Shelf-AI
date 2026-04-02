@@ -140,6 +140,31 @@ export default function App({ clerk = { enabled: false, isLoaded: false, isSigne
     setError('');
   };
 
+  const buildAuthHeaders = () => {
+    const token = auth?.token;
+    const userId = auth?.user?.id;
+    const username = auth?.user?.username || auth?.user?.email;
+    const headers = {};
+    if (token) headers.Authorization = `Bearer ${token}`;
+    if (userId) headers['X-User-Id'] = String(userId);
+    if (username) headers['X-Username'] = String(username).toLowerCase();
+    return headers;
+  };
+
+  const resetUserScopedState = () => {
+    setCurrentlyReading([]);
+    setEducationalBooks([]);
+    setPreviousReads([]);
+    setUserFeedback(DEFAULT_USER_FEEDBACK);
+    setPersonalityProfile(null);
+    setAnnualWrapped(null);
+    setReviews([]);
+    setReviewInsights(DEFAULT_REVIEW_INSIGHTS);
+    setUserPreferenceModel({});
+    setRecommendations([]);
+    setError('');
+  };
+
   useEffect(() => {
     if (window.location.pathname === '/author-dashboard') {
       setActiveSection('author_dashboard')
@@ -224,10 +249,10 @@ export default function App({ clerk = { enabled: false, isLoaded: false, isSigne
         }
       } catch { /* ignore parse errors */ }
       localStorage.removeItem('auth')
+      resetUserScopedState()
       setAuth(null)
       setMenuOpen(false)
       setActiveSection('home')
-      setRecommendations([])
     }
   }, [clerkEnabled, isClerkLoaded, isSignedIn, clerkUser, auth]);
 
@@ -324,7 +349,11 @@ export default function App({ clerk = { enabled: false, isLoaded: false, isSigne
     let mounted = true
     async function loadUserReviews() {
       try {
-        const res = await fetch(`${API_BASE}/api/v1/reviews?username=${encodeURIComponent(auth.user.username)}`)
+        const res = await fetch(`${API_BASE}/api/v1/reviews?username=${encodeURIComponent(auth.user.username)}`, {
+          headers: {
+            ...buildAuthHeaders(),
+          },
+        })
         if (!res.ok) return
         const data = await res.json()
         if (!mounted) return
@@ -347,7 +376,11 @@ export default function App({ clerk = { enabled: false, isLoaded: false, isSigne
 
   // Handle successful authentication - hydrate persisted user data
   function handleAuthSuccess(a){
+<<<<<<< Updated upstream
     // Always clear in-memory user state before hydrating next account.
+=======
+    // Clear prior in-memory session state before hydrating this user.
+>>>>>>> Stashed changes
     resetUserScopedState();
     setAuth(a);
     if (a?.user) {
@@ -386,7 +419,6 @@ export default function App({ clerk = { enabled: false, isLoaded: false, isSigne
       setUserSettings(loadUserSettings('guest'));
       setMenuOpen(false);
       setActiveSection('home');
-      setRecommendations([]);
       setIsLoggingOut(false);
     };
 
