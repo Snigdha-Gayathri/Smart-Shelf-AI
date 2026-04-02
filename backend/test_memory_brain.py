@@ -74,6 +74,22 @@ from services.personality_service import (
 from services.recommendation_service import get_personalized_recommendations
 
 
+def _fake_generate_embeddings(texts):
+    """Deterministic embedding stub for mood recommendation tests."""
+    vectors = []
+    for text in texts:
+        value = (text or "").lower()
+        vectors.append([
+            1.0 if any(token in value for token in ["obsess", "possess", "dark romance", "enemies to lovers", "mafia"]) else 0.0,
+            1.0 if any(token in value for token in ["numb", "neutral", "slow burn", "introspective", "cozy", "healing"]) else 0.0,
+            1.0 if any(token in value for token in ["ruin", "tragic", "angst", "grief", "sad", "cry", "dark"]) else 0.0,
+            1.0 if any(token in value for token in ["protect", "mmc", "hero", "guard"]) else 0.0,
+            1.0 if any(token in value for token in ["curiosity", "mystery", "adventure", "unconventional"]) else 0.0,
+            1.0 if any(token in value for token in ["love", "desire", "romance", "heartwarming", "comfort", "passion"]) else 0.0,
+        ])
+    return vectors
+
+
 # ────────────────────────── Fixtures ──────────────────────────
 
 @pytest.fixture(autouse=True)
@@ -755,6 +771,16 @@ class TestAPIEndpoints:
         # Need to import app after patching DB
         from fastapi.testclient import TestClient
         from app import app
+        import services.mood_processor as mood_processor
+        import services.mood_recommendation_service as mood_recommendation_service
+
+        mood_processor.generate_embeddings = _fake_generate_embeddings
+        mood_recommendation_service.generate_embeddings = _fake_generate_embeddings
+        if hasattr(mood_processor, "_candidate_embeddings"):
+            mood_processor._candidate_embeddings.cache_clear()
+        if hasattr(mood_recommendation_service, "_embed_text"):
+            mood_recommendation_service._embed_text.cache_clear()
+
         self.client = TestClient(app)
 
     def test_post_books_interact(self):
@@ -822,6 +848,83 @@ class TestAPIEndpoints:
         data = resp.json()
         assert data["status"] == "ok"
         assert len(data["recommendations"]) > 0
+
+    def test_empty_recommendation_input_returns_400(self):
+        resp = self.client.post("/api/recommend", json={"query": "   "})
+        assert resp.status_code == 400
+        assert resp.json() == {"error": "Query text cannot be empty"}
+
+    def test_exact_mood_match(self):
+        resp = self.client.post("/api/recommend", json={"query": "I want obsession"})
+        assert resp.status_code == 200
+        data = resp.json()
+        assert data["detectedMood"] == "i want obsession"
+        assert "dark romance" in data["matchedTags"]
+        assert len(data["recommendations"]) > 0
+
+    def test_similar_phrasing_maps_correctly(self):
+        resp = self.client.post("/api/recommend", json={"query": "I need obsessive love"})
+        assert resp.status_code == 200
+        data = resp.json()
+        assert data["detectedMood"] == "i want obsession"
+        assert "possessive" in data["matchedTags"] or "obsessive" in data["matchedTags"]
+        assert len(data["recommendations"]) > 0
+
+    def test_unknown_mood_still_returns_recommendations(self):
+        resp = self.client.post("/api/recommend", json={"query": "hungry"})
+        assert resp.status_code == 200
+        data = resp.json()
+        assert isinstance(data.get("recommendations"), list)
+        assert len(data["recommendations"]) > 0
+
+    def test_get_all_books(self):
+        sample_books = [
+            {
+                "id": "the-kiss-thief",
+                "title": "The Kiss Thief",
+                "author": "L.J. Shen",
+            }
+        ]
+        with patch("controllers.book_controller.list_books", return_value=sample_books):
+            resp = self.client.get("/api/books")
+        assert resp.status_code == 200
+        data = resp.json()
+        assert isinstance(data, list)
+        assert data == sample_books
+
+    def test_get_all_books_empty_array(self):
+        with patch("controllers.book_controller.list_books", return_value=[]):
+            resp = self.client.get("/api/books")
+        assert resp.status_code == 200
+        assert resp.json() == []
+
+    def test_get_all_books_failure_returns_500(self):
+        with patch("controllers.book_controller.list_books", side_effect=RuntimeError("db failure")):
+            resp = self.client.get("/api/books")
+        assert resp.status_code == 500
+
+    def test_get_book_by_id_valid(self):
+        sample_book = {
+            "id": "the-kiss-thief",
+            "title": "The Kiss Thief",
+            "author": "L.J. Shen",
+            "genre": "contemporary romance",
+        }
+        with patch("controllers.book_controller.fetch_book_by_id", return_value=sample_book):
+            resp = self.client.get("/api/books/the-kiss-thief")
+        assert resp.status_code == 200
+        assert resp.json() == sample_book
+
+    def test_get_book_by_id_invalid(self):
+        with patch("controllers.book_controller.fetch_book_by_id", side_effect=LookupError("Book not found")):
+            resp = self.client.get("/api/books/does-not-exist")
+        assert resp.status_code == 404
+        assert resp.json() == {"error": "Book not found"}
+
+    def test_get_book_by_id_invalid_format(self):
+        resp = self.client.get("/api/books/   ")
+        assert resp.status_code == 404
+        assert resp.json() == {"error": "Book not found"}
 
     def test_patch_trope_preference(self):
         ensure_memory_user(1)

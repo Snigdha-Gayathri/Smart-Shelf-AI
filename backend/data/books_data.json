@@ -14923,5 +14923,2234 @@
       "narrative_complexity": "Moderate-High",
       "reading_value": "Imagination, empathy, and character psychology"
     }
+  },
+  [
+  {
+    "title": "Garlic and Sapphires: The Secret Life of a Critic in Disguise",
+    "author": "Ruth Reichl",
+    "cover": "/covers/garlic-and-sapphires.svg",
+    "synopsis": "Ruth Reichl, upon becoming the New York Times' top restaurant critic, discovers restaurants have her picture posted everywhere. To review them honestly, she adopts a series of elaborate disguises and personas — from frumpy schoolteachers to flamboyant redheads — and discovers how dramatically a restaurant's treatment changes based on who you appear to be.",
+    "emotion_tags": [
+      "delight",
+      "curiosity",
+      "wit",
+      "nostalgia"
+    ],
+    "genre": "memoir",
+    "mood": "witty charming",
+    "tone": "warm humorous",
+    "pacing": "leisurely",
+    "type": "non-fiction",
+    "personality_vector": [
+      0.5,
+      0.6,
+      0.3,
+      0.7,
+      0.8
+    ],
+    "embedding_tags": [
+      "food memoir",
+      "identity disguise",
+      "restaurant culture",
+      "New York City",
+      "culinary journalism",
+      "class and dining",
+      "female voice"
+    ],
+    "buy_link": "https://www.amazon.in/s?k=Garlic+and+Sapphires+Ruth+Reichl",
+    "reading_insights": {
+      "vocabulary_enrichment": "High",
+      "cognitive_benefit": "Cultural literacy and observational thinking",
+      "narrative_complexity": "Low-Moderate",
+      "reading_value": "Wit, empathy, and social commentary through food"
+    }
+  },
+  {
+    "title": "Delicious!",
+    "author": "Ruth Reichl",
+    "cover": "/covers/delicious.svg",
+    "synopsis": "Billie Breslin moves from California to New York to work at Delicious!, the city's most iconic food magazine. When the magazine shuts down, she stays to man the reader hotline — and stumbles upon a hidden room containing wartime letters written by a young girl to the legendary chef James Beard, setting Billie on a journey of self-discovery, history, and love.",
+    "emotion_tags": [
+      "wonder",
+      "warmth",
+      "longing",
+      "healing"
+    ],
+    "genre": "contemporary fiction",
+    "mood": "cozy heartwarming",
+    "tone": "lyrical whimsical",
+    "pacing": "moderate",
+    "type": "fiction",
+    "personality_vector": [
+      0.4,
+      0.5,
+      0.6,
+      0.8,
+      0.7
+    ],
+    "embedding_tags": [
+      "food fiction",
+      "hidden letters mystery",
+      "coming of age",
+      "New York City",
+      "self-discovery",
+      "WWII parallel story",
+      "culinary world"
+    ],
+    "buy_link": "https://www.amazon.in/s?k=Delicious+Ruth+Reichl+novel",
+    "reading_insights": {
+      "vocabulary_enrichment": "Medium-High",
+      "cognitive_benefit": "Emotional intelligence and historical empathy",
+      "narrative_complexity": "Moderate",
+      "reading_value": "Healing through food, history, and human connection"
+    }
+  },
+  {
+    "title": "The Gastronomical Me",
+    "author": "M.F.K. Fisher",
+    "cover": "/covers/gastronomical-me.svg",
+    "synopsis": "A seminal classic of food writing, this memoir traces M.F.K. Fisher's life through the meals she ate and the people she shared them with — from childhood in California to Dijon in the 1930s, across cruise ships and Swiss farms, through love, loss, and the tensions of pre-war Europe. Food here is metaphor: for desire, survival, grief, and joy.",
+    "emotion_tags": [
+      "longing",
+      "sensuality",
+      "melancholy",
+      "wonder"
+    ],
+    "genre": "memoir",
+    "mood": "reflective lyrical",
+    "tone": "elegant sensuous",
+    "pacing": "slow meditative",
+    "type": "non-fiction",
+    "personality_vector": [
+      0.4,
+      0.5,
+      0.3,
+      0.8,
+      0.9
+    ],
+    "embedding_tags": [
+      "classic food writing",
+      "travel memoir",
+      "love and loss",
+      "pre-WWII Europe",
+      "sensory prose",
+      "female literary voice",
+      "gastronomic philosophy"
+    ],
+    "buy_link": "https://www.amazon.in/s?k=The+Gastronomical+Me+MFK+Fisher",
+    "reading_insights": {
+      "vocabulary_enrichment": "Very High",
+      "cognitive_benefit": "Literary appreciation and philosophical reflection on appetite",
+      "narrative_complexity": "Moderate-High",
+      "reading_value": "Prose mastery, cultural history, and the meaning of hunger"
+    }
+  },
+  {
+    "title": "An Everlasting Meal: Cooking with Economy and Grace",
+    "author": "Tamar Adler",
+    "cover": "/covers/everlasting-meal.svg",
+    "synopsis": "A meditation on the philosophy and practice of cooking, this essay collection teaches readers to cook instinctively and frugally — using leftovers, bones, peels, and humble ingredients to create satisfying meals. Written in the spirit of M.F.K. Fisher, it weaves philosophy with practical instruction and argues that the best meals grow from the ends of previous ones.",
+    "emotion_tags": [
+      "comfort",
+      "inspiration",
+      "contentment",
+      "curiosity"
+    ],
+    "genre": "food essays / cookbook",
+    "mood": "contemplative nurturing",
+    "tone": "philosophical graceful",
+    "pacing": "slow",
+    "type": "non-fiction",
+    "personality_vector": [
+      0.3,
+      0.4,
+      0.4,
+      0.8,
+      0.85
+    ],
+    "embedding_tags": [
+      "food philosophy",
+      "frugal cooking",
+      "home cooking",
+      "essays",
+      "MFK Fisher influence",
+      "sustainability",
+      "culinary wisdom"
+    ],
+    "buy_link": "https://www.amazon.in/s?k=An+Everlasting+Meal+Tamar+Adler",
+    "reading_insights": {
+      "vocabulary_enrichment": "High",
+      "cognitive_benefit": "Systems thinking and mindful resourcefulness",
+      "narrative_complexity": "Low-Moderate",
+      "reading_value": "Practical wisdom, mindfulness, and beauty in simplicity"
+    }
+  },
+  {
+    "title": "The School of Essential Ingredients",
+    "author": "Erica Bauermeister",
+    "cover": "/covers/school-of-essential-ingredients.svg",
+    "synopsis": "Eight very different students gather in Lillian's restaurant kitchen every Monday night for a cooking class. Each carries a secret hunger beyond the culinary: a grieving widower, a young mother losing her identity, an Italian designer adrift in America. As Lillian guides them through dishes, she gently unlocks the deeper transformations each student needs to make.",
+    "emotion_tags": [
+      "warmth",
+      "healing",
+      "hope",
+      "belonging"
+    ],
+    "genre": "contemporary fiction",
+    "mood": "cozy magical realism",
+    "tone": "lyrical tender",
+    "pacing": "gentle",
+    "type": "fiction",
+    "personality_vector": [
+      0.35,
+      0.45,
+      0.65,
+      0.85,
+      0.75
+    ],
+    "embedding_tags": [
+      "food fiction",
+      "cooking class",
+      "ensemble cast",
+      "healing and transformation",
+      "magical food",
+      "community",
+      "Chocolat vibes"
+    ],
+    "buy_link": "https://www.amazon.in/s?k=The+School+of+Essential+Ingredients+Erica+Bauermeister",
+    "reading_insights": {
+      "vocabulary_enrichment": "Medium",
+      "cognitive_benefit": "Emotional intelligence and empathy",
+      "narrative_complexity": "Low-Moderate",
+      "reading_value": "Comfort, community, and the healing power of food"
+    }
+  },
+  {
+    "title": "Garden Spells",
+    "author": "Sarah Addison Allen",
+    "cover": "/covers/garden-spells.svg",
+    "synopsis": "In the small town of Bascom, North Carolina, Claire Waverley tends a magical garden where edible flowers have secret powers. When her wild younger sister Sydney returns after a decade away — with a daughter and a dangerous past — the two must reconnect and confront their family's peculiar legacy, including an enchanted apple tree that throws fruit at anyone who gets too close.",
+    "emotion_tags": [
+      "whimsy",
+      "longing",
+      "warmth",
+      "hope"
+    ],
+    "genre": "magical realism / southern fiction",
+    "mood": "enchanting cozy",
+    "tone": "warm whimsical",
+    "pacing": "leisurely",
+    "type": "fiction",
+    "personality_vector": [
+      0.4,
+      0.5,
+      0.6,
+      0.8,
+      0.75
+    ],
+    "embedding_tags": [
+      "magical realism",
+      "Southern setting",
+      "food magic",
+      "sisters",
+      "small town charm",
+      "family secrets",
+      "Practical Magic vibes"
+    ],
+    "buy_link": "https://www.amazon.in/s?k=Garden+Spells+Sarah+Addison+Allen",
+    "reading_insights": {
+      "vocabulary_enrichment": "Medium",
+      "cognitive_benefit": "Imagination and emotional resonance",
+      "narrative_complexity": "Low-Moderate",
+      "reading_value": "Escapism, charm, and the magic in everyday life"
+    }
+  },
+  {
+    "title": "Charlie and the Chocolate Factory",
+    "author": "Roald Dahl",
+    "cover": "/covers/charlie-chocolate-factory.svg",
+    "synopsis": "Poor Charlie Bucket wins one of five golden tickets granting entry to the mysterious Willy Wonka's chocolate factory. Inside, the wonders are extraordinary — but so are the dangers for greedy, gluttonous, or spoiled children. A darkly funny tale about virtue, imagination, and the purest kind of luck.",
+    "emotion_tags": [
+      "wonder",
+      "delight",
+      "mischief",
+      "excitement"
+    ],
+    "genre": "children's fantasy",
+    "mood": "whimsical adventurous",
+    "tone": "darkly humorous",
+    "pacing": "fast",
+    "type": "fiction",
+    "personality_vector": [
+      0.55,
+      0.6,
+      0.3,
+      0.5,
+      0.9
+    ],
+    "embedding_tags": [
+      "children's classic",
+      "candy factory",
+      "morality tale",
+      "whimsy",
+      "Roald Dahl",
+      "golden ticket",
+      "imagination"
+    ],
+    "buy_link": "https://www.amazon.in/s?k=Charlie+and+the+Chocolate+Factory+Roald+Dahl",
+    "reading_insights": {
+      "vocabulary_enrichment": "Medium",
+      "cognitive_benefit": "Moral reasoning and imagination",
+      "narrative_complexity": "Low",
+      "reading_value": "Wonder, creativity, and the value of kindness"
+    }
+  },
+  {
+    "title": "The Poppy War Trilogy",
+    "author": "R.F. Kuang",
+    "cover": "/covers/poppy-war.svg",
+    "synopsis": "Fang Runin, a war orphan from rural China's fantasy analog, aces a national exam and enters the empire's elite military academy. She discovers she can channel the power of gods. But when war breaks out — inspired by the Sino-Japanese War and the Nanjing Massacre — Rin's rage and power spiral into something devastating, forcing her to confront what vengeance costs.",
+    "emotion_tags": [
+      "fury",
+      "grief",
+      "determination",
+      "horror"
+    ],
+    "genre": "grimdark fantasy",
+    "mood": "dark intense",
+    "tone": "brutal unflinching",
+    "pacing": "fast",
+    "type": "fiction",
+    "personality_vector": [
+      0.85,
+      0.9,
+      0.2,
+      0.4,
+      0.5
+    ],
+    "embedding_tags": [
+      "grimdark fantasy",
+      "Chinese history inspired",
+      "war and genocide",
+      "shamanism",
+      "female rage",
+      "military academy",
+      "power and trauma"
+    ],
+    "buy_link": "https://www.amazon.in/s?k=The+Poppy+War+RF+Kuang",
+    "reading_insights": {
+      "vocabulary_enrichment": "High",
+      "cognitive_benefit": "Historical empathy and moral philosophy",
+      "narrative_complexity": "High",
+      "reading_value": "Understanding trauma, war psychology, and the cost of power"
+    }
+  },
+  {
+    "title": "Misery",
+    "author": "Stephen King",
+    "cover": "/covers/misery.svg",
+    "synopsis": "Novelist Paul Sheldon crashes his car in a blizzard and is 'rescued' by Annie Wilkes, his self-proclaimed number one fan. Trapped in her remote Colorado home with broken legs, Paul quickly realizes Annie is dangerously unhinged — and she wants him to resurrect the heroine he killed in his latest book, or else.",
+    "emotion_tags": [
+      "dread",
+      "tension",
+      "claustrophobia",
+      "desperation"
+    ],
+    "genre": "psychological thriller",
+    "mood": "suffocating terrifying",
+    "tone": "relentless dark",
+    "pacing": "fast",
+    "type": "fiction",
+    "personality_vector": [
+      0.75,
+      0.85,
+      0.15,
+      0.35,
+      0.4
+    ],
+    "embedding_tags": [
+      "psychological horror",
+      "captivity",
+      "obsessive fan",
+      "Stephen King",
+      "writer protagonist",
+      "isolation",
+      "survival"
+    ],
+    "buy_link": "https://www.amazon.in/s?k=Misery+Stephen+King",
+    "reading_insights": {
+      "vocabulary_enrichment": "Medium-High",
+      "cognitive_benefit": "Psychological tension and creative resilience",
+      "narrative_complexity": "Moderate",
+      "reading_value": "Suspense, character psychology, and the power of storytelling"
+    }
+  },
+  {
+    "title": "Gone Girl",
+    "author": "Gillian Flynn",
+    "cover": "/covers/gone-girl.svg",
+    "synopsis": "On their fifth wedding anniversary, Nick Dunne's wife Amy disappears. As the police investigation zeroes in on Nick, alternating narratives reveal a marriage of lies, manipulation, and dark secrets — building to one of the most shocking twists in modern thriller fiction.",
+    "emotion_tags": [
+      "unease",
+      "suspicion",
+      "shock",
+      "dark fascination"
+    ],
+    "genre": "psychological thriller",
+    "mood": "sinister gripping",
+    "tone": "razor-sharp dark",
+    "pacing": "fast",
+    "type": "fiction",
+    "personality_vector": [
+      0.8,
+      0.85,
+      0.2,
+      0.45,
+      0.5
+    ],
+    "embedding_tags": [
+      "psychological thriller",
+      "unreliable narrator",
+      "toxic marriage",
+      "media circus",
+      "identity and performance",
+      "female villain",
+      "shocking twist"
+    ],
+    "buy_link": "https://www.amazon.in/s?k=Gone+Girl+Gillian+Flynn",
+    "reading_insights": {
+      "vocabulary_enrichment": "High",
+      "cognitive_benefit": "Critical thinking and narrative analysis",
+      "narrative_complexity": "High",
+      "reading_value": "Subverted expectations, gender dynamics, and manipulation"
+    }
+  },
+  {
+    "title": "Dungeon Crawler Carl",
+    "author": "Matt Dinniman",
+    "cover": "/covers/dungeon-crawler-carl.svg",
+    "synopsis": "When an alien corporation destroys Earth and converts it into an 18-level dungeon for an intergalactic reality show, Coast Guard vet Carl and his ex-girlfriend's insufferably regal cat Princess Donut must fight their way through monsters, traps, and drug-dealing llamas — while keeping their viewer ratings high enough to receive loot drops that might keep them alive.",
+    "emotion_tags": [
+      "adrenaline",
+      "dark humor",
+      "anger",
+      "camaraderie"
+    ],
+    "genre": "LitRPG / sci-fi fantasy",
+    "mood": "chaotic hilarious",
+    "tone": "irreverent explosive",
+    "pacing": "breakneck",
+    "type": "fiction",
+    "personality_vector": [
+      0.7,
+      0.6,
+      0.2,
+      0.5,
+      0.65
+    ],
+    "embedding_tags": [
+      "LitRPG",
+      "dungeon crawl",
+      "dark humor",
+      "apocalypse",
+      "reality show satire",
+      "unlikely duo",
+      "video game mechanics"
+    ],
+    "buy_link": "https://www.amazon.in/s?k=Dungeon+Crawler+Carl+Matt+Dinniman",
+    "reading_insights": {
+      "vocabulary_enrichment": "Medium",
+      "cognitive_benefit": "Humor processing, strategic thinking",
+      "narrative_complexity": "Moderate",
+      "reading_value": "Pure entertainment, resilience, and dark catharsis"
+    }
+  },
+  {
+    "title": "A Confederacy of Dunces",
+    "author": "John Kennedy Toole",
+    "cover": "/covers/confederacy-of-dunces.svg",
+    "synopsis": "Ignatius J. Reilly, an obese, flatulent, medievally opinionated slob living with his mother in New Orleans, is forced by circumstance to get a job. His resulting collision with the modern world — through a series of catastrophic misadventures — produces one of the funniest and most furiously satirical novels in American literature.",
+    "emotion_tags": [
+      "outrage",
+      "hilarity",
+      "exasperation",
+      "absurdity"
+    ],
+    "genre": "satirical comedy",
+    "mood": "riotously absurd",
+    "tone": "biting comedic",
+    "pacing": "moderate",
+    "type": "fiction",
+    "personality_vector": [
+      0.65,
+      0.5,
+      0.3,
+      0.6,
+      0.75
+    ],
+    "embedding_tags": [
+      "satirical fiction",
+      "New Orleans",
+      "absurdist comedy",
+      "anti-hero",
+      "American classic",
+      "social critique",
+      "rage and humor"
+    ],
+    "buy_link": "https://www.amazon.in/s?k=A+Confederacy+of+Dunces+John+Kennedy+Toole",
+    "reading_insights": {
+      "vocabulary_enrichment": "High",
+      "cognitive_benefit": "Satirical analysis and humor appreciation",
+      "narrative_complexity": "Moderate-High",
+      "reading_value": "Social satire, comic catharsis, and literary wit"
+    }
+  },
+  {
+    "title": "The Anger Trap: Free Yourself from the Frustrations that Sabotage Your Life",
+    "author": "Les Carter",
+    "cover": "/covers/anger-trap.svg",
+    "synopsis": "A clinical psychologist explores how unresolved anger silently sabotages relationships, work, and self-esteem. Carter identifies the patterns that keep people stuck in chronic frustration, offering practical strategies to recognize emotional triggers, understand the root causes of anger, and build healthier responses.",
+    "emotion_tags": [
+      "frustration",
+      "clarity",
+      "relief",
+      "growth"
+    ],
+    "genre": "self-help / psychology",
+    "mood": "grounding instructive",
+    "tone": "clinical compassionate",
+    "pacing": "moderate",
+    "type": "non-fiction",
+    "personality_vector": [
+      0.5,
+      0.3,
+      0.6,
+      0.75,
+      0.55
+    ],
+    "embedding_tags": [
+      "anger management",
+      "emotional intelligence",
+      "psychology",
+      "self-help",
+      "relationships",
+      "mental health",
+      "behavior patterns"
+    ],
+    "buy_link": "https://www.amazon.in/s?k=The+Anger+Trap+Les+Carter",
+    "reading_insights": {
+      "vocabulary_enrichment": "Medium",
+      "cognitive_benefit": "Emotional regulation and self-awareness",
+      "narrative_complexity": "Low-Moderate",
+      "reading_value": "Practical emotional intelligence and conflict resolution"
+    }
+  },
+  {
+    "title": "Never Get Angry Again",
+    "author": "David J. Lieberman",
+    "cover": "/covers/never-get-angry-again.svg",
+    "synopsis": "Drawing on neuroscience, psychology, and spirituality, Lieberman argues that anger is always a choice rooted in ego and distorted thinking. He provides tools to permanently eliminate chronic anger by addressing its origins in low self-esteem, unmet expectations, and poor emotional habits.",
+    "emotion_tags": [
+      "frustration",
+      "resolve",
+      "calm",
+      "clarity"
+    ],
+    "genre": "self-help / psychology",
+    "mood": "empowering prescriptive",
+    "tone": "direct practical",
+    "pacing": "fast",
+    "type": "non-fiction",
+    "personality_vector": [
+      0.45,
+      0.3,
+      0.65,
+      0.7,
+      0.5
+    ],
+    "embedding_tags": [
+      "anger management",
+      "neuroscience",
+      "self-esteem",
+      "emotional health",
+      "psychology",
+      "mindset shift",
+      "behavioral change"
+    ],
+    "buy_link": "https://www.amazon.in/s?k=Never+Get+Angry+Again+David+Lieberman",
+    "reading_insights": {
+      "vocabulary_enrichment": "Medium",
+      "cognitive_benefit": "Self-regulation and mindset transformation",
+      "narrative_complexity": "Low",
+      "reading_value": "Emotional freedom and practical anger resolution"
+    }
+  },
+  {
+    "title": "The Cow in the Parking Lot: A Zen Approach to Overcoming Anger",
+    "author": "Leonard Scheff and Susan Edmiston",
+    "cover": "/covers/cow-parking-lot.svg",
+    "synopsis": "A Buddhist-inspired guide that uses the thought experiment of imagining a cow in the parking lot — instead of a driver — to defuse rage and reframe frustration. It offers Zen philosophy and practical techniques to recognize irrational anger triggers and cultivate equanimity in daily life.",
+    "emotion_tags": [
+      "irritation",
+      "amusement",
+      "calm",
+      "insight"
+    ],
+    "genre": "self-help / mindfulness",
+    "mood": "gentle humorous",
+    "tone": "warm philosophical",
+    "pacing": "slow",
+    "type": "non-fiction",
+    "personality_vector": [
+      0.35,
+      0.25,
+      0.7,
+      0.75,
+      0.55
+    ],
+    "embedding_tags": [
+      "Zen philosophy",
+      "mindfulness",
+      "anger management",
+      "Buddhism",
+      "reframing",
+      "humor",
+      "equanimity"
+    ],
+    "buy_link": "https://www.amazon.in/s?k=The+Cow+in+the+Parking+Lot+Leonard+Scheff",
+    "reading_insights": {
+      "vocabulary_enrichment": "Low-Medium",
+      "cognitive_benefit": "Perspective-taking and mindfulness",
+      "narrative_complexity": "Low",
+      "reading_value": "Zen wisdom, humor, and emotional reframing"
+    }
+  },
+  {
+    "title": "Facing the Fire: Experiencing and Expressing Anger Appropriately",
+    "author": "John Lee",
+    "cover": "/covers/facing-the-fire.svg",
+    "synopsis": "John Lee argues that suppressed anger is at the root of depression, addiction, and toxic behavior. Drawing on his own recovery journey, he offers practical guidance on how to feel anger fully without exploding or imploding — learning to use it as a signal for healthy boundaries rather than a weapon.",
+    "emotion_tags": [
+      "rawness",
+      "vulnerability",
+      "catharsis",
+      "strength"
+    ],
+    "genre": "self-help / psychology",
+    "mood": "raw empowering",
+    "tone": "candid personal",
+    "pacing": "moderate",
+    "type": "non-fiction",
+    "personality_vector": [
+      0.55,
+      0.4,
+      0.6,
+      0.7,
+      0.5
+    ],
+    "embedding_tags": [
+      "anger and healing",
+      "emotional suppression",
+      "recovery",
+      "boundaries",
+      "psychology",
+      "vulnerability",
+      "trauma"
+    ],
+    "buy_link": "https://www.amazon.in/s?k=Facing+the+Fire+John+Lee+anger",
+    "reading_insights": {
+      "vocabulary_enrichment": "Medium",
+      "cognitive_benefit": "Emotional processing and boundary setting",
+      "narrative_complexity": "Low-Moderate",
+      "reading_value": "Healing through authentic emotional expression"
+    }
+  },
+  {
+    "title": "Shigley's Mechanical Engineering Design",
+    "author": "Richard Budynas and J. Keith Nisbett",
+    "cover": "/covers/shigleys-mechanical.svg",
+    "synopsis": "The definitive textbook for mechanical engineering design, covering the full design process from materials and load analysis to fatigue, deflection, shafts, bearings, gears, and fasteners. Combining fundamental theory with real-world industrial applications, it has been the standard reference for engineering students and professionals for over 50 years.",
+    "emotion_tags": [
+      "intellectual rigor",
+      "problem-solving",
+      "precision",
+      "mastery"
+    ],
+    "genre": "engineering textbook",
+    "mood": "technical systematic",
+    "tone": "academic rigorous",
+    "pacing": "slow dense",
+    "type": "non-fiction",
+    "personality_vector": [
+      0.2,
+      0.3,
+      0.9,
+      0.4,
+      0.3
+    ],
+    "embedding_tags": [
+      "mechanical engineering",
+      "machine design",
+      "fatigue analysis",
+      "materials science",
+      "engineering fundamentals",
+      "textbook",
+      "GATE preparation"
+    ],
+    "buy_link": "https://www.amazon.in/s?k=Shigley%27s+Mechanical+Engineering+Design+Budynas+Nisbett",
+    "reading_insights": {
+      "vocabulary_enrichment": "Very High (Technical)",
+      "cognitive_benefit": "Analytical thinking and engineering problem-solving",
+      "narrative_complexity": "Very High (Technical)",
+      "reading_value": "Foundation for mechanical design practice and exam preparation"
+    }
+  },
+  {
+    "title": "Fluid Mechanics: Fundamentals and Applications",
+    "author": "Yunus A. Cengel and John M. Cimbala",
+    "cover": "/covers/fluid-mechanics-cengel.svg",
+    "synopsis": "A comprehensive undergraduate textbook covering fluid statics, kinematics, conservation laws, viscous flow, turbomachinery, and compressible flow. Known for its accessible writing style, real-world examples, and problem sets that bridge fundamental theory with engineering applications across mechanical and civil disciplines.",
+    "emotion_tags": [
+      "intellectual curiosity",
+      "rigor",
+      "analytical focus"
+    ],
+    "genre": "engineering textbook",
+    "mood": "technical accessible",
+    "tone": "clear instructional",
+    "pacing": "slow",
+    "type": "non-fiction",
+    "personality_vector": [
+      0.2,
+      0.3,
+      0.9,
+      0.35,
+      0.3
+    ],
+    "embedding_tags": [
+      "fluid mechanics",
+      "engineering",
+      "thermodynamics",
+      "textbook",
+      "undergraduate",
+      "Cengel",
+      "GATE preparation"
+    ],
+    "buy_link": "https://www.amazon.in/s?k=Fluid+Mechanics+Cengel+Cimbala",
+    "reading_insights": {
+      "vocabulary_enrichment": "Very High (Technical)",
+      "cognitive_benefit": "Physical intuition and mathematical modeling",
+      "narrative_complexity": "Very High (Technical)",
+      "reading_value": "Core fluid dynamics knowledge for engineering practice"
+    }
+  },
+  {
+    "title": "Steam Tables (Engineering Thermodynamics)",
+    "author": "R.S. Khurmi",
+    "cover": "/covers/steam-tables-khurmi.svg",
+    "synopsis": "A standard reference work covering thermodynamic properties of steam and water at various pressures and temperatures, widely used in mechanical and chemical engineering courses. Includes saturated and superheated steam tables, mollier diagrams, and supporting theory for thermodynamic cycle calculations.",
+    "emotion_tags": [
+      "precision",
+      "utility",
+      "analytical focus"
+    ],
+    "genre": "engineering reference",
+    "mood": "technical reference",
+    "tone": "precise technical",
+    "pacing": "reference use",
+    "type": "non-fiction",
+    "personality_vector": [
+      0.1,
+      0.2,
+      0.95,
+      0.3,
+      0.25
+    ],
+    "embedding_tags": [
+      "steam tables",
+      "thermodynamics",
+      "mechanical engineering",
+      "Rankine cycle",
+      "reference book",
+      "R.S. Khurmi",
+      "GATE"
+    ],
+    "buy_link": "https://www.amazon.in/s?k=Steam+Tables+RS+Khurmi",
+    "reading_insights": {
+      "vocabulary_enrichment": "High (Technical)",
+      "cognitive_benefit": "Thermodynamic property lookup and cycle analysis",
+      "narrative_complexity": "High (Technical)",
+      "reading_value": "Essential reference for thermal engineering calculations"
+    }
+  },
+  {
+    "title": "Material Science and Engineering",
+    "author": "R.K. Rajput",
+    "cover": "/covers/material-science-rajput.svg",
+    "synopsis": "A comprehensive textbook covering atomic structure, crystal defects, phase diagrams, mechanical and thermal properties of metals, ceramics, polymers, and composites. Designed for undergraduate engineering students, it bridges materials theory with practical applications in design and manufacturing.",
+    "emotion_tags": [
+      "analytical focus",
+      "curiosity",
+      "rigor"
+    ],
+    "genre": "engineering textbook",
+    "mood": "technical instructional",
+    "tone": "academic structured",
+    "pacing": "slow",
+    "type": "non-fiction",
+    "personality_vector": [
+      0.15,
+      0.25,
+      0.92,
+      0.35,
+      0.3
+    ],
+    "embedding_tags": [
+      "material science",
+      "engineering",
+      "metals",
+      "phase diagrams",
+      "textbook",
+      "manufacturing",
+      "undergraduate"
+    ],
+    "buy_link": "https://www.amazon.in/s?k=Material+Science+Engineering+RK+Rajput",
+    "reading_insights": {
+      "vocabulary_enrichment": "Very High (Technical)",
+      "cognitive_benefit": "Materials knowledge for design and manufacturing",
+      "narrative_complexity": "High (Technical)",
+      "reading_value": "Foundational materials literacy for engineers"
+    }
+  },
+  {
+    "title": "Power Electronics",
+    "author": "P.S. Bimbhra",
+    "cover": "/covers/power-electronics-bimbhra.svg",
+    "synopsis": "A leading textbook on power electronics covering thyristors, SCRs, power diodes, MOSFETs, IGBTs, AC/DC converters, inverters, choppers, and controllers. A standard reference for electrical engineering students preparing for examinations and professional practice in energy systems.",
+    "emotion_tags": [
+      "precision",
+      "analytical focus",
+      "mastery"
+    ],
+    "genre": "engineering textbook",
+    "mood": "technical rigorous",
+    "tone": "academic detailed",
+    "pacing": "slow",
+    "type": "non-fiction",
+    "personality_vector": [
+      0.15,
+      0.25,
+      0.93,
+      0.3,
+      0.3
+    ],
+    "embedding_tags": [
+      "power electronics",
+      "electrical engineering",
+      "thyristors",
+      "converters",
+      "inverters",
+      "textbook",
+      "GATE preparation"
+    ],
+    "buy_link": "https://www.amazon.in/s?k=Power+Electronics+PS+Bimbhra",
+    "reading_insights": {
+      "vocabulary_enrichment": "Very High (Technical)",
+      "cognitive_benefit": "Circuit analysis and power conversion systems",
+      "narrative_complexity": "Very High (Technical)",
+      "reading_value": "Core knowledge for electrical power systems engineering"
+    }
+  },
+  {
+    "title": "Signals and Systems",
+    "author": "A. Anand Kumar",
+    "cover": "/covers/signals-systems.svg",
+    "synopsis": "A comprehensive treatment of continuous and discrete-time signals, Fourier transforms, Laplace transforms, Z-transforms, and system analysis. A foundational textbook for electronics and communications engineering covering topics essential for signal processing, communications, and control systems.",
+    "emotion_tags": [
+      "precision",
+      "analytical focus",
+      "intellectual satisfaction"
+    ],
+    "genre": "engineering textbook",
+    "mood": "technical systematic",
+    "tone": "mathematical precise",
+    "pacing": "slow",
+    "type": "non-fiction",
+    "personality_vector": [
+      0.1,
+      0.2,
+      0.94,
+      0.3,
+      0.25
+    ],
+    "embedding_tags": [
+      "signals and systems",
+      "electronics",
+      "Fourier transform",
+      "Laplace transform",
+      "textbook",
+      "ECE",
+      "GATE preparation"
+    ],
+    "buy_link": "https://www.amazon.in/s?k=Signals+and+Systems+Anand+Kumar",
+    "reading_insights": {
+      "vocabulary_enrichment": "Very High (Technical)",
+      "cognitive_benefit": "Mathematical modeling and frequency domain thinking",
+      "narrative_complexity": "Very High (Technical)",
+      "reading_value": "Foundational signal analysis for electronics engineers"
+    }
+  },
+  {
+    "title": "Electric Machines",
+    "author": "D.P. Kothari and I.J. Nagrath",
+    "cover": "/covers/electric-machines-kothari.svg",
+    "synopsis": "A comprehensive textbook on transformers, DC machines, induction motors, synchronous machines, and special machines. Widely used in electrical engineering programs, it combines theory with analysis of real machine behavior and is a standard reference for GATE and other competitive examinations.",
+    "emotion_tags": [
+      "rigor",
+      "analytical focus",
+      "mastery"
+    ],
+    "genre": "engineering textbook",
+    "mood": "technical instructional",
+    "tone": "academic rigorous",
+    "pacing": "slow",
+    "type": "non-fiction",
+    "personality_vector": [
+      0.1,
+      0.2,
+      0.93,
+      0.3,
+      0.25
+    ],
+    "embedding_tags": [
+      "electric machines",
+      "electrical engineering",
+      "motors",
+      "transformers",
+      "textbook",
+      "Kothari Nagrath",
+      "GATE"
+    ],
+    "buy_link": "https://www.amazon.in/s?k=Electric+Machines+Kothari+Nagrath",
+    "reading_insights": {
+      "vocabulary_enrichment": "Very High (Technical)",
+      "cognitive_benefit": "Electromechanical system understanding",
+      "narrative_complexity": "Very High (Technical)",
+      "reading_value": "Core knowledge for electrical machines and drives"
+    }
+  },
+  {
+    "title": "Optical Fiber Communications",
+    "author": "Gerd Keiser",
+    "cover": "/covers/optical-fiber-keiser.svg",
+    "synopsis": "The definitive reference on optical fiber communication systems, covering fiber optic theory, light propagation, optical sources, detectors, amplifiers, WDM systems, and network architectures. A classic graduate-level text widely used in telecommunications engineering programs worldwide.",
+    "emotion_tags": [
+      "precision",
+      "curiosity",
+      "mastery"
+    ],
+    "genre": "engineering textbook",
+    "mood": "technical comprehensive",
+    "tone": "academic precise",
+    "pacing": "slow",
+    "type": "non-fiction",
+    "personality_vector": [
+      0.1,
+      0.2,
+      0.93,
+      0.3,
+      0.25
+    ],
+    "embedding_tags": [
+      "optical fiber",
+      "telecommunications",
+      "photonics",
+      "WDM",
+      "Gerd Keiser",
+      "textbook",
+      "graduate level"
+    ],
+    "buy_link": "https://www.amazon.in/s?k=Optical+Fiber+Communications+Gerd+Keiser",
+    "reading_insights": {
+      "vocabulary_enrichment": "Very High (Technical)",
+      "cognitive_benefit": "Photonics and telecommunications system design",
+      "narrative_complexity": "Very High (Technical)",
+      "reading_value": "Foundation for modern optical communications engineering"
+    }
+  },
+  {
+    "title": "Building Construction",
+    "author": "B.C. Punmia",
+    "cover": "/covers/building-construction.svg",
+    "synopsis": "A comprehensive civil engineering reference covering foundations, masonry, concrete construction, roofing, flooring, doors and windows, plastering, and advanced structural systems. A widely used textbook for civil engineering students preparing for degree examinations and professional practice.",
+    "emotion_tags": [
+      "methodical focus",
+      "practical utility",
+      "analytical thinking"
+    ],
+    "genre": "engineering textbook",
+    "mood": "technical practical",
+    "tone": "academic structured",
+    "pacing": "slow",
+    "type": "non-fiction",
+    "personality_vector": [
+      0.1,
+      0.2,
+      0.93,
+      0.3,
+      0.2
+    ],
+    "embedding_tags": [
+      "civil engineering",
+      "building construction",
+      "foundations",
+      "masonry",
+      "textbook",
+      "B.C. Punmia",
+      "structural engineering"
+    ],
+    "buy_link": "https://www.amazon.in/s?k=Building+Construction+BC+Punmia",
+    "reading_insights": {
+      "vocabulary_enrichment": "High (Technical)",
+      "cognitive_benefit": "Structural systems understanding and site knowledge",
+      "narrative_complexity": "High (Technical)",
+      "reading_value": "Practical construction knowledge for civil engineers"
+    }
+  },
+  {
+    "title": "Concrete Technology",
+    "author": "M.S. Shetty",
+    "cover": "/covers/concrete-technology.svg",
+    "synopsis": "An authoritative text on cement chemistry, concrete mix design, properties of fresh and hardened concrete, admixtures, durability, and special concretes including high-strength and fiber-reinforced types. A standard reference for civil engineering students and practicing professionals.",
+    "emotion_tags": [
+      "analytical rigor",
+      "precision",
+      "technical mastery"
+    ],
+    "genre": "engineering textbook",
+    "mood": "technical reference",
+    "tone": "academic precise",
+    "pacing": "slow",
+    "type": "non-fiction",
+    "personality_vector": [
+      0.1,
+      0.2,
+      0.93,
+      0.3,
+      0.2
+    ],
+    "embedding_tags": [
+      "concrete technology",
+      "civil engineering",
+      "cement",
+      "mix design",
+      "textbook",
+      "MS Shetty",
+      "materials"
+    ],
+    "buy_link": "https://www.amazon.in/s?k=Concrete+Technology+MS+Shetty",
+    "reading_insights": {
+      "vocabulary_enrichment": "High (Technical)",
+      "cognitive_benefit": "Materials knowledge for construction and structural design",
+      "narrative_complexity": "High (Technical)",
+      "reading_value": "Authoritative reference for concrete practice and research"
+    }
+  },
+  {
+    "title": "Civil Engineering: Conventional and Objective Type",
+    "author": "R.S. Khurmi and J.K. Gupta",
+    "cover": "/covers/civil-engineering-khurmi.svg",
+    "synopsis": "A comprehensive examination guide covering all major topics in civil engineering including structural analysis, RCC design, fluid mechanics, soil mechanics, surveying, and highway engineering. Widely used by students preparing for GATE, IES, and state-level competitive examinations.",
+    "emotion_tags": [
+      "focused preparation",
+      "analytical rigor",
+      "exam readiness"
+    ],
+    "genre": "engineering exam guide",
+    "mood": "study-focused systematic",
+    "tone": "concise structured",
+    "pacing": "self-paced",
+    "type": "non-fiction",
+    "personality_vector": [
+      0.1,
+      0.2,
+      0.94,
+      0.3,
+      0.2
+    ],
+    "embedding_tags": [
+      "civil engineering",
+      "GATE preparation",
+      "IES",
+      "objective type questions",
+      "Khurmi Gupta",
+      "examination guide",
+      "competitive exams"
+    ],
+    "buy_link": "https://www.amazon.in/s?k=Civil+Engineering+Conventional+Objective+Khurmi+Gupta",
+    "reading_insights": {
+      "vocabulary_enrichment": "High (Technical)",
+      "cognitive_benefit": "Exam readiness and comprehensive knowledge consolidation",
+      "narrative_complexity": "High (Technical)",
+      "reading_value": "Targeted preparation for civil engineering competitive examinations"
+    }
+  },
+  {
+    "title": "Advanced Engineering Mathematics",
+    "author": "Erwin Kreyszig",
+    "cover": "/covers/advanced-engineering-math.svg",
+    "synopsis": "The most widely used mathematics textbook for engineering students, covering ODEs, linear algebra, vector calculus, Fourier analysis, partial differential equations, complex analysis, probability, and numerical methods. An encyclopedic reference that underpins all engineering disciplines.",
+    "emotion_tags": [
+      "intellectual rigor",
+      "methodical focus",
+      "mastery"
+    ],
+    "genre": "mathematics textbook",
+    "mood": "technical comprehensive",
+    "tone": "academic rigorous",
+    "pacing": "slow",
+    "type": "non-fiction",
+    "personality_vector": [
+      0.1,
+      0.2,
+      0.97,
+      0.3,
+      0.25
+    ],
+    "embedding_tags": [
+      "engineering mathematics",
+      "differential equations",
+      "linear algebra",
+      "Kreyszig",
+      "textbook",
+      "GATE",
+      "all engineering disciplines"
+    ],
+    "buy_link": "https://www.amazon.in/s?k=Advanced+Engineering+Mathematics+Kreyszig",
+    "reading_insights": {
+      "vocabulary_enrichment": "Very High (Technical)",
+      "cognitive_benefit": "Mathematical rigor and abstract reasoning",
+      "narrative_complexity": "Very High (Technical)",
+      "reading_value": "Essential mathematical foundation for all engineering fields"
+    }
+  },
+  {
+    "title": "Vector Mechanics for Engineers",
+    "author": "Beer, Johnston, Mazurek, and Cornwell",
+    "cover": "/covers/vector-mechanics.svg",
+    "synopsis": "A foundational textbook in statics and dynamics, covering equilibrium of rigid bodies, kinematics, kinetics, energy methods, and vibration. Known for its clear problem-solving methodology and extensive problem sets, it is a standard text in mechanical and civil engineering programs worldwide.",
+    "emotion_tags": [
+      "analytical precision",
+      "intellectual rigor",
+      "problem-solving"
+    ],
+    "genre": "engineering textbook",
+    "mood": "technical instructional",
+    "tone": "academic clear",
+    "pacing": "slow",
+    "type": "non-fiction",
+    "personality_vector": [
+      0.1,
+      0.2,
+      0.95,
+      0.3,
+      0.25
+    ],
+    "embedding_tags": [
+      "statics",
+      "dynamics",
+      "mechanics",
+      "engineering",
+      "Beer Johnston",
+      "textbook",
+      "undergraduate"
+    ],
+    "buy_link": "https://www.amazon.in/s?k=Vector+Mechanics+Engineers+Beer+Johnston",
+    "reading_insights": {
+      "vocabulary_enrichment": "High (Technical)",
+      "cognitive_benefit": "Physical intuition and force analysis",
+      "narrative_complexity": "High (Technical)",
+      "reading_value": "Fundamental mechanics knowledge for design and analysis"
+    }
+  },
+  {
+    "title": "Skunk Works: A Personal Memoir of My Years at Lockheed",
+    "author": "Ben Rich",
+    "cover": "/covers/skunk-works.svg",
+    "synopsis": "The insider account of Lockheed's top-secret aerospace division, told by its chief, Ben Rich. From the U-2 spy plane to the SR-71 Blackbird to the F-117 stealth fighter, this is the true story of maverick engineers racing against Cold War pressures to build the most advanced aircraft in history — and the organizational genius that made it possible.",
+    "emotion_tags": [
+      "awe",
+      "pride",
+      "excitement",
+      "ingenuity"
+    ],
+    "genre": "memoir / engineering history",
+    "mood": "thrilling inspiring",
+    "tone": "engaging candid",
+    "pacing": "fast",
+    "type": "non-fiction",
+    "personality_vector": [
+      0.5,
+      0.55,
+      0.7,
+      0.6,
+      0.65
+    ],
+    "embedding_tags": [
+      "aerospace engineering",
+      "Cold War history",
+      "stealth technology",
+      "Lockheed",
+      "engineering memoir",
+      "military aviation",
+      "innovation culture"
+    ],
+    "buy_link": "https://www.amazon.in/s?k=Skunk+Works+Ben+Rich+Lockheed",
+    "reading_insights": {
+      "vocabulary_enrichment": "Medium-High",
+      "cognitive_benefit": "Innovation management and engineering leadership",
+      "narrative_complexity": "Moderate",
+      "reading_value": "Inspiration, engineering culture, and Cold War history"
+    }
+  },
+  {
+    "title": "Debugging: The 9 Indispensable Rules for Finding Even the Most Elusive Software and Hardware Problems",
+    "author": "David J. Agans",
+    "cover": "/covers/debugging-agans.svg",
+    "synopsis": "A practical, entertainingly written guide that distills debugging into nine universal rules applicable to any hardware or software problem. Illustrated with engineering war stories, Agans teaches systematic thinking about failure — how to reproduce bugs, isolate variables, and track down even the most baffling problems with a cool, methodical head.",
+    "emotion_tags": [
+      "frustration relief",
+      "clarity",
+      "methodical satisfaction"
+    ],
+    "genre": "technical / engineering",
+    "mood": "practical humorous",
+    "tone": "frank engaging",
+    "pacing": "fast",
+    "type": "non-fiction",
+    "personality_vector": [
+      0.35,
+      0.3,
+      0.8,
+      0.55,
+      0.5
+    ],
+    "embedding_tags": [
+      "debugging",
+      "software engineering",
+      "hardware engineering",
+      "problem-solving",
+      "systematic thinking",
+      "engineering rules",
+      "war stories"
+    ],
+    "buy_link": "https://www.amazon.in/s?k=Debugging+David+Agans+9+Indispensable+Rules",
+    "reading_insights": {
+      "vocabulary_enrichment": "Medium",
+      "cognitive_benefit": "Systematic problem-solving and diagnostic thinking",
+      "narrative_complexity": "Low-Moderate",
+      "reading_value": "Practical engineering mindset and debugging methodology"
+    }
+  },
+  {
+    "title": "Principles: Life and Work",
+    "author": "Ray Dalio",
+    "cover": "/covers/principles-dalio.svg",
+    "synopsis": "Ray Dalio, founder of Bridgewater Associates, shares the unconventional principles he has used to build one of the world's largest hedge funds. Covering decision-making, idea meritocracy, radical transparency, and systematic thinking, the book argues that developing a set of explicit, testable principles is the key to excellence in work and life.",
+    "emotion_tags": [
+      "ambition",
+      "clarity",
+      "challenge",
+      "discipline"
+    ],
+    "genre": "business / self-help",
+    "mood": "analytical prescriptive",
+    "tone": "direct philosophical",
+    "pacing": "moderate",
+    "type": "non-fiction",
+    "personality_vector": [
+      0.4,
+      0.35,
+      0.75,
+      0.6,
+      0.55
+    ],
+    "embedding_tags": [
+      "leadership",
+      "decision-making",
+      "business philosophy",
+      "Ray Dalio",
+      "frameworks",
+      "radical transparency",
+      "problem-solving systems"
+    ],
+    "buy_link": "https://www.amazon.in/s?k=Principles+Ray+Dalio",
+    "reading_insights": {
+      "vocabulary_enrichment": "Medium-High",
+      "cognitive_benefit": "Systems thinking and principled decision-making",
+      "narrative_complexity": "Moderate",
+      "reading_value": "Mental models, organizational design, and self-improvement"
+    }
+  },
+  {
+    "title": "The Simple Wild",
+    "author": "K.A. Tucker",
+    "cover": "/covers/simple-wild.svg",
+    "synopsis": "City girl Calla reconnects with her estranged father in the Alaskan bush, where bush pilot Jonah is infuriating, rugged, and everything she didn't expect. As the wild Alaskan landscape strips away her defenses, she must decide what she truly wants — and who she's willing to become.",
+    "emotion_tags": [
+      "longing",
+      "warmth",
+      "adventure",
+      "tension"
+    ],
+    "genre": "contemporary romance",
+    "mood": "heartwarming slow-burn",
+    "tone": "emotional immersive",
+    "pacing": "moderate",
+    "type": "fiction",
+    "personality_vector": [
+      0.5,
+      0.6,
+      0.3,
+      0.75,
+      0.7
+    ],
+    "embedding_tags": [
+      "romance",
+      "Alaska setting",
+      "slow burn",
+      "opposites attract",
+      "family healing",
+      "wilderness",
+      "emotional depth"
+    ],
+    "buy_link": "https://www.amazon.in/s?k=The+Simple+Wild+KA+Tucker",
+    "reading_insights": {
+      "vocabulary_enrichment": "Medium",
+      "cognitive_benefit": "Emotional intelligence and perspective-taking",
+      "narrative_complexity": "Low-Moderate",
+      "reading_value": "Escapism, emotional warmth, and romantic tension"
+    }
+  },
+  {
+    "title": "Love and Other Words",
+    "author": "Christina Lauren",
+    "cover": "/covers/love-and-other-words.svg",
+    "synopsis": "Macy and Elliot fell in love as teenagers sharing a secret reading nook filled with books — and then never spoke again. A decade later they collide in San Francisco. Told in alternating timelines of then and now, this is a story about first loves, silence, loss, and the words left unsaid.",
+    "emotion_tags": [
+      "nostalgia",
+      "heartache",
+      "hope",
+      "tenderness"
+    ],
+    "genre": "contemporary romance",
+    "mood": "bittersweet tender",
+    "tone": "emotional lyrical",
+    "pacing": "moderate",
+    "type": "fiction",
+    "personality_vector": [
+      0.45,
+      0.55,
+      0.35,
+      0.8,
+      0.75
+    ],
+    "embedding_tags": [
+      "second chance romance",
+      "dual timeline",
+      "first love",
+      "books and reading",
+      "grief",
+      "slow burn",
+      "emotional"
+    ],
+    "buy_link": "https://www.amazon.in/s?k=Love+and+Other+Words+Christina+Lauren",
+    "reading_insights": {
+      "vocabulary_enrichment": "Medium",
+      "cognitive_benefit": "Emotional resonance and empathy",
+      "narrative_complexity": "Moderate",
+      "reading_value": "Love, loss, and the healing power of reconnection"
+    }
+  },
+  {
+    "title": "November 9",
+    "author": "Colleen Hoover",
+    "cover": "/covers/november-9.svg",
+    "synopsis": "Fallon and Ben meet by chance the day she's leaving LA for good. They agree to meet only one day each year — November 9 — and never in between. Each annual reunion brings new revelations and deeper connection, but a dark secret from the beginning threatens to destroy everything they've built.",
+    "emotion_tags": [
+      "anticipation",
+      "heartache",
+      "shock",
+      "devotion"
+    ],
+    "genre": "contemporary romance",
+    "mood": "intense emotionally devastating",
+    "tone": "gripping emotional",
+    "pacing": "fast",
+    "type": "fiction",
+    "personality_vector": [
+      0.65,
+      0.7,
+      0.3,
+      0.6,
+      0.7
+    ],
+    "embedding_tags": [
+      "Colleen Hoover",
+      "annual meetings",
+      "dark secret",
+      "emotional twist",
+      "obsessive romance",
+      "trauma",
+      "CoHo"
+    ],
+    "buy_link": "https://www.amazon.in/s?k=November+9+Colleen+Hoover",
+    "reading_insights": {
+      "vocabulary_enrichment": "Medium",
+      "cognitive_benefit": "Emotional processing and narrative tension",
+      "narrative_complexity": "Moderate",
+      "reading_value": "Emotional intensity and romantic drama with a twist"
+    }
+  },
+  {
+    "title": "Every Summer After",
+    "author": "Carley Fortune",
+    "cover": "/covers/every-summer-after.svg",
+    "synopsis": "Percy and Sam spent five summers falling in love at a lakeside cottage in small-town Ontario. Then one night ended everything. Years later, a funeral brings Percy back — and forces her to face what she lost, what she did, and whether any of it can be rebuilt.",
+    "emotion_tags": [
+      "nostalgia",
+      "regret",
+      "longing",
+      "hope"
+    ],
+    "genre": "contemporary romance",
+    "mood": "nostalgic bittersweet",
+    "tone": "tender emotional",
+    "pacing": "moderate",
+    "type": "fiction",
+    "personality_vector": [
+      0.45,
+      0.55,
+      0.35,
+      0.8,
+      0.7
+    ],
+    "embedding_tags": [
+      "second chance romance",
+      "summer nostalgia",
+      "Canadian setting",
+      "dual timeline",
+      "cottage life",
+      "grief",
+      "first love"
+    ],
+    "buy_link": "https://www.amazon.in/s?k=Every+Summer+After+Carley+Fortune",
+    "reading_insights": {
+      "vocabulary_enrichment": "Medium",
+      "cognitive_benefit": "Emotional empathy and reflective thinking",
+      "narrative_complexity": "Moderate",
+      "reading_value": "Romantic longing, memory, and the courage to reconnect"
+    }
+  },
+  {
+    "title": "A Thousand Boy Kisses",
+    "author": "Tillie Cole",
+    "cover": "/covers/thousand-boy-kisses.svg",
+    "synopsis": "Rune and Poppy fall in love as children and build a lifetime of memories in a jar of kisses. When Rune moves away and then returns years later, he finds Poppy keeping a devastating secret. A heartwrenching love story about the first and most consuming kind of love — and how some losses change you forever.",
+    "emotion_tags": [
+      "heartbreak",
+      "tenderness",
+      "grief",
+      "devotion"
+    ],
+    "genre": "young adult romance",
+    "mood": "devastatingly emotional",
+    "tone": "lyrical bittersweet",
+    "pacing": "moderate",
+    "type": "fiction",
+    "personality_vector": [
+      0.5,
+      0.65,
+      0.4,
+      0.7,
+      0.75
+    ],
+    "embedding_tags": [
+      "YA romance",
+      "childhood sweethearts",
+      "terminal illness",
+      "grief",
+      "pure love",
+      "emotional devastation",
+      "jar of kisses"
+    ],
+    "buy_link": "https://www.amazon.in/s?k=A+Thousand+Boy+Kisses+Tillie+Cole",
+    "reading_insights": {
+      "vocabulary_enrichment": "Medium",
+      "cognitive_benefit": "Emotional processing and empathy",
+      "narrative_complexity": "Low-Moderate",
+      "reading_value": "Love, grief, and the weight of goodbye"
+    }
+  },
+  {
+    "title": "The Gravity of Us",
+    "author": "Brittainy C. Cherry",
+    "cover": "/covers/gravity-of-us.svg",
+    "synopsis": "Colin is a professional soccer player hiding a private storm of grief. Graham is a neighbor managing his own darkness. When their families collide, the two men find unexpected gravity in each other — a story about two broken people discovering they make each other whole.",
+    "emotion_tags": [
+      "grief",
+      "warmth",
+      "healing",
+      "connection"
+    ],
+    "genre": "contemporary romance",
+    "mood": "emotional healing",
+    "tone": "tender poignant",
+    "pacing": "moderate",
+    "type": "fiction",
+    "personality_vector": [
+      0.45,
+      0.55,
+      0.4,
+      0.8,
+      0.7
+    ],
+    "embedding_tags": [
+      "romance",
+      "grief and healing",
+      "family dynamics",
+      "emotional depth",
+      "Brittainy Cherry",
+      "male protagonist",
+      "hurt/comfort"
+    ],
+    "buy_link": "https://www.amazon.in/s?k=The+Gravity+of+Us+Brittainy+Cherry",
+    "reading_insights": {
+      "vocabulary_enrichment": "Medium",
+      "cognitive_benefit": "Emotional intelligence and empathy",
+      "narrative_complexity": "Moderate",
+      "reading_value": "Healing through love and human connection"
+    }
+  },
+  {
+    "title": "The Song of Achilles",
+    "author": "Madeline Miller",
+    "cover": "/covers/song-of-achilles.svg",
+    "synopsis": "Patroclus, an awkward young prince, is exiled and meets the golden Achilles, son of a goddess and destined for eternal glory. Their bond deepens into love as the Trojan War approaches — a war that prophecy says Achilles must enter, and from which he will not return. A devastating retelling of the Iliad narrated by the man who loved Achilles most.",
+    "emotion_tags": [
+      "grief",
+      "devotion",
+      "wonder",
+      "heartbreak"
+    ],
+    "genre": "literary fiction / mythology retelling",
+    "mood": "lyrical devastating",
+    "tone": "beautiful mournful",
+    "pacing": "moderate",
+    "type": "fiction",
+    "personality_vector": [
+      0.55,
+      0.7,
+      0.35,
+      0.65,
+      0.85
+    ],
+    "embedding_tags": [
+      "Greek mythology",
+      "Iliad retelling",
+      "LGBTQ+ romance",
+      "epic love story",
+      "Trojan War",
+      "literary fiction",
+      "fate and sacrifice"
+    ],
+    "buy_link": "https://www.amazon.in/s?k=The+Song+of+Achilles+Madeline+Miller",
+    "reading_insights": {
+      "vocabulary_enrichment": "High",
+      "cognitive_benefit": "Literary appreciation and mythological literacy",
+      "narrative_complexity": "Moderate-High",
+      "reading_value": "Love, mortality, glory, and the meaning of sacrifice"
+    }
+  },
+  {
+    "title": "A Little Life",
+    "author": "Hanya Yanagihara",
+    "cover": "/covers/a-little-life.svg",
+    "synopsis": "Four friends move to New York after college: Willem, JB, Malcolm, and the brilliant but damaged Jude. Over decades, the novel follows their lives but circles relentlessly around Jude's hidden history of severe abuse and trauma. A profoundly difficult, profoundly beautiful novel about friendship, suffering, and what it means to love someone who cannot stop hurting.",
+    "emotion_tags": [
+      "grief",
+      "anguish",
+      "love",
+      "devastation"
+    ],
+    "genre": "literary fiction",
+    "mood": "devastating profound",
+    "tone": "intense unflinching",
+    "pacing": "slow",
+    "type": "fiction",
+    "personality_vector": [
+      0.5,
+      0.7,
+      0.4,
+      0.6,
+      0.9
+    ],
+    "embedding_tags": [
+      "literary fiction",
+      "trauma and abuse",
+      "male friendship",
+      "New York City",
+      "grief",
+      "emotional devastation",
+      "controversial masterpiece"
+    ],
+    "buy_link": "https://www.amazon.in/s?k=A+Little+Life+Hanya+Yanagihara",
+    "reading_insights": {
+      "vocabulary_enrichment": "Very High",
+      "cognitive_benefit": "Empathy, ethical inquiry, and emotional complexity",
+      "narrative_complexity": "High",
+      "reading_value": "Deep humanity, the limits of love, and the weight of the past"
+    }
+  },
+  {
+    "title": "All Your Perfects",
+    "author": "Colleen Hoover",
+    "cover": "/covers/all-your-perfects.svg",
+    "synopsis": "Quinn and Graham have a perfect life on paper — but years of infertility struggles have quietly hollowed out their marriage. Told in two timelines, the story moves between their falling in love and the painful present, asking whether love is enough to survive the grief of what cannot be fixed.",
+    "emotion_tags": [
+      "heartache",
+      "hope",
+      "grief",
+      "tenderness"
+    ],
+    "genre": "contemporary romance",
+    "mood": "emotionally raw",
+    "tone": "honest vulnerable",
+    "pacing": "moderate",
+    "type": "fiction",
+    "personality_vector": [
+      0.5,
+      0.65,
+      0.35,
+      0.7,
+      0.75
+    ],
+    "embedding_tags": [
+      "marriage struggles",
+      "infertility",
+      "dual timeline",
+      "Colleen Hoover",
+      "emotional",
+      "second chance within marriage",
+      "grief"
+    ],
+    "buy_link": "https://www.amazon.in/s?k=All+Your+Perfects+Colleen+Hoover",
+    "reading_insights": {
+      "vocabulary_enrichment": "Medium",
+      "cognitive_benefit": "Emotional intelligence and empathy for complex relationships",
+      "narrative_complexity": "Moderate",
+      "reading_value": "Honest look at love under pressure and marital resilience"
+    }
+  },
+  {
+    "title": "Eleanor Oliphant Is Completely Fine",
+    "author": "Gail Honeyman",
+    "cover": "/covers/eleanor-oliphant.svg",
+    "synopsis": "Eleanor Oliphant lives a rigidly solitary life, surviving on routine, vodka, and a burning secret. When she befriends an IT guy named Raymond and they help an elderly stranger together, the walls she has built around her devastating past begin to crack in this funny, tender, and ultimately heartbreaking novel about loneliness and healing.",
+    "emotion_tags": [
+      "loneliness",
+      "humor",
+      "hope",
+      "catharsis"
+    ],
+    "genre": "literary fiction / contemporary",
+    "mood": "heartwarming bittersweet",
+    "tone": "wry tender",
+    "pacing": "moderate",
+    "type": "fiction",
+    "personality_vector": [
+      0.45,
+      0.5,
+      0.4,
+      0.75,
+      0.8
+    ],
+    "embedding_tags": [
+      "social isolation",
+      "mental health",
+      "friendship",
+      "dark past",
+      "female protagonist",
+      "unexpected humor",
+      "healing"
+    ],
+    "buy_link": "https://www.amazon.in/s?k=Eleanor+Oliphant+Is+Completely+Fine+Gail+Honeyman",
+    "reading_insights": {
+      "vocabulary_enrichment": "Medium-High",
+      "cognitive_benefit": "Empathy, mental health awareness, and social understanding",
+      "narrative_complexity": "Moderate",
+      "reading_value": "Loneliness, resilience, and the surprising forms of friendship"
+    }
+  },
+  {
+    "title": "Normal People",
+    "author": "Sally Rooney",
+    "cover": "/covers/normal-people.svg",
+    "synopsis": "Connell and Marianne grow up in the same small Irish town but inhabit entirely different worlds. Their relationship shifts and reforms over the years — from high school secrecy to college intimacy and beyond — tracing how power, class, and communication failure shape even the most connected people.",
+    "emotion_tags": [
+      "longing",
+      "frustration",
+      "intimacy",
+      "ache"
+    ],
+    "genre": "literary fiction / contemporary",
+    "mood": "quiet intense",
+    "tone": "sparse literary",
+    "pacing": "moderate",
+    "type": "fiction",
+    "personality_vector": [
+      0.45,
+      0.55,
+      0.4,
+      0.7,
+      0.85
+    ],
+    "embedding_tags": [
+      "Irish fiction",
+      "class dynamics",
+      "will-they-won't-they",
+      "literary romance",
+      "college years",
+      "communication failures",
+      "Sally Rooney"
+    ],
+    "buy_link": "https://www.amazon.in/s?k=Normal+People+Sally+Rooney",
+    "reading_insights": {
+      "vocabulary_enrichment": "High",
+      "cognitive_benefit": "Social dynamics, communication, and emotional intelligence",
+      "narrative_complexity": "Moderate-High",
+      "reading_value": "Intimate character study and class consciousness in love"
+    }
+  },
+  {
+    "title": "It Happened One Summer",
+    "author": "Tessa Bailey",
+    "cover": "/covers/it-happened-one-summer.svg",
+    "synopsis": "LA socialite Piper Bellinger is sent to Westport, a tiny fishing town in Washington, as punishment. There she meets the gruff, gorgeous crab boat captain Brendan, who has no patience for Hollywood glitter. A fun, steamy opposites-attract romance with a big heart.",
+    "emotion_tags": [
+      "humor",
+      "warmth",
+      "tension",
+      "fun"
+    ],
+    "genre": "contemporary romance",
+    "mood": "fun flirty",
+    "tone": "witty steamy",
+    "pacing": "fast",
+    "type": "fiction",
+    "personality_vector": [
+      0.45,
+      0.55,
+      0.3,
+      0.7,
+      0.65
+    ],
+    "embedding_tags": [
+      "small town romance",
+      "opposites attract",
+      "fish out of water",
+      "steamy",
+      "Tessa Bailey",
+      "coastal setting",
+      "humorous"
+    ],
+    "buy_link": "https://www.amazon.in/s?k=It+Happened+One+Summer+Tessa+Bailey",
+    "reading_insights": {
+      "vocabulary_enrichment": "Low-Medium",
+      "cognitive_benefit": "Light entertainment and emotional release",
+      "narrative_complexity": "Low",
+      "reading_value": "Fun escapism and feel-good romance"
+    }
+  },
+  {
+    "title": "The Kiss Quotient",
+    "author": "Helen Hoang",
+    "cover": "/covers/kiss-quotient.svg",
+    "synopsis": "Econometrist Stella Lane, who has autism and struggles with relationships, hires escort Michael Phan to teach her about love and intimacy. What starts as a business arrangement becomes something neither of them expected — a warm, sensory-rich romance that celebrates neurodiversity and the courage to be known.",
+    "emotion_tags": [
+      "tenderness",
+      "vulnerability",
+      "warmth",
+      "joy"
+    ],
+    "genre": "contemporary romance",
+    "mood": "sweet steamy",
+    "tone": "warm authentic",
+    "pacing": "fast",
+    "type": "fiction",
+    "personality_vector": [
+      0.4,
+      0.5,
+      0.35,
+      0.8,
+      0.7
+    ],
+    "embedding_tags": [
+      "neurodiversity",
+      "autism representation",
+      "romance",
+      "Vietnamese-American culture",
+      "unconventional love",
+      "steamy",
+      "Helen Hoang"
+    ],
+    "buy_link": "https://www.amazon.in/s?k=The+Kiss+Quotient+Helen+Hoang",
+    "reading_insights": {
+      "vocabulary_enrichment": "Medium",
+      "cognitive_benefit": "Empathy and understanding of neurodiversity",
+      "narrative_complexity": "Low-Moderate",
+      "reading_value": "Representation, vulnerability, and the joy of genuine connection"
+    }
+  },
+  {
+    "title": "Fourth Wing",
+    "author": "Rebecca Yarros",
+    "cover": "/covers/fourth-wing.svg",
+    "synopsis": "Violet Sorrengail is thrust into the brutal war college for dragon riders despite her fragile body. As she fights to survive alongside lethal classmates and bond with a dragon, her greatest threat might be the darkly magnetic Xaden Riorson — a rider with secrets that could destroy everything she's been taught to believe.",
+    "emotion_tags": [
+      "excitement",
+      "tension",
+      "desire",
+      "danger"
+    ],
+    "genre": "romantasy",
+    "mood": "addictive thrilling",
+    "tone": "dark steamy",
+    "pacing": "fast",
+    "type": "fiction",
+    "personality_vector": [
+      0.65,
+      0.7,
+      0.3,
+      0.55,
+      0.7
+    ],
+    "embedding_tags": [
+      "romantasy",
+      "dragons",
+      "military academy",
+      "enemies to lovers",
+      "Rebecca Yarros",
+      "steamy",
+      "BookTok phenomenon"
+    ],
+    "buy_link": "https://www.amazon.in/s?k=Fourth+Wing+Rebecca+Yarros",
+    "reading_insights": {
+      "vocabulary_enrichment": "Medium",
+      "cognitive_benefit": "World-building appreciation and tension management",
+      "narrative_complexity": "Moderate",
+      "reading_value": "Fantasy escapism with romantic intensity"
+    }
+  },
+  {
+    "title": "From Blood and Ash",
+    "author": "Jennifer L. Armentrout",
+    "cover": "/covers/from-blood-and-ash.svg",
+    "synopsis": "Poppy is the Maiden — a sacred, untouchable figure kept isolated behind veils and strict rules. Her guard Hawke is forbidden, charming, and holds a devastating secret. As Poppy's sheltered world begins to crack, she discovers that everything she's been told about her destiny may be a lie.",
+    "emotion_tags": [
+      "forbidden desire",
+      "danger",
+      "wonder",
+      "shock"
+    ],
+    "genre": "romantasy",
+    "mood": "dark intense",
+    "tone": "steamy gripping",
+    "pacing": "fast",
+    "type": "fiction",
+    "personality_vector": [
+      0.65,
+      0.7,
+      0.3,
+      0.55,
+      0.65
+    ],
+    "embedding_tags": [
+      "romantasy",
+      "forbidden romance",
+      "chosen one",
+      "dark fantasy",
+      "Jennifer Armentrout",
+      "steamy",
+      "plot twists"
+    ],
+    "buy_link": "https://www.amazon.in/s?k=From+Blood+and+Ash+Jennifer+Armentrout",
+    "reading_insights": {
+      "vocabulary_enrichment": "Medium",
+      "cognitive_benefit": "Plot analysis and narrative deception",
+      "narrative_complexity": "Moderate",
+      "reading_value": "Escapism, forbidden romance, and world-building"
+    }
+  },
+  {
+    "title": "The Cruel Prince",
+    "author": "Holly Black",
+    "cover": "/covers/cruel-prince.svg",
+    "synopsis": "Mortal girl Jude was taken to Faerie as a child. Now a teenager in the deadly fae court, she craves belonging and power in a world that views her as lesser. Her greatest antagonist is the cruel, beautiful Prince Cardan — and their hate-fueled rivalry will determine the fate of the entire faerie realm.",
+    "emotion_tags": [
+      "spite",
+      "fascination",
+      "ambition",
+      "dark desire"
+    ],
+    "genre": "YA fantasy / fae romance",
+    "mood": "sharp dark",
+    "tone": "witty dangerous",
+    "pacing": "fast",
+    "type": "fiction",
+    "personality_vector": [
+      0.65,
+      0.7,
+      0.3,
+      0.5,
+      0.7
+    ],
+    "embedding_tags": [
+      "fae fantasy",
+      "enemies to lovers",
+      "mortal in faerie",
+      "court intrigue",
+      "Holly Black",
+      "YA",
+      "dark romance"
+    ],
+    "buy_link": "https://www.amazon.in/s?k=The+Cruel+Prince+Holly+Black",
+    "reading_insights": {
+      "vocabulary_enrichment": "Medium-High",
+      "cognitive_benefit": "Strategic thinking and moral complexity",
+      "narrative_complexity": "Moderate",
+      "reading_value": "Power dynamics, cunning heroines, and lush world-building"
+    }
+  },
+  {
+    "title": "The House in the Cerulean Sea",
+    "author": "TJ Klune",
+    "cover": "/covers/cerulean-sea.svg",
+    "synopsis": "Linus Baker is a by-the-books caseworker for magical children. He's sent to inspect a mysterious orphanage on a remote island — home to the most dangerous magical children imaginable, including the Antichrist. What he finds instead is found family, unexpected love, and a world that might be worth fighting for.",
+    "emotion_tags": [
+      "cozy warmth",
+      "delight",
+      "hope",
+      "tenderness"
+    ],
+    "genre": "cozy fantasy / romance",
+    "mood": "gentle magical",
+    "tone": "warm whimsical",
+    "pacing": "leisurely",
+    "type": "fiction",
+    "personality_vector": [
+      0.35,
+      0.4,
+      0.4,
+      0.85,
+      0.8
+    ],
+    "embedding_tags": [
+      "cozy fantasy",
+      "found family",
+      "LGBTQ+ romance",
+      "magical children",
+      "TJ Klune",
+      "heartwarming",
+      "wholesome"
+    ],
+    "buy_link": "https://www.amazon.in/s?k=The+House+in+the+Cerulean+Sea+TJ+Klune",
+    "reading_insights": {
+      "vocabulary_enrichment": "Medium",
+      "cognitive_benefit": "Emotional intelligence and value of acceptance",
+      "narrative_complexity": "Low-Moderate",
+      "reading_value": "Comfort, inclusivity, and the magic of found family"
+    }
+  },
+  {
+    "title": "Legends & Lattes",
+    "author": "Travis Baldree",
+    "cover": "/covers/legends-lattes.svg",
+    "synopsis": "After decades of violence as an orc mercenary, Viv hangs up her sword to open the first coffee shop in a city that has never tasted the drink. A cozy, quietly revolutionary novel about chosen peace, small pleasures, and the surprising bravery of building something soft in a world built for hard things.",
+    "emotion_tags": [
+      "coziness",
+      "hope",
+      "contentment",
+      "gentle joy"
+    ],
+    "genre": "cozy fantasy",
+    "mood": "warm slow",
+    "tone": "gentle charming",
+    "pacing": "slow",
+    "type": "fiction",
+    "personality_vector": [
+      0.3,
+      0.35,
+      0.45,
+      0.9,
+      0.85
+    ],
+    "embedding_tags": [
+      "cozy fantasy",
+      "orc protagonist",
+      "coffee shop",
+      "found family",
+      "queer characters",
+      "low stakes",
+      "Travis Baldree"
+    ],
+    "buy_link": "https://www.amazon.in/s?k=Legends+and+Lattes+Travis+Baldree",
+    "reading_insights": {
+      "vocabulary_enrichment": "Medium",
+      "cognitive_benefit": "Mindfulness and appreciation for small joys",
+      "narrative_complexity": "Low",
+      "reading_value": "Comfort, acceptance, and the radical act of choosing peace"
+    }
+  },
+  {
+    "title": "Better Than the Movies",
+    "author": "Lynn Painter",
+    "cover": "/covers/better-than-movies.svg",
+    "synopsis": "Liz is a hopeless romantic obsessed with movie-perfect love. When her childhood nemesis Wes moves in next door, they make a reluctant pact: she helps him get the girl he likes; he helps her get closer to her dream guy Michael. Naturally, things do not go according to plan.",
+    "emotion_tags": [
+      "fun",
+      "giddiness",
+      "tension",
+      "warmth"
+    ],
+    "genre": "YA contemporary romance",
+    "mood": "light fun",
+    "tone": "witty playful",
+    "pacing": "fast",
+    "type": "fiction",
+    "personality_vector": [
+      0.4,
+      0.5,
+      0.3,
+      0.75,
+      0.65
+    ],
+    "embedding_tags": [
+      "YA romance",
+      "enemies to lovers",
+      "fake alliance",
+      "romcom vibes",
+      "movie references",
+      "teen romance",
+      "Lynn Painter"
+    ],
+    "buy_link": "https://www.amazon.in/s?k=Better+Than+the+Movies+Lynn+Painter",
+    "reading_insights": {
+      "vocabulary_enrichment": "Medium",
+      "cognitive_benefit": "Light entertainment and emotional awareness",
+      "narrative_complexity": "Low",
+      "reading_value": "Fun, warmth, and feel-good romantic comedy"
+    }
+  },
+  {
+    "title": "To All the Boys I've Loved Before",
+    "author": "Jenny Han",
+    "cover": "/covers/to-all-the-boys.svg",
+    "synopsis": "Lara Jean Song Covey writes secret love letters to every boy she's ever loved — letters she never intends to send. When someone mails them all out, she has to face the consequences, including a fake-dating arrangement with one of the recipients that starts to feel dangerously real.",
+    "emotion_tags": [
+      "sweet embarrassment",
+      "giddiness",
+      "warmth",
+      "romantic tension"
+    ],
+    "genre": "YA contemporary romance",
+    "mood": "sweet light",
+    "tone": "charming tender",
+    "pacing": "fast",
+    "type": "fiction",
+    "personality_vector": [
+      0.4,
+      0.5,
+      0.3,
+      0.8,
+      0.7
+    ],
+    "embedding_tags": [
+      "YA romance",
+      "fake dating",
+      "secret letters",
+      "Korean-American protagonist",
+      "Jenny Han",
+      "first love",
+      "family dynamics"
+    ],
+    "buy_link": "https://www.amazon.in/s?k=To+All+the+Boys+I%27ve+Loved+Before+Jenny+Han",
+    "reading_insights": {
+      "vocabulary_enrichment": "Medium",
+      "cognitive_benefit": "Emotional awareness and identity exploration",
+      "narrative_complexity": "Low",
+      "reading_value": "Sweet romance, family love, and girlhood"
+    }
+  },
+  {
+    "title": "Throne of Glass",
+    "author": "Sarah J. Maas",
+    "cover": "/covers/throne-of-glass.svg",
+    "synopsis": "Celaena Sardothien, the world's most feared assassin, is offered a chance at freedom — if she can win the king's competition to become his royal champion. But the competition is far deadlier than it appears, and Celaena must navigate court intrigue, a growing mystery, and two men pulling her in opposite directions.",
+    "emotion_tags": [
+      "excitement",
+      "determination",
+      "tension",
+      "ambition"
+    ],
+    "genre": "YA fantasy",
+    "mood": "action-packed thrilling",
+    "tone": "bold adventurous",
+    "pacing": "fast",
+    "type": "fiction",
+    "personality_vector": [
+      0.6,
+      0.65,
+      0.3,
+      0.55,
+      0.7
+    ],
+    "embedding_tags": [
+      "YA fantasy",
+      "female assassin",
+      "court intrigue",
+      "competition",
+      "Sarah J. Maas",
+      "fantasy romance",
+      "love triangle"
+    ],
+    "buy_link": "https://www.amazon.in/s?k=Throne+of+Glass+Sarah+J+Maas",
+    "reading_insights": {
+      "vocabulary_enrichment": "Medium",
+      "cognitive_benefit": "Strategic thinking and world-building immersion",
+      "narrative_complexity": "Moderate",
+      "reading_value": "Escapism, empowerment, and high-stakes adventure"
+    }
+  },
+  {
+    "title": "Powerless",
+    "author": "Lauren Roberts",
+    "cover": "/covers/powerless-lauren-roberts.svg",
+    "synopsis": "In a kingdom where only the Gifted — those with powers — have worth, ordinary girl Paedyn is desperately hiding the fact that she has none. When she accidentally saves the life of a prince and is forced into the Purging Trials, she must use her wits alone to survive a competition designed to kill the powerless.",
+    "emotion_tags": [
+      "defiance",
+      "tension",
+      "excitement",
+      "forbidden attraction"
+    ],
+    "genre": "YA romantasy",
+    "mood": "thrilling edge-of-seat",
+    "tone": "dark witty",
+    "pacing": "fast",
+    "type": "fiction",
+    "personality_vector": [
+      0.65,
+      0.7,
+      0.3,
+      0.5,
+      0.65
+    ],
+    "embedding_tags": [
+      "YA romantasy",
+      "powerless protagonist",
+      "survival competition",
+      "enemies to lovers",
+      "Lauren Roberts",
+      "court fantasy",
+      "BookTok"
+    ],
+    "buy_link": "https://www.amazon.in/s?k=Powerless+Lauren+Roberts",
+    "reading_insights": {
+      "vocabulary_enrichment": "Medium",
+      "cognitive_benefit": "Resilience thinking and underdog psychology",
+      "narrative_complexity": "Moderate",
+      "reading_value": "Empowerment, survival, and romantic tension"
+    }
+  },
+  {
+    "title": "The Selection",
+    "author": "Kiera Cass",
+    "cover": "/covers/the-selection.svg",
+    "synopsis": "In a future dystopian America, thirty-five girls are chosen to compete for the heart of Prince Maxon in the Selection — part Bachelor competition, part fairy tale. America Singer wants nothing to do with it, but as she gets closer to the crown, she's no longer sure what she wants.",
+    "emotion_tags": [
+      "excitement",
+      "romance",
+      "ambivalence",
+      "competition"
+    ],
+    "genre": "YA dystopian romance",
+    "mood": "light romantic",
+    "tone": "fun escapist",
+    "pacing": "fast",
+    "type": "fiction",
+    "personality_vector": [
+      0.45,
+      0.55,
+      0.3,
+      0.7,
+      0.65
+    ],
+    "embedding_tags": [
+      "YA dystopia",
+      "romance competition",
+      "prince",
+      "Kiera Cass",
+      "light fantasy",
+      "fairy tale elements",
+      "Bachelor premise"
+    ],
+    "buy_link": "https://www.amazon.in/s?k=The+Selection+Kiera+Cass",
+    "reading_insights": {
+      "vocabulary_enrichment": "Low-Medium",
+      "cognitive_benefit": "Light entertainment and female agency themes",
+      "narrative_complexity": "Low",
+      "reading_value": "Fun escapism and romantic fantasy"
+    }
+  },
+  {
+    "title": "Red Queen",
+    "author": "Victoria Aveyard",
+    "cover": "/covers/red-queen.svg",
+    "synopsis": "Mare Barrow is a lowly Red — one of the powerless masses ruled by silver-blooded elites with supernatural abilities. But when Mare discovers she possesses dangerous powers of her own, she's hidden in plain sight within the Silver court. A story of class revolution, deception, and the most dangerous game: trust.",
+    "emotion_tags": [
+      "defiance",
+      "betrayal",
+      "tension",
+      "rage"
+    ],
+    "genre": "YA fantasy / dystopia",
+    "mood": "dark exciting",
+    "tone": "sharp electrifying",
+    "pacing": "fast",
+    "type": "fiction",
+    "personality_vector": [
+      0.65,
+      0.7,
+      0.3,
+      0.5,
+      0.65
+    ],
+    "embedding_tags": [
+      "YA fantasy",
+      "class revolution",
+      "betrayal",
+      "powers",
+      "Victoria Aveyard",
+      "enemies to lovers",
+      "dystopian"
+    ],
+    "buy_link": "https://www.amazon.in/s?k=Red+Queen+Victoria+Aveyard",
+    "reading_insights": {
+      "vocabulary_enrichment": "Medium",
+      "cognitive_benefit": "Social inequality awareness and political thinking",
+      "narrative_complexity": "Moderate",
+      "reading_value": "Class dynamics, power, and the price of ambition"
+    }
   }
+]
 ]

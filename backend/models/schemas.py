@@ -166,6 +166,12 @@ class RecommendationResponse(BaseModel):
     recommendations: List[RecommendationItem]
     profile_summary: Optional[PersonalityProfileResponse] = None
 
+class MoodRecommendationRequest(BaseModel):
+    """Payload for POST /api/recommend."""
+
+    query: Optional[str] = None
+    text: Optional[str] = None
+
 
 class TropeAnalyticsResponse(BaseModel):
     """Phase 2: Full trope intelligence state for a user."""

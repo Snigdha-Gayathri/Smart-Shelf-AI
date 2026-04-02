@@ -7,10 +7,11 @@ returns structured responses. Contains NO business logic itself.
 from __future__ import annotations
 
 import logging
-from typing import Dict
+from typing import Dict, List
 
 from models.schemas import BookInteractionRequest
 from services.memory_service import update_user_memory
+from services.book_service import list_books, fetch_book_by_id
 
 logger = logging.getLogger(__name__)
 
@@ -54,4 +55,24 @@ def handle_book_interaction(payload: BookInteractionRequest) -> Dict:
         raise
     except Exception as e:
         logger.error(f"Error processing book interaction: {e}", exc_info=True)
+        raise
+
+
+def handle_get_all_books() -> List[Dict]:
+    """Return all book catalog entries."""
+    try:
+        return list_books()
+    except Exception as e:
+        logger.error(f"Error fetching books catalog: {e}", exc_info=True)
+        raise
+
+
+def handle_get_book_by_id(book_id: str) -> Dict:
+    """Return a single book record by id or title."""
+    try:
+        return fetch_book_by_id(book_id)
+    except LookupError:
+        raise
+    except Exception as e:
+        logger.error(f"Error fetching book '{book_id}': {e}", exc_info=True)
         raise

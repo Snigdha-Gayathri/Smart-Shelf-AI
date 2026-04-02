@@ -37,17 +37,24 @@ def _load_books_data() -> List[Dict]:
         logger.warning(f"books_data.json not found at {books_path}")
         return []
     with open(books_path, "r", encoding="utf-8") as f:
-        return json.load(f)
+        data = json.load(f)
+    if not isinstance(data, list):
+        return []
+    return [book for book in data if isinstance(book, dict)]
 
 
 def _get_book_by_id(book_id: str) -> Optional[Dict]:
     """Find a book in the dataset by title (used as book_id)."""
     books = _load_books_data()
     for book in books:
+        if not isinstance(book, dict):
+            continue
         if book.get("title", "").lower() == book_id.lower():
             return book
     # Fallback: partial match
     for book in books:
+        if not isinstance(book, dict):
+            continue
         if book_id.lower() in book.get("title", "").lower():
             return book
     return None

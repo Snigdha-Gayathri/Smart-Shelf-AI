@@ -18,6 +18,7 @@ from services.trope_engine_service import (
     get_trope_analytics,
     get_effective_trope_weights,
 )
+from services.annual_wrapped_service import generate_annual_wrapped
 
 logger = logging.getLogger(__name__)
 
@@ -185,4 +186,36 @@ def handle_get_effective_weights(user_id: int) -> Dict:
         }
     except Exception as e:
         logger.error(f"Error fetching effective weights for user {user_id}: {e}", exc_info=True)
+        raise
+
+
+# ──────────────────── Annual Wrapped Handler ────────────────────
+
+def handle_get_annual_wrapped(user_id: int) -> Dict:
+    """Generate comprehensive annual wrapped report for a user.
+
+    Report includes three primary metrics:
+      1. Prediction vs Reality Alignment (0.0-1.0)
+      2. Preference Stability Index (0.0-1.0)
+      3. Exploration vs Exploitation Score (0.0-1.0)
+
+    Plus context:
+      - Top genres
+      - Favorite tropes
+      - Reading statistics
+
+    Args:
+        user_id: The user's ID.
+
+    Returns:
+        Dict with complete annual wrapped report.
+    """
+    try:
+        report = generate_annual_wrapped(user_id)
+        return {
+            "status": "ok",
+            **report,
+        }
+    except Exception as e:
+        logger.error(f"Error generating annual wrapped for user {user_id}: {e}", exc_info=True)
         raise

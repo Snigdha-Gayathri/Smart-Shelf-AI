@@ -69,10 +69,14 @@ except Exception as _mem_err:
 
 try:
     from routes.book_routes import router as book_router
+    from routes.book_routes import catalog_router as catalog_book_router
+    from routes.recommendation_routes import router as recommendation_router
     from routes.user_routes import router as user_router
     from routes.therapist_routes import router as therapist_router
 except Exception as _route_err:
     book_router = None
+    catalog_book_router = None
+    recommendation_router = None
     user_router = None
     therapist_router = None
     logger.warning(f"⚠️ Memory Brain routes failed to import: {_route_err}")
@@ -130,6 +134,12 @@ app.add_middleware(
 if book_router is not None:
     app.include_router(book_router)
     logger.info("Registered /books routes (Memory Brain)")
+if catalog_book_router is not None:
+    app.include_router(catalog_book_router)
+    logger.info("Registered /api/books routes (catalog)")
+if recommendation_router is not None:
+    app.include_router(recommendation_router)
+    logger.info("Registered /api/recommend route (mood recommendations)")
 if user_router is not None:
     app.include_router(user_router)
     logger.info("Registered /users routes (Memory Brain)")
@@ -1033,7 +1043,15 @@ async def recommend(mood: MoodRequest):
         import time as _time
 
         t_start = _time.perf_counter()
-        text = mood.text or ""
+        from services.mood_mapping import (
+            normalize_query_text,
+            resolve_reference_emotions,
+            should_skip_query_filtering,
+        )
+        try:
+            text = normalize_query_text(mood.text)
+        except ValueError as ve:
+            return JSONResponse(status_code=400, content={"error": str(ve)})
         logger.info(f"🔎 Recommendation request: '{text[:80]}'")
 
         # ── Use in-memory dataset (loaded once at startup) ──
@@ -1059,8 +1077,11 @@ async def recommend(mood: MoodRequest):
                 logger.info(f"Type filter '{requested_type}': {len(books)} candidates")
 
             # ── Step 2: filter by genre / embedding_tags before ML scoring ──
-            books = _filter_books_by_query(books, text)
-            logger.info(f"After query filter: {len(books)} candidate books")
+            if should_skip_query_filtering(text):
+                logger.info("Skipping query narrowing for fallback mood prompt")
+            else:
+                books = _filter_books_by_query(books, text)
+                logger.info(f"After query filter: {len(books)} candidate books")
 
         if not books:
             logger.warning("No books available after applying requested type filter")
@@ -1079,7 +1100,11 @@ async def recommend(mood: MoodRequest):
 
         if _ML_AVAILABLE:
             try:
-                user_analysis = await asyncio.to_thread(_analyze_prompt, text)
+                reference_emotions = resolve_reference_emotions(text)
+                if reference_emotions:
+                    user_analysis = await asyncio.to_thread(_analyze_prompt, text, reference_emotions)
+                else:
+                    user_analysis = await asyncio.to_thread(_analyze_prompt, text)
             except Exception as e:
                 logger.warning(f"analyze_prompt failed: {e}")
                 user_analysis = {"compound_emotions": {}}
@@ -1298,7 +1323,7 @@ async def recommend(mood: MoodRequest):
             reason = None
             try:
                 if explain_client is not None:
-                    reason = explain_client.explain_reason(mood.text or "", book)
+                    reason = explain_client.explain_reason(text, book)
             except Exception:
                 reason = None
             book["reason"] = reason

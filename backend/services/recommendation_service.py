@@ -42,7 +42,11 @@ def _load_books() -> List[Dict]:
         logger.warning(f"Books dataset not found at {books_path}")
         return []
     with open(books_path, "r", encoding="utf-8") as f:
-        _books_cache = json.load(f)
+        data = json.load(f)
+    if isinstance(data, list):
+        _books_cache = [book for book in data if isinstance(book, dict)]
+    else:
+        _books_cache = []
     logger.info(f"📚 recommendation_service: loaded {len(_books_cache)} books into cache")
     return _books_cache
 

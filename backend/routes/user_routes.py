@@ -25,6 +25,7 @@ from controllers.user_controller import (
     handle_trope_feedback,
     handle_get_trope_analytics,
     handle_get_effective_weights,
+    handle_get_annual_wrapped,
 )
 from controllers.orchestrator_controller import (
     handle_orchestrated_recommendations,
@@ -223,3 +224,38 @@ def get_dashboard(
         return handle_orchestrated_dashboard(user_id, rec_limit=rec_limit)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+# ──────────────────── Annual Wrapped Route ────────────────────
+
+@router.get("/{user_id}/annual-wrapped")
+def get_annual_wrapped(user_id: int):
+    """Generate comprehensive annual wrapped report for a user.
+
+    Returns three primary analytical metrics:
+      1. Prediction vs Reality Alignment
+         - How well recommendations matched your actual preferences
+         - Score: 0.0-1.0 (1.0 = perfect), Classification: Low/Moderate/High
+
+      2. Preference Stability Index
+         - Consistency of your reading patterns over time
+         - Score: 0.0-1.0 (1.0 = perfectly stable), Classification: Stable/Evolving/Dynamic
+
+      3. Exploration vs Exploitation Score
+         - Your tendency to explore new genres vs stick to familiar ones
+         - Score: 0.0-1.0 (1.0 = pure exploration), Classification: Explorer/Balanced/Focused
+
+    Plus additional context:
+      - Top 5 genres
+      - Favorite tropes
+      - Reading statistics
+
+    Returns empty/insufficient data response if user has fewer than 5 books read.
+    """
+    if user_id <= 0:
+        raise HTTPException(status_code=422, detail="user_id must be a positive integer")
+    try:
+        return handle_get_annual_wrapped(user_id)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
