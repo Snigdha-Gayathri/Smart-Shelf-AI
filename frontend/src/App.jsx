@@ -419,14 +419,6 @@ export default function App({ clerk = { enabled: false, isLoaded: false, isSigne
         },
         body: JSON.stringify({ username: auth.user.username || auth.user.email, password })
       });
-              headers: {
-                ...buildAuthHeaders(),
-              },
-            });
-                headers: {
-                  ...buildAuthHeaders(),
-                },
-              })
       
       if (res.ok) {
         // Explicitly delete all persisted user data from storage before logout
